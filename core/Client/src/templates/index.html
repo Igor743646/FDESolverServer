@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block config %}
+
+<div>
+    <textarea rows="27" cols="90" style="resize: none;">
+{
+    "LeftBound": -0.4,
+    "RightBound": 0.4,   
+    "MaxTime": 0.2,                 
+    "Alpha": 1.8,
+    "Gamma": 0.9,            
+    "SpaceStep": 0.02,
+    "TimeStep": 0.001,     
+    "Beta": 0.5,                    
+    "AlphaLeft": 0,
+    "BetaLeft": 0,     
+    "AlphaRight": 0,
+    "BetaRight": 0,   
+    "DiffusionCoefficient": "0.001",     
+    "DemolitionCoefficient": "0.0",    
+    "ZeroTimeState": "if(and(less(-0.01, x), less(x, 0.01)), 50.0, 0.0)",            
+    "SourceFunction": "0.0",   
+    "LeftBoundState": "0.0",           
+    "RightBoundState": "0.0",          
+    "BordersAvailable": 0,          
+    "StochasticIterationCount": 1000,
+    "RealSolutionName": "$u(x, t) = ??",                        
+    "RealSolution" : "0.0"
+}
+    </textarea>
+</div>
+
+{% endblock %}
