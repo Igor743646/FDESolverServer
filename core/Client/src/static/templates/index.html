@@ -3,7 +3,7 @@
 {% block config %}
 
 <div>
-    <textarea rows="27" cols="90" style="resize: none;">
+    <textarea  id="config_textarea" rows="27" cols="90" style="resize: none;">
 {
     "LeftBound": -0.4,
     "RightBound": 0.4,   
@@ -19,7 +19,7 @@
     "BetaRight": 0,   
     "DiffusionCoefficient": "0.001",     
     "DemolitionCoefficient": "0.0",    
-    "ZeroTimeState": "if(and(less(-0.01, x), less(x, 0.01)), 50.0, 0.0)",            
+    "ZeroTimeState": "((-0.01 < x) && (x < 0.01)) ? 50.0 : 0.0",            
     "SourceFunction": "0.0",   
     "LeftBoundState": "0.0",           
     "RightBoundState": "0.0",          
