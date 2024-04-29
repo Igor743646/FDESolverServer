@@ -21,6 +21,43 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace PFDESolver {
+PROTOBUF_CONSTEXPR TClientConfig::TClientConfig(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.diffusioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.demolitioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.zerotimestate_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.sourcefunction_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.leftboundstate_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.rightboundstate_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.stochasticiterationcount_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.realsolutionname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.realsolution_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.spacecount_)*/uint64_t{0u}
+  , /*decltype(_impl_.timecount_)*/uint64_t{0u}
+  , /*decltype(_impl_.leftbound_)*/0
+  , /*decltype(_impl_.rightbound_)*/0
+  , /*decltype(_impl_.maxtime_)*/0
+  , /*decltype(_impl_.alpha_)*/0
+  , /*decltype(_impl_.gamma_)*/0
+  , /*decltype(_impl_.spacestep_)*/0
+  , /*decltype(_impl_.timestep_)*/0
+  , /*decltype(_impl_.beta_)*/0
+  , /*decltype(_impl_.alphaleft_)*/0
+  , /*decltype(_impl_.betaleft_)*/0
+  , /*decltype(_impl_.alpharight_)*/0
+  , /*decltype(_impl_.betaright_)*/0
+  , /*decltype(_impl_.bordersavailable_)*/false} {}
+struct TClientConfigDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TClientConfigDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TClientConfigDefaultTypeInternal() {}
+  union {
+    TClientConfig _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TClientConfigDefaultTypeInternal _TClientConfig_default_instance_;
 PROTOBUF_CONSTEXPR TSolverConfig::TSolverConfig(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.spacecount_)*/uint64_t{0u}
@@ -49,11 +86,65 @@ struct TSolverConfigDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TSolverConfigDefaultTypeInternal _TSolverConfig_default_instance_;
 }  // namespace PFDESolver
-static ::_pb::Metadata file_level_metadata_config_2eproto[1];
+static ::_pb::Metadata file_level_metadata_config_2eproto[2];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_config_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_config_2eproto = nullptr;
 
 const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.spacecount_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.timecount_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.leftbound_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.rightbound_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.maxtime_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.alpha_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.gamma_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.spacestep_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.timestep_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.beta_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.alphaleft_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.betaleft_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.alpharight_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.betaright_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.diffusioncoefficient_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.demolitioncoefficient_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.zerotimestate_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.sourcefunction_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.leftboundstate_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.rightboundstate_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.bordersavailable_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.stochasticiterationcount_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.realsolutionname_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.realsolution_),
+  3,
+  4,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  0,
+  1,
+  2,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TSolverConfig, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -77,29 +168,47 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TSolverConfig, _impl_.bordersavailable_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
+  { 0, 30, -1, sizeof(::PFDESolver::TClientConfig)},
+  { 54, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::PFDESolver::_TClientConfig_default_instance_._instance,
   &::PFDESolver::_TSolverConfig_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014config.proto\022\nPFDESolver\"\245\002\n\rTSolverCo"
-  "nfig\022\022\n\nSpaceCount\030\001 \001(\004\022\021\n\tTimeCount\030\002 "
-  "\001(\004\022\021\n\tLeftBound\030\003 \001(\001\022\022\n\nRightBound\030\004 \001"
-  "(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005Alpha\030\006 \001(\001\022\r\n\005Ga"
-  "mma\030\007 \001(\001\022\021\n\tSpaceStep\030\010 \001(\001\022\020\n\010TimeStep"
-  "\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022\021\n\tAlphaLeft\030\013 \001(\001\022"
-  "\020\n\010BetaLeft\030\014 \001(\001\022\022\n\nAlphaRight\030\r \001(\001\022\021\n"
-  "\tBetaRight\030\016 \001(\001\022\030\n\020BordersAvailable\030\017 \001"
-  "(\010b\006proto3"
+  "\n\014config.proto\022\nPFDESolver\"\215\005\n\rTClientCo"
+  "nfig\022\027\n\nSpaceCount\030\001 \001(\004H\000\210\001\001\022\026\n\tTimeCou"
+  "nt\030\002 \001(\004H\001\210\001\001\022\021\n\tLeftBound\030\003 \001(\001\022\022\n\nRigh"
+  "tBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005Alpha\030\006"
+  " \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceStep\030\010 \001(\001\022\020"
+  "\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022\021\n\tAlphaL"
+  "eft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n\nAlphaRigh"
+  "t\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\034\n\024DiffusionC"
+  "oefficient\030\017 \001(\t\022\035\n\025DemolitionCoefficien"
+  "t\030\020 \001(\t\022\025\n\rZeroTimeState\030\021 \001(\t\022\026\n\016Source"
+  "Function\030\022 \001(\t\022\026\n\016LeftBoundState\030\023 \001(\t\022\027"
+  "\n\017RightBoundState\030\024 \001(\t\022\030\n\020BordersAvaila"
+  "ble\030\025 \001(\010\022%\n\030StochasticIterationCount\030\026 "
+  "\001(\tH\002\210\001\001\022\035\n\020RealSolutionName\030\027 \001(\tH\003\210\001\001\022"
+  "\031\n\014RealSolution\030\030 \001(\tH\004\210\001\001B\r\n\013_SpaceCoun"
+  "tB\014\n\n_TimeCountB\033\n\031_StochasticIterationC"
+  "ountB\023\n\021_RealSolutionNameB\017\n\r_RealSoluti"
+  "on\"\245\002\n\rTSolverConfig\022\022\n\nSpaceCount\030\001 \001(\004"
+  "\022\021\n\tTimeCount\030\002 \001(\004\022\021\n\tLeftBound\030\003 \001(\001\022\022"
+  "\n\nRightBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005A"
+  "lpha\030\006 \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceStep\030\010"
+  " \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022\021\n\t"
+  "AlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n\nAlp"
+  "haRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020Bord"
+  "ersAvailable\030\017 \001(\010b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_config_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
-    false, false, 330, descriptor_table_protodef_config_2eproto,
+    false, false, 986, descriptor_table_protodef_config_2eproto,
     "config.proto",
-    &descriptor_table_config_2eproto_once, nullptr, 0, 1,
+    &descriptor_table_config_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_config_2eproto::offsets,
     file_level_metadata_config_2eproto, file_level_enum_descriptors_config_2eproto,
     file_level_service_descriptors_config_2eproto,
@@ -111,6 +220,1170 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_config_2
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_config_2eproto(&descriptor_table_config_2eproto);
 namespace PFDESolver {
+
+// ===================================================================
+
+class TClientConfig::_Internal {
+ public:
+  using HasBits = decltype(std::declval<TClientConfig>()._impl_._has_bits_);
+  static void set_has_spacecount(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static void set_has_timecount(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
+  static void set_has_stochasticiterationcount(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static void set_has_realsolutionname(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_realsolution(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+};
+
+TClientConfig::TClientConfig(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:PFDESolver.TClientConfig)
+}
+TClientConfig::TClientConfig(const TClientConfig& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  TClientConfig* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.diffusioncoefficient_){}
+    , decltype(_impl_.demolitioncoefficient_){}
+    , decltype(_impl_.zerotimestate_){}
+    , decltype(_impl_.sourcefunction_){}
+    , decltype(_impl_.leftboundstate_){}
+    , decltype(_impl_.rightboundstate_){}
+    , decltype(_impl_.stochasticiterationcount_){}
+    , decltype(_impl_.realsolutionname_){}
+    , decltype(_impl_.realsolution_){}
+    , decltype(_impl_.spacecount_){}
+    , decltype(_impl_.timecount_){}
+    , decltype(_impl_.leftbound_){}
+    , decltype(_impl_.rightbound_){}
+    , decltype(_impl_.maxtime_){}
+    , decltype(_impl_.alpha_){}
+    , decltype(_impl_.gamma_){}
+    , decltype(_impl_.spacestep_){}
+    , decltype(_impl_.timestep_){}
+    , decltype(_impl_.beta_){}
+    , decltype(_impl_.alphaleft_){}
+    , decltype(_impl_.betaleft_){}
+    , decltype(_impl_.alpharight_){}
+    , decltype(_impl_.betaright_){}
+    , decltype(_impl_.bordersavailable_){}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.diffusioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_diffusioncoefficient().empty()) {
+    _this->_impl_.diffusioncoefficient_.Set(from._internal_diffusioncoefficient(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.demolitioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.demolitioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_demolitioncoefficient().empty()) {
+    _this->_impl_.demolitioncoefficient_.Set(from._internal_demolitioncoefficient(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.zerotimestate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.zerotimestate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_zerotimestate().empty()) {
+    _this->_impl_.zerotimestate_.Set(from._internal_zerotimestate(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.sourcefunction_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.sourcefunction_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_sourcefunction().empty()) {
+    _this->_impl_.sourcefunction_.Set(from._internal_sourcefunction(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.leftboundstate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.leftboundstate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_leftboundstate().empty()) {
+    _this->_impl_.leftboundstate_.Set(from._internal_leftboundstate(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.rightboundstate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.rightboundstate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_rightboundstate().empty()) {
+    _this->_impl_.rightboundstate_.Set(from._internal_rightboundstate(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.stochasticiterationcount_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_stochasticiterationcount()) {
+    _this->_impl_.stochasticiterationcount_.Set(from._internal_stochasticiterationcount(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.realsolutionname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.realsolutionname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_realsolutionname()) {
+    _this->_impl_.realsolutionname_.Set(from._internal_realsolutionname(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.realsolution_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.realsolution_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_realsolution()) {
+    _this->_impl_.realsolution_.Set(from._internal_realsolution(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.spacecount_, &from._impl_.spacecount_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.bordersavailable_) -
+    reinterpret_cast<char*>(&_impl_.spacecount_)) + sizeof(_impl_.bordersavailable_));
+  // @@protoc_insertion_point(copy_constructor:PFDESolver.TClientConfig)
+}
+
+inline void TClientConfig::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.diffusioncoefficient_){}
+    , decltype(_impl_.demolitioncoefficient_){}
+    , decltype(_impl_.zerotimestate_){}
+    , decltype(_impl_.sourcefunction_){}
+    , decltype(_impl_.leftboundstate_){}
+    , decltype(_impl_.rightboundstate_){}
+    , decltype(_impl_.stochasticiterationcount_){}
+    , decltype(_impl_.realsolutionname_){}
+    , decltype(_impl_.realsolution_){}
+    , decltype(_impl_.spacecount_){uint64_t{0u}}
+    , decltype(_impl_.timecount_){uint64_t{0u}}
+    , decltype(_impl_.leftbound_){0}
+    , decltype(_impl_.rightbound_){0}
+    , decltype(_impl_.maxtime_){0}
+    , decltype(_impl_.alpha_){0}
+    , decltype(_impl_.gamma_){0}
+    , decltype(_impl_.spacestep_){0}
+    , decltype(_impl_.timestep_){0}
+    , decltype(_impl_.beta_){0}
+    , decltype(_impl_.alphaleft_){0}
+    , decltype(_impl_.betaleft_){0}
+    , decltype(_impl_.alpharight_){0}
+    , decltype(_impl_.betaright_){0}
+    , decltype(_impl_.bordersavailable_){false}
+  };
+  _impl_.diffusioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.demolitioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.demolitioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.zerotimestate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.zerotimestate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.sourcefunction_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.sourcefunction_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.leftboundstate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.leftboundstate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.rightboundstate_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.rightboundstate_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.stochasticiterationcount_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.realsolutionname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.realsolutionname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.realsolution_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.realsolution_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+TClientConfig::~TClientConfig() {
+  // @@protoc_insertion_point(destructor:PFDESolver.TClientConfig)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void TClientConfig::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.diffusioncoefficient_.Destroy();
+  _impl_.demolitioncoefficient_.Destroy();
+  _impl_.zerotimestate_.Destroy();
+  _impl_.sourcefunction_.Destroy();
+  _impl_.leftboundstate_.Destroy();
+  _impl_.rightboundstate_.Destroy();
+  _impl_.stochasticiterationcount_.Destroy();
+  _impl_.realsolutionname_.Destroy();
+  _impl_.realsolution_.Destroy();
+}
+
+void TClientConfig::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void TClientConfig::Clear() {
+// @@protoc_insertion_point(message_clear_start:PFDESolver.TClientConfig)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.diffusioncoefficient_.ClearToEmpty();
+  _impl_.demolitioncoefficient_.ClearToEmpty();
+  _impl_.zerotimestate_.ClearToEmpty();
+  _impl_.sourcefunction_.ClearToEmpty();
+  _impl_.leftboundstate_.ClearToEmpty();
+  _impl_.rightboundstate_.ClearToEmpty();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _impl_.stochasticiterationcount_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _impl_.realsolutionname_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _impl_.realsolution_.ClearNonDefaultToEmpty();
+    }
+  }
+  if (cached_has_bits & 0x00000018u) {
+    ::memset(&_impl_.spacecount_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&_impl_.timecount_) -
+        reinterpret_cast<char*>(&_impl_.spacecount_)) + sizeof(_impl_.timecount_));
+  }
+  ::memset(&_impl_.leftbound_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.bordersavailable_) -
+      reinterpret_cast<char*>(&_impl_.leftbound_)) + sizeof(_impl_.bordersavailable_));
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* TClientConfig::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // optional uint64 SpaceCount = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _Internal::set_has_spacecount(&has_bits);
+          _impl_.spacecount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional uint64 TimeCount = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _Internal::set_has_timecount(&has_bits);
+          _impl_.timecount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double LeftBound = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 25)) {
+          _impl_.leftbound_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double RightBound = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
+          _impl_.rightbound_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double MaxTime = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 41)) {
+          _impl_.maxtime_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double Alpha = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 49)) {
+          _impl_.alpha_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double Gamma = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 57)) {
+          _impl_.gamma_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double SpaceStep = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 65)) {
+          _impl_.spacestep_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double TimeStep = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 73)) {
+          _impl_.timestep_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double Beta = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 81)) {
+          _impl_.beta_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double AlphaLeft = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 89)) {
+          _impl_.alphaleft_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double BetaLeft = 12;
+      case 12:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 97)) {
+          _impl_.betaleft_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double AlphaRight = 13;
+      case 13:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 105)) {
+          _impl_.alpharight_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // double BetaRight = 14;
+      case 14:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 113)) {
+          _impl_.betaright_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // string DiffusionCoefficient = 15;
+      case 15:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
+          auto str = _internal_mutable_diffusioncoefficient();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.DiffusionCoefficient"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string DemolitionCoefficient = 16;
+      case 16:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 130)) {
+          auto str = _internal_mutable_demolitioncoefficient();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.DemolitionCoefficient"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string ZeroTimeState = 17;
+      case 17:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 138)) {
+          auto str = _internal_mutable_zerotimestate();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.ZeroTimeState"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string SourceFunction = 18;
+      case 18:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 146)) {
+          auto str = _internal_mutable_sourcefunction();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.SourceFunction"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string LeftBoundState = 19;
+      case 19:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 154)) {
+          auto str = _internal_mutable_leftboundstate();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.LeftBoundState"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string RightBoundState = 20;
+      case 20:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 162)) {
+          auto str = _internal_mutable_rightboundstate();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.RightBoundState"));
+        } else
+          goto handle_unusual;
+        continue;
+      // bool BordersAvailable = 21;
+      case 21:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 168)) {
+          _impl_.bordersavailable_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string StochasticIterationCount = 22;
+      case 22:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 178)) {
+          auto str = _internal_mutable_stochasticiterationcount();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.StochasticIterationCount"));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string RealSolutionName = 23;
+      case 23:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 186)) {
+          auto str = _internal_mutable_realsolutionname();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.RealSolutionName"));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string RealSolution = 24;
+      case 24:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 194)) {
+          auto str = _internal_mutable_realsolution();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.RealSolution"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  _impl_._has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* TClientConfig::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:PFDESolver.TClientConfig)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // optional uint64 SpaceCount = 1;
+  if (_internal_has_spacecount()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(1, this->_internal_spacecount(), target);
+  }
+
+  // optional uint64 TimeCount = 2;
+  if (_internal_has_timecount()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_timecount(), target);
+  }
+
+  // double LeftBound = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_leftbound = this->_internal_leftbound();
+  uint64_t raw_leftbound;
+  memcpy(&raw_leftbound, &tmp_leftbound, sizeof(tmp_leftbound));
+  if (raw_leftbound != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(3, this->_internal_leftbound(), target);
+  }
+
+  // double RightBound = 4;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rightbound = this->_internal_rightbound();
+  uint64_t raw_rightbound;
+  memcpy(&raw_rightbound, &tmp_rightbound, sizeof(tmp_rightbound));
+  if (raw_rightbound != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_rightbound(), target);
+  }
+
+  // double MaxTime = 5;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_maxtime = this->_internal_maxtime();
+  uint64_t raw_maxtime;
+  memcpy(&raw_maxtime, &tmp_maxtime, sizeof(tmp_maxtime));
+  if (raw_maxtime != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(5, this->_internal_maxtime(), target);
+  }
+
+  // double Alpha = 6;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpha = this->_internal_alpha();
+  uint64_t raw_alpha;
+  memcpy(&raw_alpha, &tmp_alpha, sizeof(tmp_alpha));
+  if (raw_alpha != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(6, this->_internal_alpha(), target);
+  }
+
+  // double Gamma = 7;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_gamma = this->_internal_gamma();
+  uint64_t raw_gamma;
+  memcpy(&raw_gamma, &tmp_gamma, sizeof(tmp_gamma));
+  if (raw_gamma != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(7, this->_internal_gamma(), target);
+  }
+
+  // double SpaceStep = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_spacestep = this->_internal_spacestep();
+  uint64_t raw_spacestep;
+  memcpy(&raw_spacestep, &tmp_spacestep, sizeof(tmp_spacestep));
+  if (raw_spacestep != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(8, this->_internal_spacestep(), target);
+  }
+
+  // double TimeStep = 9;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timestep = this->_internal_timestep();
+  uint64_t raw_timestep;
+  memcpy(&raw_timestep, &tmp_timestep, sizeof(tmp_timestep));
+  if (raw_timestep != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(9, this->_internal_timestep(), target);
+  }
+
+  // double Beta = 10;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_beta = this->_internal_beta();
+  uint64_t raw_beta;
+  memcpy(&raw_beta, &tmp_beta, sizeof(tmp_beta));
+  if (raw_beta != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(10, this->_internal_beta(), target);
+  }
+
+  // double AlphaLeft = 11;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alphaleft = this->_internal_alphaleft();
+  uint64_t raw_alphaleft;
+  memcpy(&raw_alphaleft, &tmp_alphaleft, sizeof(tmp_alphaleft));
+  if (raw_alphaleft != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(11, this->_internal_alphaleft(), target);
+  }
+
+  // double BetaLeft = 12;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaleft = this->_internal_betaleft();
+  uint64_t raw_betaleft;
+  memcpy(&raw_betaleft, &tmp_betaleft, sizeof(tmp_betaleft));
+  if (raw_betaleft != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(12, this->_internal_betaleft(), target);
+  }
+
+  // double AlphaRight = 13;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpharight = this->_internal_alpharight();
+  uint64_t raw_alpharight;
+  memcpy(&raw_alpharight, &tmp_alpharight, sizeof(tmp_alpharight));
+  if (raw_alpharight != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(13, this->_internal_alpharight(), target);
+  }
+
+  // double BetaRight = 14;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaright = this->_internal_betaright();
+  uint64_t raw_betaright;
+  memcpy(&raw_betaright, &tmp_betaright, sizeof(tmp_betaright));
+  if (raw_betaright != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(14, this->_internal_betaright(), target);
+  }
+
+  // string DiffusionCoefficient = 15;
+  if (!this->_internal_diffusioncoefficient().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_diffusioncoefficient().data(), static_cast<int>(this->_internal_diffusioncoefficient().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.DiffusionCoefficient");
+    target = stream->WriteStringMaybeAliased(
+        15, this->_internal_diffusioncoefficient(), target);
+  }
+
+  // string DemolitionCoefficient = 16;
+  if (!this->_internal_demolitioncoefficient().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_demolitioncoefficient().data(), static_cast<int>(this->_internal_demolitioncoefficient().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.DemolitionCoefficient");
+    target = stream->WriteStringMaybeAliased(
+        16, this->_internal_demolitioncoefficient(), target);
+  }
+
+  // string ZeroTimeState = 17;
+  if (!this->_internal_zerotimestate().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_zerotimestate().data(), static_cast<int>(this->_internal_zerotimestate().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.ZeroTimeState");
+    target = stream->WriteStringMaybeAliased(
+        17, this->_internal_zerotimestate(), target);
+  }
+
+  // string SourceFunction = 18;
+  if (!this->_internal_sourcefunction().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_sourcefunction().data(), static_cast<int>(this->_internal_sourcefunction().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.SourceFunction");
+    target = stream->WriteStringMaybeAliased(
+        18, this->_internal_sourcefunction(), target);
+  }
+
+  // string LeftBoundState = 19;
+  if (!this->_internal_leftboundstate().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_leftboundstate().data(), static_cast<int>(this->_internal_leftboundstate().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.LeftBoundState");
+    target = stream->WriteStringMaybeAliased(
+        19, this->_internal_leftboundstate(), target);
+  }
+
+  // string RightBoundState = 20;
+  if (!this->_internal_rightboundstate().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_rightboundstate().data(), static_cast<int>(this->_internal_rightboundstate().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.RightBoundState");
+    target = stream->WriteStringMaybeAliased(
+        20, this->_internal_rightboundstate(), target);
+  }
+
+  // bool BordersAvailable = 21;
+  if (this->_internal_bordersavailable() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(21, this->_internal_bordersavailable(), target);
+  }
+
+  // optional string StochasticIterationCount = 22;
+  if (_internal_has_stochasticiterationcount()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_stochasticiterationcount().data(), static_cast<int>(this->_internal_stochasticiterationcount().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.StochasticIterationCount");
+    target = stream->WriteStringMaybeAliased(
+        22, this->_internal_stochasticiterationcount(), target);
+  }
+
+  // optional string RealSolutionName = 23;
+  if (_internal_has_realsolutionname()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_realsolutionname().data(), static_cast<int>(this->_internal_realsolutionname().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.RealSolutionName");
+    target = stream->WriteStringMaybeAliased(
+        23, this->_internal_realsolutionname(), target);
+  }
+
+  // optional string RealSolution = 24;
+  if (_internal_has_realsolution()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_realsolution().data(), static_cast<int>(this->_internal_realsolution().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.RealSolution");
+    target = stream->WriteStringMaybeAliased(
+        24, this->_internal_realsolution(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:PFDESolver.TClientConfig)
+  return target;
+}
+
+size_t TClientConfig::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:PFDESolver.TClientConfig)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string DiffusionCoefficient = 15;
+  if (!this->_internal_diffusioncoefficient().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_diffusioncoefficient());
+  }
+
+  // string DemolitionCoefficient = 16;
+  if (!this->_internal_demolitioncoefficient().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_demolitioncoefficient());
+  }
+
+  // string ZeroTimeState = 17;
+  if (!this->_internal_zerotimestate().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_zerotimestate());
+  }
+
+  // string SourceFunction = 18;
+  if (!this->_internal_sourcefunction().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_sourcefunction());
+  }
+
+  // string LeftBoundState = 19;
+  if (!this->_internal_leftboundstate().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_leftboundstate());
+  }
+
+  // string RightBoundState = 20;
+  if (!this->_internal_rightboundstate().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_rightboundstate());
+  }
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    // optional string StochasticIterationCount = 22;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 2 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_stochasticiterationcount());
+    }
+
+    // optional string RealSolutionName = 23;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 2 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_realsolutionname());
+    }
+
+    // optional string RealSolution = 24;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 2 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_realsolution());
+    }
+
+    // optional uint64 SpaceCount = 1;
+    if (cached_has_bits & 0x00000008u) {
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_spacecount());
+    }
+
+    // optional uint64 TimeCount = 2;
+    if (cached_has_bits & 0x00000010u) {
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_timecount());
+    }
+
+  }
+  // double LeftBound = 3;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_leftbound = this->_internal_leftbound();
+  uint64_t raw_leftbound;
+  memcpy(&raw_leftbound, &tmp_leftbound, sizeof(tmp_leftbound));
+  if (raw_leftbound != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double RightBound = 4;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rightbound = this->_internal_rightbound();
+  uint64_t raw_rightbound;
+  memcpy(&raw_rightbound, &tmp_rightbound, sizeof(tmp_rightbound));
+  if (raw_rightbound != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double MaxTime = 5;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_maxtime = this->_internal_maxtime();
+  uint64_t raw_maxtime;
+  memcpy(&raw_maxtime, &tmp_maxtime, sizeof(tmp_maxtime));
+  if (raw_maxtime != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double Alpha = 6;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpha = this->_internal_alpha();
+  uint64_t raw_alpha;
+  memcpy(&raw_alpha, &tmp_alpha, sizeof(tmp_alpha));
+  if (raw_alpha != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double Gamma = 7;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_gamma = this->_internal_gamma();
+  uint64_t raw_gamma;
+  memcpy(&raw_gamma, &tmp_gamma, sizeof(tmp_gamma));
+  if (raw_gamma != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double SpaceStep = 8;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_spacestep = this->_internal_spacestep();
+  uint64_t raw_spacestep;
+  memcpy(&raw_spacestep, &tmp_spacestep, sizeof(tmp_spacestep));
+  if (raw_spacestep != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double TimeStep = 9;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timestep = this->_internal_timestep();
+  uint64_t raw_timestep;
+  memcpy(&raw_timestep, &tmp_timestep, sizeof(tmp_timestep));
+  if (raw_timestep != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double Beta = 10;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_beta = this->_internal_beta();
+  uint64_t raw_beta;
+  memcpy(&raw_beta, &tmp_beta, sizeof(tmp_beta));
+  if (raw_beta != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double AlphaLeft = 11;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alphaleft = this->_internal_alphaleft();
+  uint64_t raw_alphaleft;
+  memcpy(&raw_alphaleft, &tmp_alphaleft, sizeof(tmp_alphaleft));
+  if (raw_alphaleft != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double BetaLeft = 12;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaleft = this->_internal_betaleft();
+  uint64_t raw_betaleft;
+  memcpy(&raw_betaleft, &tmp_betaleft, sizeof(tmp_betaleft));
+  if (raw_betaleft != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double AlphaRight = 13;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpharight = this->_internal_alpharight();
+  uint64_t raw_alpharight;
+  memcpy(&raw_alpharight, &tmp_alpharight, sizeof(tmp_alpharight));
+  if (raw_alpharight != 0) {
+    total_size += 1 + 8;
+  }
+
+  // double BetaRight = 14;
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaright = this->_internal_betaright();
+  uint64_t raw_betaright;
+  memcpy(&raw_betaright, &tmp_betaright, sizeof(tmp_betaright));
+  if (raw_betaright != 0) {
+    total_size += 1 + 8;
+  }
+
+  // bool BordersAvailable = 21;
+  if (this->_internal_bordersavailable() != 0) {
+    total_size += 2 + 1;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TClientConfig::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    TClientConfig::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TClientConfig::GetClassData() const { return &_class_data_; }
+
+
+void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<TClientConfig*>(&to_msg);
+  auto& from = static_cast<const TClientConfig&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:PFDESolver.TClientConfig)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_diffusioncoefficient().empty()) {
+    _this->_internal_set_diffusioncoefficient(from._internal_diffusioncoefficient());
+  }
+  if (!from._internal_demolitioncoefficient().empty()) {
+    _this->_internal_set_demolitioncoefficient(from._internal_demolitioncoefficient());
+  }
+  if (!from._internal_zerotimestate().empty()) {
+    _this->_internal_set_zerotimestate(from._internal_zerotimestate());
+  }
+  if (!from._internal_sourcefunction().empty()) {
+    _this->_internal_set_sourcefunction(from._internal_sourcefunction());
+  }
+  if (!from._internal_leftboundstate().empty()) {
+    _this->_internal_set_leftboundstate(from._internal_leftboundstate());
+  }
+  if (!from._internal_rightboundstate().empty()) {
+    _this->_internal_set_rightboundstate(from._internal_rightboundstate());
+  }
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_stochasticiterationcount(from._internal_stochasticiterationcount());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_internal_set_realsolutionname(from._internal_realsolutionname());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_internal_set_realsolution(from._internal_realsolution());
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.spacecount_ = from._impl_.spacecount_;
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _this->_impl_.timecount_ = from._impl_.timecount_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_leftbound = from._internal_leftbound();
+  uint64_t raw_leftbound;
+  memcpy(&raw_leftbound, &tmp_leftbound, sizeof(tmp_leftbound));
+  if (raw_leftbound != 0) {
+    _this->_internal_set_leftbound(from._internal_leftbound());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_rightbound = from._internal_rightbound();
+  uint64_t raw_rightbound;
+  memcpy(&raw_rightbound, &tmp_rightbound, sizeof(tmp_rightbound));
+  if (raw_rightbound != 0) {
+    _this->_internal_set_rightbound(from._internal_rightbound());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_maxtime = from._internal_maxtime();
+  uint64_t raw_maxtime;
+  memcpy(&raw_maxtime, &tmp_maxtime, sizeof(tmp_maxtime));
+  if (raw_maxtime != 0) {
+    _this->_internal_set_maxtime(from._internal_maxtime());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpha = from._internal_alpha();
+  uint64_t raw_alpha;
+  memcpy(&raw_alpha, &tmp_alpha, sizeof(tmp_alpha));
+  if (raw_alpha != 0) {
+    _this->_internal_set_alpha(from._internal_alpha());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_gamma = from._internal_gamma();
+  uint64_t raw_gamma;
+  memcpy(&raw_gamma, &tmp_gamma, sizeof(tmp_gamma));
+  if (raw_gamma != 0) {
+    _this->_internal_set_gamma(from._internal_gamma());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_spacestep = from._internal_spacestep();
+  uint64_t raw_spacestep;
+  memcpy(&raw_spacestep, &tmp_spacestep, sizeof(tmp_spacestep));
+  if (raw_spacestep != 0) {
+    _this->_internal_set_spacestep(from._internal_spacestep());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_timestep = from._internal_timestep();
+  uint64_t raw_timestep;
+  memcpy(&raw_timestep, &tmp_timestep, sizeof(tmp_timestep));
+  if (raw_timestep != 0) {
+    _this->_internal_set_timestep(from._internal_timestep());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_beta = from._internal_beta();
+  uint64_t raw_beta;
+  memcpy(&raw_beta, &tmp_beta, sizeof(tmp_beta));
+  if (raw_beta != 0) {
+    _this->_internal_set_beta(from._internal_beta());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alphaleft = from._internal_alphaleft();
+  uint64_t raw_alphaleft;
+  memcpy(&raw_alphaleft, &tmp_alphaleft, sizeof(tmp_alphaleft));
+  if (raw_alphaleft != 0) {
+    _this->_internal_set_alphaleft(from._internal_alphaleft());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaleft = from._internal_betaleft();
+  uint64_t raw_betaleft;
+  memcpy(&raw_betaleft, &tmp_betaleft, sizeof(tmp_betaleft));
+  if (raw_betaleft != 0) {
+    _this->_internal_set_betaleft(from._internal_betaleft());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_alpharight = from._internal_alpharight();
+  uint64_t raw_alpharight;
+  memcpy(&raw_alpharight, &tmp_alpharight, sizeof(tmp_alpharight));
+  if (raw_alpharight != 0) {
+    _this->_internal_set_alpharight(from._internal_alpharight());
+  }
+  static_assert(sizeof(uint64_t) == sizeof(double), "Code assumes uint64_t and double are the same size.");
+  double tmp_betaright = from._internal_betaright();
+  uint64_t raw_betaright;
+  memcpy(&raw_betaright, &tmp_betaright, sizeof(tmp_betaright));
+  if (raw_betaright != 0) {
+    _this->_internal_set_betaright(from._internal_betaright());
+  }
+  if (from._internal_bordersavailable() != 0) {
+    _this->_internal_set_bordersavailable(from._internal_bordersavailable());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void TClientConfig::CopyFrom(const TClientConfig& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:PFDESolver.TClientConfig)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TClientConfig::IsInitialized() const {
+  return true;
+}
+
+void TClientConfig::InternalSwap(TClientConfig* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.diffusioncoefficient_, lhs_arena,
+      &other->_impl_.diffusioncoefficient_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.demolitioncoefficient_, lhs_arena,
+      &other->_impl_.demolitioncoefficient_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.zerotimestate_, lhs_arena,
+      &other->_impl_.zerotimestate_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.sourcefunction_, lhs_arena,
+      &other->_impl_.sourcefunction_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.leftboundstate_, lhs_arena,
+      &other->_impl_.leftboundstate_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.rightboundstate_, lhs_arena,
+      &other->_impl_.rightboundstate_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.stochasticiterationcount_, lhs_arena,
+      &other->_impl_.stochasticiterationcount_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.realsolutionname_, lhs_arena,
+      &other->_impl_.realsolutionname_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.realsolution_, lhs_arena,
+      &other->_impl_.realsolution_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(TClientConfig, _impl_.bordersavailable_)
+      + sizeof(TClientConfig::_impl_.bordersavailable_)
+      - PROTOBUF_FIELD_OFFSET(TClientConfig, _impl_.spacecount_)>(
+          reinterpret_cast<char*>(&_impl_.spacecount_),
+          reinterpret_cast<char*>(&other->_impl_.spacecount_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata TClientConfig::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_config_2eproto_getter, &descriptor_table_config_2eproto_once,
+      file_level_metadata_config_2eproto[0]);
+}
 
 // ===================================================================
 
@@ -776,12 +2049,16 @@ void TSolverConfig::InternalSwap(TSolverConfig* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TSolverConfig::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_config_2eproto_getter, &descriptor_table_config_2eproto_once,
-      file_level_metadata_config_2eproto[0]);
+      file_level_metadata_config_2eproto[1]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace PFDESolver
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::PFDESolver::TClientConfig*
+Arena::CreateMaybeMessage< ::PFDESolver::TClientConfig >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::PFDESolver::TClientConfig >(arena);
+}
 template<> PROTOBUF_NOINLINE ::PFDESolver::TSolverConfig*
 Arena::CreateMaybeMessage< ::PFDESolver::TSolverConfig >(Arena* arena) {
   return Arena::CreateMessageInternal< ::PFDESolver::TSolverConfig >(arena);

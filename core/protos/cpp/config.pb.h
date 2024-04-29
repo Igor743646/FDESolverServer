@@ -45,16 +45,487 @@ struct TableStruct_config_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_config_2eproto;
 namespace PFDESolver {
+class TClientConfig;
+struct TClientConfigDefaultTypeInternal;
+extern TClientConfigDefaultTypeInternal _TClientConfig_default_instance_;
 class TSolverConfig;
 struct TSolverConfigDefaultTypeInternal;
 extern TSolverConfigDefaultTypeInternal _TSolverConfig_default_instance_;
 }  // namespace PFDESolver
 PROTOBUF_NAMESPACE_OPEN
+template<> ::PFDESolver::TClientConfig* Arena::CreateMaybeMessage<::PFDESolver::TClientConfig>(Arena*);
 template<> ::PFDESolver::TSolverConfig* Arena::CreateMaybeMessage<::PFDESolver::TSolverConfig>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace PFDESolver {
 
 // ===================================================================
+
+class TClientConfig final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PFDESolver.TClientConfig) */ {
+ public:
+  inline TClientConfig() : TClientConfig(nullptr) {}
+  ~TClientConfig() override;
+  explicit PROTOBUF_CONSTEXPR TClientConfig(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  TClientConfig(const TClientConfig& from);
+  TClientConfig(TClientConfig&& from) noexcept
+    : TClientConfig() {
+    *this = ::std::move(from);
+  }
+
+  inline TClientConfig& operator=(const TClientConfig& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TClientConfig& operator=(TClientConfig&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TClientConfig& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const TClientConfig* internal_default_instance() {
+    return reinterpret_cast<const TClientConfig*>(
+               &_TClientConfig_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(TClientConfig& a, TClientConfig& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(TClientConfig* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TClientConfig* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TClientConfig* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<TClientConfig>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const TClientConfig& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const TClientConfig& from) {
+    TClientConfig::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TClientConfig* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "PFDESolver.TClientConfig";
+  }
+  protected:
+  explicit TClientConfig(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDiffusionCoefficientFieldNumber = 15,
+    kDemolitionCoefficientFieldNumber = 16,
+    kZeroTimeStateFieldNumber = 17,
+    kSourceFunctionFieldNumber = 18,
+    kLeftBoundStateFieldNumber = 19,
+    kRightBoundStateFieldNumber = 20,
+    kStochasticIterationCountFieldNumber = 22,
+    kRealSolutionNameFieldNumber = 23,
+    kRealSolutionFieldNumber = 24,
+    kSpaceCountFieldNumber = 1,
+    kTimeCountFieldNumber = 2,
+    kLeftBoundFieldNumber = 3,
+    kRightBoundFieldNumber = 4,
+    kMaxTimeFieldNumber = 5,
+    kAlphaFieldNumber = 6,
+    kGammaFieldNumber = 7,
+    kSpaceStepFieldNumber = 8,
+    kTimeStepFieldNumber = 9,
+    kBetaFieldNumber = 10,
+    kAlphaLeftFieldNumber = 11,
+    kBetaLeftFieldNumber = 12,
+    kAlphaRightFieldNumber = 13,
+    kBetaRightFieldNumber = 14,
+    kBordersAvailableFieldNumber = 21,
+  };
+  // string DiffusionCoefficient = 15;
+  void clear_diffusioncoefficient();
+  const std::string& diffusioncoefficient() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_diffusioncoefficient(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_diffusioncoefficient();
+  PROTOBUF_NODISCARD std::string* release_diffusioncoefficient();
+  void set_allocated_diffusioncoefficient(std::string* diffusioncoefficient);
+  private:
+  const std::string& _internal_diffusioncoefficient() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_diffusioncoefficient(const std::string& value);
+  std::string* _internal_mutable_diffusioncoefficient();
+  public:
+
+  // string DemolitionCoefficient = 16;
+  void clear_demolitioncoefficient();
+  const std::string& demolitioncoefficient() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_demolitioncoefficient(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_demolitioncoefficient();
+  PROTOBUF_NODISCARD std::string* release_demolitioncoefficient();
+  void set_allocated_demolitioncoefficient(std::string* demolitioncoefficient);
+  private:
+  const std::string& _internal_demolitioncoefficient() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_demolitioncoefficient(const std::string& value);
+  std::string* _internal_mutable_demolitioncoefficient();
+  public:
+
+  // string ZeroTimeState = 17;
+  void clear_zerotimestate();
+  const std::string& zerotimestate() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_zerotimestate(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_zerotimestate();
+  PROTOBUF_NODISCARD std::string* release_zerotimestate();
+  void set_allocated_zerotimestate(std::string* zerotimestate);
+  private:
+  const std::string& _internal_zerotimestate() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_zerotimestate(const std::string& value);
+  std::string* _internal_mutable_zerotimestate();
+  public:
+
+  // string SourceFunction = 18;
+  void clear_sourcefunction();
+  const std::string& sourcefunction() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_sourcefunction(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_sourcefunction();
+  PROTOBUF_NODISCARD std::string* release_sourcefunction();
+  void set_allocated_sourcefunction(std::string* sourcefunction);
+  private:
+  const std::string& _internal_sourcefunction() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_sourcefunction(const std::string& value);
+  std::string* _internal_mutable_sourcefunction();
+  public:
+
+  // string LeftBoundState = 19;
+  void clear_leftboundstate();
+  const std::string& leftboundstate() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_leftboundstate(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_leftboundstate();
+  PROTOBUF_NODISCARD std::string* release_leftboundstate();
+  void set_allocated_leftboundstate(std::string* leftboundstate);
+  private:
+  const std::string& _internal_leftboundstate() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_leftboundstate(const std::string& value);
+  std::string* _internal_mutable_leftboundstate();
+  public:
+
+  // string RightBoundState = 20;
+  void clear_rightboundstate();
+  const std::string& rightboundstate() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_rightboundstate(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_rightboundstate();
+  PROTOBUF_NODISCARD std::string* release_rightboundstate();
+  void set_allocated_rightboundstate(std::string* rightboundstate);
+  private:
+  const std::string& _internal_rightboundstate() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_rightboundstate(const std::string& value);
+  std::string* _internal_mutable_rightboundstate();
+  public:
+
+  // optional string StochasticIterationCount = 22;
+  bool has_stochasticiterationcount() const;
+  private:
+  bool _internal_has_stochasticiterationcount() const;
+  public:
+  void clear_stochasticiterationcount();
+  const std::string& stochasticiterationcount() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_stochasticiterationcount(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_stochasticiterationcount();
+  PROTOBUF_NODISCARD std::string* release_stochasticiterationcount();
+  void set_allocated_stochasticiterationcount(std::string* stochasticiterationcount);
+  private:
+  const std::string& _internal_stochasticiterationcount() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_stochasticiterationcount(const std::string& value);
+  std::string* _internal_mutable_stochasticiterationcount();
+  public:
+
+  // optional string RealSolutionName = 23;
+  bool has_realsolutionname() const;
+  private:
+  bool _internal_has_realsolutionname() const;
+  public:
+  void clear_realsolutionname();
+  const std::string& realsolutionname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_realsolutionname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_realsolutionname();
+  PROTOBUF_NODISCARD std::string* release_realsolutionname();
+  void set_allocated_realsolutionname(std::string* realsolutionname);
+  private:
+  const std::string& _internal_realsolutionname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_realsolutionname(const std::string& value);
+  std::string* _internal_mutable_realsolutionname();
+  public:
+
+  // optional string RealSolution = 24;
+  bool has_realsolution() const;
+  private:
+  bool _internal_has_realsolution() const;
+  public:
+  void clear_realsolution();
+  const std::string& realsolution() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_realsolution(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_realsolution();
+  PROTOBUF_NODISCARD std::string* release_realsolution();
+  void set_allocated_realsolution(std::string* realsolution);
+  private:
+  const std::string& _internal_realsolution() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_realsolution(const std::string& value);
+  std::string* _internal_mutable_realsolution();
+  public:
+
+  // optional uint64 SpaceCount = 1;
+  bool has_spacecount() const;
+  private:
+  bool _internal_has_spacecount() const;
+  public:
+  void clear_spacecount();
+  uint64_t spacecount() const;
+  void set_spacecount(uint64_t value);
+  private:
+  uint64_t _internal_spacecount() const;
+  void _internal_set_spacecount(uint64_t value);
+  public:
+
+  // optional uint64 TimeCount = 2;
+  bool has_timecount() const;
+  private:
+  bool _internal_has_timecount() const;
+  public:
+  void clear_timecount();
+  uint64_t timecount() const;
+  void set_timecount(uint64_t value);
+  private:
+  uint64_t _internal_timecount() const;
+  void _internal_set_timecount(uint64_t value);
+  public:
+
+  // double LeftBound = 3;
+  void clear_leftbound();
+  double leftbound() const;
+  void set_leftbound(double value);
+  private:
+  double _internal_leftbound() const;
+  void _internal_set_leftbound(double value);
+  public:
+
+  // double RightBound = 4;
+  void clear_rightbound();
+  double rightbound() const;
+  void set_rightbound(double value);
+  private:
+  double _internal_rightbound() const;
+  void _internal_set_rightbound(double value);
+  public:
+
+  // double MaxTime = 5;
+  void clear_maxtime();
+  double maxtime() const;
+  void set_maxtime(double value);
+  private:
+  double _internal_maxtime() const;
+  void _internal_set_maxtime(double value);
+  public:
+
+  // double Alpha = 6;
+  void clear_alpha();
+  double alpha() const;
+  void set_alpha(double value);
+  private:
+  double _internal_alpha() const;
+  void _internal_set_alpha(double value);
+  public:
+
+  // double Gamma = 7;
+  void clear_gamma();
+  double gamma() const;
+  void set_gamma(double value);
+  private:
+  double _internal_gamma() const;
+  void _internal_set_gamma(double value);
+  public:
+
+  // double SpaceStep = 8;
+  void clear_spacestep();
+  double spacestep() const;
+  void set_spacestep(double value);
+  private:
+  double _internal_spacestep() const;
+  void _internal_set_spacestep(double value);
+  public:
+
+  // double TimeStep = 9;
+  void clear_timestep();
+  double timestep() const;
+  void set_timestep(double value);
+  private:
+  double _internal_timestep() const;
+  void _internal_set_timestep(double value);
+  public:
+
+  // double Beta = 10;
+  void clear_beta();
+  double beta() const;
+  void set_beta(double value);
+  private:
+  double _internal_beta() const;
+  void _internal_set_beta(double value);
+  public:
+
+  // double AlphaLeft = 11;
+  void clear_alphaleft();
+  double alphaleft() const;
+  void set_alphaleft(double value);
+  private:
+  double _internal_alphaleft() const;
+  void _internal_set_alphaleft(double value);
+  public:
+
+  // double BetaLeft = 12;
+  void clear_betaleft();
+  double betaleft() const;
+  void set_betaleft(double value);
+  private:
+  double _internal_betaleft() const;
+  void _internal_set_betaleft(double value);
+  public:
+
+  // double AlphaRight = 13;
+  void clear_alpharight();
+  double alpharight() const;
+  void set_alpharight(double value);
+  private:
+  double _internal_alpharight() const;
+  void _internal_set_alpharight(double value);
+  public:
+
+  // double BetaRight = 14;
+  void clear_betaright();
+  double betaright() const;
+  void set_betaright(double value);
+  private:
+  double _internal_betaright() const;
+  void _internal_set_betaright(double value);
+  public:
+
+  // bool BordersAvailable = 21;
+  void clear_bordersavailable();
+  bool bordersavailable() const;
+  void set_bordersavailable(bool value);
+  private:
+  bool _internal_bordersavailable() const;
+  void _internal_set_bordersavailable(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:PFDESolver.TClientConfig)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr diffusioncoefficient_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr demolitioncoefficient_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr zerotimestate_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sourcefunction_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr leftboundstate_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr rightboundstate_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr stochasticiterationcount_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolutionname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolution_;
+    uint64_t spacecount_;
+    uint64_t timecount_;
+    double leftbound_;
+    double rightbound_;
+    double maxtime_;
+    double alpha_;
+    double gamma_;
+    double spacestep_;
+    double timestep_;
+    double beta_;
+    double alphaleft_;
+    double betaleft_;
+    double alpharight_;
+    double betaright_;
+    bool bordersavailable_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_config_2eproto;
+};
+// -------------------------------------------------------------------
 
 class TSolverConfig final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PFDESolver.TSolverConfig) */ {
@@ -104,7 +575,7 @@ class TSolverConfig final :
                &_TSolverConfig_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(TSolverConfig& a, TSolverConfig& b) {
     a.Swap(&b);
@@ -365,6 +836,830 @@ class TSolverConfig final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// TClientConfig
+
+// optional uint64 SpaceCount = 1;
+inline bool TClientConfig::_internal_has_spacecount() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  return value;
+}
+inline bool TClientConfig::has_spacecount() const {
+  return _internal_has_spacecount();
+}
+inline void TClientConfig::clear_spacecount() {
+  _impl_.spacecount_ = uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline uint64_t TClientConfig::_internal_spacecount() const {
+  return _impl_.spacecount_;
+}
+inline uint64_t TClientConfig::spacecount() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.SpaceCount)
+  return _internal_spacecount();
+}
+inline void TClientConfig::_internal_set_spacecount(uint64_t value) {
+  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_.spacecount_ = value;
+}
+inline void TClientConfig::set_spacecount(uint64_t value) {
+  _internal_set_spacecount(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.SpaceCount)
+}
+
+// optional uint64 TimeCount = 2;
+inline bool TClientConfig::_internal_has_timecount() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  return value;
+}
+inline bool TClientConfig::has_timecount() const {
+  return _internal_has_timecount();
+}
+inline void TClientConfig::clear_timecount() {
+  _impl_.timecount_ = uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000010u;
+}
+inline uint64_t TClientConfig::_internal_timecount() const {
+  return _impl_.timecount_;
+}
+inline uint64_t TClientConfig::timecount() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.TimeCount)
+  return _internal_timecount();
+}
+inline void TClientConfig::_internal_set_timecount(uint64_t value) {
+  _impl_._has_bits_[0] |= 0x00000010u;
+  _impl_.timecount_ = value;
+}
+inline void TClientConfig::set_timecount(uint64_t value) {
+  _internal_set_timecount(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.TimeCount)
+}
+
+// double LeftBound = 3;
+inline void TClientConfig::clear_leftbound() {
+  _impl_.leftbound_ = 0;
+}
+inline double TClientConfig::_internal_leftbound() const {
+  return _impl_.leftbound_;
+}
+inline double TClientConfig::leftbound() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.LeftBound)
+  return _internal_leftbound();
+}
+inline void TClientConfig::_internal_set_leftbound(double value) {
+  
+  _impl_.leftbound_ = value;
+}
+inline void TClientConfig::set_leftbound(double value) {
+  _internal_set_leftbound(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.LeftBound)
+}
+
+// double RightBound = 4;
+inline void TClientConfig::clear_rightbound() {
+  _impl_.rightbound_ = 0;
+}
+inline double TClientConfig::_internal_rightbound() const {
+  return _impl_.rightbound_;
+}
+inline double TClientConfig::rightbound() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RightBound)
+  return _internal_rightbound();
+}
+inline void TClientConfig::_internal_set_rightbound(double value) {
+  
+  _impl_.rightbound_ = value;
+}
+inline void TClientConfig::set_rightbound(double value) {
+  _internal_set_rightbound(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RightBound)
+}
+
+// double MaxTime = 5;
+inline void TClientConfig::clear_maxtime() {
+  _impl_.maxtime_ = 0;
+}
+inline double TClientConfig::_internal_maxtime() const {
+  return _impl_.maxtime_;
+}
+inline double TClientConfig::maxtime() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.MaxTime)
+  return _internal_maxtime();
+}
+inline void TClientConfig::_internal_set_maxtime(double value) {
+  
+  _impl_.maxtime_ = value;
+}
+inline void TClientConfig::set_maxtime(double value) {
+  _internal_set_maxtime(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.MaxTime)
+}
+
+// double Alpha = 6;
+inline void TClientConfig::clear_alpha() {
+  _impl_.alpha_ = 0;
+}
+inline double TClientConfig::_internal_alpha() const {
+  return _impl_.alpha_;
+}
+inline double TClientConfig::alpha() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.Alpha)
+  return _internal_alpha();
+}
+inline void TClientConfig::_internal_set_alpha(double value) {
+  
+  _impl_.alpha_ = value;
+}
+inline void TClientConfig::set_alpha(double value) {
+  _internal_set_alpha(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.Alpha)
+}
+
+// double Gamma = 7;
+inline void TClientConfig::clear_gamma() {
+  _impl_.gamma_ = 0;
+}
+inline double TClientConfig::_internal_gamma() const {
+  return _impl_.gamma_;
+}
+inline double TClientConfig::gamma() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.Gamma)
+  return _internal_gamma();
+}
+inline void TClientConfig::_internal_set_gamma(double value) {
+  
+  _impl_.gamma_ = value;
+}
+inline void TClientConfig::set_gamma(double value) {
+  _internal_set_gamma(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.Gamma)
+}
+
+// double SpaceStep = 8;
+inline void TClientConfig::clear_spacestep() {
+  _impl_.spacestep_ = 0;
+}
+inline double TClientConfig::_internal_spacestep() const {
+  return _impl_.spacestep_;
+}
+inline double TClientConfig::spacestep() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.SpaceStep)
+  return _internal_spacestep();
+}
+inline void TClientConfig::_internal_set_spacestep(double value) {
+  
+  _impl_.spacestep_ = value;
+}
+inline void TClientConfig::set_spacestep(double value) {
+  _internal_set_spacestep(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.SpaceStep)
+}
+
+// double TimeStep = 9;
+inline void TClientConfig::clear_timestep() {
+  _impl_.timestep_ = 0;
+}
+inline double TClientConfig::_internal_timestep() const {
+  return _impl_.timestep_;
+}
+inline double TClientConfig::timestep() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.TimeStep)
+  return _internal_timestep();
+}
+inline void TClientConfig::_internal_set_timestep(double value) {
+  
+  _impl_.timestep_ = value;
+}
+inline void TClientConfig::set_timestep(double value) {
+  _internal_set_timestep(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.TimeStep)
+}
+
+// double Beta = 10;
+inline void TClientConfig::clear_beta() {
+  _impl_.beta_ = 0;
+}
+inline double TClientConfig::_internal_beta() const {
+  return _impl_.beta_;
+}
+inline double TClientConfig::beta() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.Beta)
+  return _internal_beta();
+}
+inline void TClientConfig::_internal_set_beta(double value) {
+  
+  _impl_.beta_ = value;
+}
+inline void TClientConfig::set_beta(double value) {
+  _internal_set_beta(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.Beta)
+}
+
+// double AlphaLeft = 11;
+inline void TClientConfig::clear_alphaleft() {
+  _impl_.alphaleft_ = 0;
+}
+inline double TClientConfig::_internal_alphaleft() const {
+  return _impl_.alphaleft_;
+}
+inline double TClientConfig::alphaleft() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.AlphaLeft)
+  return _internal_alphaleft();
+}
+inline void TClientConfig::_internal_set_alphaleft(double value) {
+  
+  _impl_.alphaleft_ = value;
+}
+inline void TClientConfig::set_alphaleft(double value) {
+  _internal_set_alphaleft(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.AlphaLeft)
+}
+
+// double BetaLeft = 12;
+inline void TClientConfig::clear_betaleft() {
+  _impl_.betaleft_ = 0;
+}
+inline double TClientConfig::_internal_betaleft() const {
+  return _impl_.betaleft_;
+}
+inline double TClientConfig::betaleft() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.BetaLeft)
+  return _internal_betaleft();
+}
+inline void TClientConfig::_internal_set_betaleft(double value) {
+  
+  _impl_.betaleft_ = value;
+}
+inline void TClientConfig::set_betaleft(double value) {
+  _internal_set_betaleft(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.BetaLeft)
+}
+
+// double AlphaRight = 13;
+inline void TClientConfig::clear_alpharight() {
+  _impl_.alpharight_ = 0;
+}
+inline double TClientConfig::_internal_alpharight() const {
+  return _impl_.alpharight_;
+}
+inline double TClientConfig::alpharight() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.AlphaRight)
+  return _internal_alpharight();
+}
+inline void TClientConfig::_internal_set_alpharight(double value) {
+  
+  _impl_.alpharight_ = value;
+}
+inline void TClientConfig::set_alpharight(double value) {
+  _internal_set_alpharight(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.AlphaRight)
+}
+
+// double BetaRight = 14;
+inline void TClientConfig::clear_betaright() {
+  _impl_.betaright_ = 0;
+}
+inline double TClientConfig::_internal_betaright() const {
+  return _impl_.betaright_;
+}
+inline double TClientConfig::betaright() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.BetaRight)
+  return _internal_betaright();
+}
+inline void TClientConfig::_internal_set_betaright(double value) {
+  
+  _impl_.betaright_ = value;
+}
+inline void TClientConfig::set_betaright(double value) {
+  _internal_set_betaright(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.BetaRight)
+}
+
+// string DiffusionCoefficient = 15;
+inline void TClientConfig::clear_diffusioncoefficient() {
+  _impl_.diffusioncoefficient_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::diffusioncoefficient() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.DiffusionCoefficient)
+  return _internal_diffusioncoefficient();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_diffusioncoefficient(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.diffusioncoefficient_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.DiffusionCoefficient)
+}
+inline std::string* TClientConfig::mutable_diffusioncoefficient() {
+  std::string* _s = _internal_mutable_diffusioncoefficient();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.DiffusionCoefficient)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_diffusioncoefficient() const {
+  return _impl_.diffusioncoefficient_.Get();
+}
+inline void TClientConfig::_internal_set_diffusioncoefficient(const std::string& value) {
+  
+  _impl_.diffusioncoefficient_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_diffusioncoefficient() {
+  
+  return _impl_.diffusioncoefficient_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_diffusioncoefficient() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.DiffusionCoefficient)
+  return _impl_.diffusioncoefficient_.Release();
+}
+inline void TClientConfig::set_allocated_diffusioncoefficient(std::string* diffusioncoefficient) {
+  if (diffusioncoefficient != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.diffusioncoefficient_.SetAllocated(diffusioncoefficient, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.diffusioncoefficient_.IsDefault()) {
+    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.DiffusionCoefficient)
+}
+
+// string DemolitionCoefficient = 16;
+inline void TClientConfig::clear_demolitioncoefficient() {
+  _impl_.demolitioncoefficient_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::demolitioncoefficient() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.DemolitionCoefficient)
+  return _internal_demolitioncoefficient();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_demolitioncoefficient(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.demolitioncoefficient_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.DemolitionCoefficient)
+}
+inline std::string* TClientConfig::mutable_demolitioncoefficient() {
+  std::string* _s = _internal_mutable_demolitioncoefficient();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.DemolitionCoefficient)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_demolitioncoefficient() const {
+  return _impl_.demolitioncoefficient_.Get();
+}
+inline void TClientConfig::_internal_set_demolitioncoefficient(const std::string& value) {
+  
+  _impl_.demolitioncoefficient_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_demolitioncoefficient() {
+  
+  return _impl_.demolitioncoefficient_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_demolitioncoefficient() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.DemolitionCoefficient)
+  return _impl_.demolitioncoefficient_.Release();
+}
+inline void TClientConfig::set_allocated_demolitioncoefficient(std::string* demolitioncoefficient) {
+  if (demolitioncoefficient != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.demolitioncoefficient_.SetAllocated(demolitioncoefficient, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.demolitioncoefficient_.IsDefault()) {
+    _impl_.demolitioncoefficient_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.DemolitionCoefficient)
+}
+
+// string ZeroTimeState = 17;
+inline void TClientConfig::clear_zerotimestate() {
+  _impl_.zerotimestate_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::zerotimestate() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.ZeroTimeState)
+  return _internal_zerotimestate();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_zerotimestate(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.zerotimestate_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.ZeroTimeState)
+}
+inline std::string* TClientConfig::mutable_zerotimestate() {
+  std::string* _s = _internal_mutable_zerotimestate();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.ZeroTimeState)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_zerotimestate() const {
+  return _impl_.zerotimestate_.Get();
+}
+inline void TClientConfig::_internal_set_zerotimestate(const std::string& value) {
+  
+  _impl_.zerotimestate_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_zerotimestate() {
+  
+  return _impl_.zerotimestate_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_zerotimestate() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.ZeroTimeState)
+  return _impl_.zerotimestate_.Release();
+}
+inline void TClientConfig::set_allocated_zerotimestate(std::string* zerotimestate) {
+  if (zerotimestate != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.zerotimestate_.SetAllocated(zerotimestate, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.zerotimestate_.IsDefault()) {
+    _impl_.zerotimestate_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.ZeroTimeState)
+}
+
+// string SourceFunction = 18;
+inline void TClientConfig::clear_sourcefunction() {
+  _impl_.sourcefunction_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::sourcefunction() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.SourceFunction)
+  return _internal_sourcefunction();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_sourcefunction(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.sourcefunction_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.SourceFunction)
+}
+inline std::string* TClientConfig::mutable_sourcefunction() {
+  std::string* _s = _internal_mutable_sourcefunction();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.SourceFunction)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_sourcefunction() const {
+  return _impl_.sourcefunction_.Get();
+}
+inline void TClientConfig::_internal_set_sourcefunction(const std::string& value) {
+  
+  _impl_.sourcefunction_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_sourcefunction() {
+  
+  return _impl_.sourcefunction_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_sourcefunction() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.SourceFunction)
+  return _impl_.sourcefunction_.Release();
+}
+inline void TClientConfig::set_allocated_sourcefunction(std::string* sourcefunction) {
+  if (sourcefunction != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.sourcefunction_.SetAllocated(sourcefunction, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.sourcefunction_.IsDefault()) {
+    _impl_.sourcefunction_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.SourceFunction)
+}
+
+// string LeftBoundState = 19;
+inline void TClientConfig::clear_leftboundstate() {
+  _impl_.leftboundstate_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::leftboundstate() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.LeftBoundState)
+  return _internal_leftboundstate();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_leftboundstate(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.leftboundstate_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.LeftBoundState)
+}
+inline std::string* TClientConfig::mutable_leftboundstate() {
+  std::string* _s = _internal_mutable_leftboundstate();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.LeftBoundState)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_leftboundstate() const {
+  return _impl_.leftboundstate_.Get();
+}
+inline void TClientConfig::_internal_set_leftboundstate(const std::string& value) {
+  
+  _impl_.leftboundstate_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_leftboundstate() {
+  
+  return _impl_.leftboundstate_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_leftboundstate() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.LeftBoundState)
+  return _impl_.leftboundstate_.Release();
+}
+inline void TClientConfig::set_allocated_leftboundstate(std::string* leftboundstate) {
+  if (leftboundstate != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.leftboundstate_.SetAllocated(leftboundstate, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.leftboundstate_.IsDefault()) {
+    _impl_.leftboundstate_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.LeftBoundState)
+}
+
+// string RightBoundState = 20;
+inline void TClientConfig::clear_rightboundstate() {
+  _impl_.rightboundstate_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::rightboundstate() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RightBoundState)
+  return _internal_rightboundstate();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_rightboundstate(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.rightboundstate_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RightBoundState)
+}
+inline std::string* TClientConfig::mutable_rightboundstate() {
+  std::string* _s = _internal_mutable_rightboundstate();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.RightBoundState)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_rightboundstate() const {
+  return _impl_.rightboundstate_.Get();
+}
+inline void TClientConfig::_internal_set_rightboundstate(const std::string& value) {
+  
+  _impl_.rightboundstate_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_rightboundstate() {
+  
+  return _impl_.rightboundstate_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_rightboundstate() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.RightBoundState)
+  return _impl_.rightboundstate_.Release();
+}
+inline void TClientConfig::set_allocated_rightboundstate(std::string* rightboundstate) {
+  if (rightboundstate != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.rightboundstate_.SetAllocated(rightboundstate, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.rightboundstate_.IsDefault()) {
+    _impl_.rightboundstate_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.RightBoundState)
+}
+
+// bool BordersAvailable = 21;
+inline void TClientConfig::clear_bordersavailable() {
+  _impl_.bordersavailable_ = false;
+}
+inline bool TClientConfig::_internal_bordersavailable() const {
+  return _impl_.bordersavailable_;
+}
+inline bool TClientConfig::bordersavailable() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.BordersAvailable)
+  return _internal_bordersavailable();
+}
+inline void TClientConfig::_internal_set_bordersavailable(bool value) {
+  
+  _impl_.bordersavailable_ = value;
+}
+inline void TClientConfig::set_bordersavailable(bool value) {
+  _internal_set_bordersavailable(value);
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.BordersAvailable)
+}
+
+// optional string StochasticIterationCount = 22;
+inline bool TClientConfig::_internal_has_stochasticiterationcount() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool TClientConfig::has_stochasticiterationcount() const {
+  return _internal_has_stochasticiterationcount();
+}
+inline void TClientConfig::clear_stochasticiterationcount() {
+  _impl_.stochasticiterationcount_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& TClientConfig::stochasticiterationcount() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.StochasticIterationCount)
+  return _internal_stochasticiterationcount();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_stochasticiterationcount(ArgT0&& arg0, ArgT... args) {
+ _impl_._has_bits_[0] |= 0x00000001u;
+ _impl_.stochasticiterationcount_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.StochasticIterationCount)
+}
+inline std::string* TClientConfig::mutable_stochasticiterationcount() {
+  std::string* _s = _internal_mutable_stochasticiterationcount();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.StochasticIterationCount)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_stochasticiterationcount() const {
+  return _impl_.stochasticiterationcount_.Get();
+}
+inline void TClientConfig::_internal_set_stochasticiterationcount(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.stochasticiterationcount_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_stochasticiterationcount() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.stochasticiterationcount_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_stochasticiterationcount() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.StochasticIterationCount)
+  if (!_internal_has_stochasticiterationcount()) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* p = _impl_.stochasticiterationcount_.Release();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.stochasticiterationcount_.IsDefault()) {
+    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void TClientConfig::set_allocated_stochasticiterationcount(std::string* stochasticiterationcount) {
+  if (stochasticiterationcount != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.stochasticiterationcount_.SetAllocated(stochasticiterationcount, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.stochasticiterationcount_.IsDefault()) {
+    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.StochasticIterationCount)
+}
+
+// optional string RealSolutionName = 23;
+inline bool TClientConfig::_internal_has_realsolutionname() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool TClientConfig::has_realsolutionname() const {
+  return _internal_has_realsolutionname();
+}
+inline void TClientConfig::clear_realsolutionname() {
+  _impl_.realsolutionname_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const std::string& TClientConfig::realsolutionname() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RealSolutionName)
+  return _internal_realsolutionname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_realsolutionname(ArgT0&& arg0, ArgT... args) {
+ _impl_._has_bits_[0] |= 0x00000002u;
+ _impl_.realsolutionname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RealSolutionName)
+}
+inline std::string* TClientConfig::mutable_realsolutionname() {
+  std::string* _s = _internal_mutable_realsolutionname();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.RealSolutionName)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_realsolutionname() const {
+  return _impl_.realsolutionname_.Get();
+}
+inline void TClientConfig::_internal_set_realsolutionname(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_.realsolutionname_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_realsolutionname() {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  return _impl_.realsolutionname_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_realsolutionname() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.RealSolutionName)
+  if (!_internal_has_realsolutionname()) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  auto* p = _impl_.realsolutionname_.Release();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.realsolutionname_.IsDefault()) {
+    _impl_.realsolutionname_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void TClientConfig::set_allocated_realsolutionname(std::string* realsolutionname) {
+  if (realsolutionname != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  _impl_.realsolutionname_.SetAllocated(realsolutionname, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.realsolutionname_.IsDefault()) {
+    _impl_.realsolutionname_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.RealSolutionName)
+}
+
+// optional string RealSolution = 24;
+inline bool TClientConfig::_internal_has_realsolution() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool TClientConfig::has_realsolution() const {
+  return _internal_has_realsolution();
+}
+inline void TClientConfig::clear_realsolution() {
+  _impl_.realsolution_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline const std::string& TClientConfig::realsolution() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RealSolution)
+  return _internal_realsolution();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_realsolution(ArgT0&& arg0, ArgT... args) {
+ _impl_._has_bits_[0] |= 0x00000004u;
+ _impl_.realsolution_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RealSolution)
+}
+inline std::string* TClientConfig::mutable_realsolution() {
+  std::string* _s = _internal_mutable_realsolution();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.RealSolution)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_realsolution() const {
+  return _impl_.realsolution_.Get();
+}
+inline void TClientConfig::_internal_set_realsolution(const std::string& value) {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_.realsolution_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_realsolution() {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  return _impl_.realsolution_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_realsolution() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.RealSolution)
+  if (!_internal_has_realsolution()) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  auto* p = _impl_.realsolution_.Release();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.realsolution_.IsDefault()) {
+    _impl_.realsolution_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return p;
+}
+inline void TClientConfig::set_allocated_realsolution(std::string* realsolution) {
+  if (realsolution != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+  _impl_.realsolution_.SetAllocated(realsolution, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.realsolution_.IsDefault()) {
+    _impl_.realsolution_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.RealSolution)
+}
+
+// -------------------------------------------------------------------
+
 // TSolverConfig
 
 // uint64 SpaceCount = 1;
@@ -670,6 +1965,8 @@ inline void TSolverConfig::set_bordersavailable(bool value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
