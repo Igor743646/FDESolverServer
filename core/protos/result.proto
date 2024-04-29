@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package PFDESolver;
+
+import "config.proto";
+import "matrix.proto";
+
+message TResult {
+    string MethodName = 1;
+    TSolverConfig Config = 2;
+    TMatrix Field = 3;
+    optional TMatrix SolveMatrix = 4;
+}
+
+message TResults {
+    TSolverConfig Task = 1;
+    repeated TResult Results = 2;
+    optional TMatrix RealSolution = 3;
+    optional string RealSolutionName = 4;
+}
