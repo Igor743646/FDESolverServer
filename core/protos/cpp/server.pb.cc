@@ -30,9 +30,9 @@ static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_server_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014server.proto\022\020PFDESolverServer\032\014config"
-  ".proto\032\014result.proto2O\n\020TFDESolverServer"
-  "\022;\n\007RunTask\022\031.PFDESolver.TClientConfig\032\023"
-  ".PFDESolver.TResult\"\000b\006proto3"
+  ".proto\032\014result.proto2P\n\020TFDESolverServer"
+  "\022<\n\007RunTask\022\031.PFDESolver.TClientConfig\032\024"
+  ".PFDESolver.TResults\"\000b\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_server_2eproto_deps[2] = {
   &::descriptor_table_config_2eproto,
@@ -40,7 +40,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_server_2eproto_deps
 };
 static ::_pbi::once_flag descriptor_table_server_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_server_2eproto = {
-    false, false, 149, descriptor_table_protodef_server_2eproto,
+    false, false, 150, descriptor_table_protodef_server_2eproto,
     "server.proto",
     &descriptor_table_server_2eproto_once, descriptor_table_server_2eproto_deps, 2, 0,
     schemas, file_default_instances, TableStruct_server_2eproto::offsets,

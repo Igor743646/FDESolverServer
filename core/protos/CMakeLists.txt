@@ -12,78 +12,52 @@ include(cmake/common.cmake)
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
 
-function(generate_protobuf)
-    set(flags GRPC_MODE)
-    set(args)
-    set(listArgs SOURCES)
+add_library(PB_Files config.proto matrix.proto result.proto)
+add_library(GRPC_Files server.proto)
 
-    cmake_parse_arguments(arg "${flags}" "${args}" "${listArgs}" ${ARGN})
+target_link_libraries(PB_Files PUBLIC absl::check ${_REFLECTION} ${_GRPC_GRPCPP} ${_PROTOBUF_LIBPROTOBUF})
+target_link_libraries(GRPC_Files PUBLIC PB_Files)
 
-    if (arg_GRPC_MODE)
-        message(STATUS "[GRPC] proto generate files: ${arg_SOURCES}")
-        # Generate protos
-        foreach(proto_file ${arg_SOURCES})
-            get_filename_component(proto_file_absolute_path "${proto_file}.proto" ABSOLUTE)
-            get_filename_component(proto_file_path "${proto_file_absolute_path}" PATH)
-            set(myserver_proto_src "${proto_file_path}/cpp/${proto_file}.pb.cc")
-            set(myserver_proto_hdr "${proto_file_path}/cpp/${proto_file}.pb.h")
-            set(myserver_proto_grpc_src "${proto_file_path}/cpp/${proto_file}.grpc.pb.cc")
-            set(myserver_proto_grpc_hdr "${proto_file_path}/cpp/${proto_file}.grpc.pb.h")
+protobuf_generate(
+    TARGET PB_Files
+    LANGUAGE cpp
+    OUT_VAR PROTO_SRCS_PB
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/cpp")
 
-            set(proto_sources "${myserver_proto_src}" "${proto_sources}" PARENT_SCOPE)
-            set(proto_headeres "${myserver_proto_hdr}" "${proto_headeres}" PARENT_SCOPE)
-            set(proto_sources "${myserver_proto_grpc_src}" "${proto_sources}" PARENT_SCOPE)
-            set(proto_headeres "${myserver_proto_grpc_hdr}" "${proto_headeres}" PARENT_SCOPE)
+protobuf_generate(
+    TARGET GRPC_Files
+    LANGUAGE cpp
+    OUT_VAR PROTO_SRCS_GRPC
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/cpp")
 
-            add_custom_command(
-                OUTPUT "${myserver_proto_src}" "${myserver_proto_hdr}"
-                COMMAND ${_PROTOBUF_PROTOC}
-                ARGS --cpp_out "${PROJECT_SOURCE_DIR}/cpp"
-                    --grpc_out "${PROJECT_SOURCE_DIR}/cpp"
-                    --proto_path "${proto_file_path}"
-                    --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
-                    "${proto_file_absolute_path}"
-                DEPENDS "${proto_file_absolute_path}"
-                MAIN_DEPENDENCY "${proto_file_absolute_path}"
-                BYPRODUCTS "${myserver_proto_src}" "${myserver_proto_hdr}"
-                COMMENT "Generate headers and sources from proto: ${proto_file_absolute_path}")
-        endforeach()
-    else()
-        message(STATUS "[PB] proto generate files: ${arg_SOURCES}")
-        # Generate protos
-        foreach(proto_file ${arg_SOURCES})
-            message(STATUS "Generate from file: ${proto_file}.proto")
-            get_filename_component(proto_file_absolute_path "${proto_file}.proto" ABSOLUTE)
-            get_filename_component(proto_file_path "${proto_file_absolute_path}" PATH)
-            set(myserver_proto_src "${proto_file_path}/cpp/${proto_file}.pb.cc")
-            set(myserver_proto_hdr "${proto_file_path}/cpp/${proto_file}.pb.h")
+protobuf_generate(
+    TARGET PB_Files
+    LANGUAGE python
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py")
 
-            set(proto_sources "${myserver_proto_src}" "${proto_sources}" PARENT_SCOPE)
-            set(proto_headeres "${myserver_proto_hdr}" "${proto_headeres}" PARENT_SCOPE)
+protobuf_generate(
+    TARGET GRPC_Files
+    LANGUAGE python
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py")
 
-            add_custom_command(
-                OUTPUT "${myserver_proto_src}" "${myserver_proto_hdr}"
-                COMMAND ${_PROTOBUF_PROTOC}
-                ARGS --cpp_out "${PROJECT_SOURCE_DIR}/cpp"
-                    --proto_path "${proto_file_path}"
-                    --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
-                    "${proto_file_absolute_path}"
-                DEPENDS "${proto_file_absolute_path}"
-                MAIN_DEPENDENCY "${proto_file_absolute_path}"
-                BYPRODUCTS "${myserver_proto_src}" "${myserver_proto_hdr}"
-                COMMENT "Generate headers and sources from proto: ${proto_file_absolute_path}")
-        endforeach()
-    endif()
+protobuf_generate(
+    TARGET GRPC_Files
+    LANGUAGE grpc
+    OUT_VAR PROTO_SRCS_GRPC_GRPC
+    # DEPENDENCIES PB_Files
+    PLUGIN protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_cpp_plugin>
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/cpp"
+    GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc)
 
-endfunction()
-
-generate_protobuf(SOURCES "config")
-generate_protobuf(SOURCES "matrix")
-generate_protobuf(SOURCES "result")
-generate_protobuf(SOURCES "server" GRPC_MODE)
+protobuf_generate(
+    TARGET GRPC_Files
+    LANGUAGE grpc
+    PLUGIN protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_python_plugin>
+    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py"
+    GENERATE_EXTENSIONS _pb2_grpc.py)
 
 # Create library
-add_library(proto_lib STATIC OBJECT ${proto_sources} ${proto_headeres})
+add_library(proto_lib STATIC OBJECT ${PROTO_SRCS_PB} ${PROTO_SRCS_GRPC} ${PROTO_SRCS_GRPC_GRPC})
 target_link_libraries(proto_lib
     absl::check
     ${_REFLECTION}

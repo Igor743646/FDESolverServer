@@ -35,41 +35,41 @@ class TFDESolverServer final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResult* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>> AsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>>(AsyncRunTaskRaw(context, request, cq));
+    virtual ::grpc::Status RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResults* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>> AsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>>(AsyncRunTaskRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>> PrepareAsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>>(PrepareAsyncRunTaskRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>> PrepareAsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>>(PrepareAsyncRunTaskRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>* AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResult>* PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>* AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::PFDESolver::TResults>* PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResult* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>> AsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>>(AsyncRunTaskRaw(context, request, cq));
+    ::grpc::Status RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResults* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>> AsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>>(AsyncRunTaskRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>> PrepareAsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>>(PrepareAsyncRunTaskRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>> PrepareAsyncRunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>>(PrepareAsyncRunTaskRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, std::function<void(::grpc::Status)>) override;
-      void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, std::function<void(::grpc::Status)>) override;
+      void RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,8 +81,8 @@ class TFDESolverServer final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>* AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>* PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>* AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>* PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_RunTask_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -91,7 +91,7 @@ class TFDESolverServer final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status RunTask(::grpc::ServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response);
+    virtual ::grpc::Status RunTask(::grpc::ServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_RunTask : public BaseClass {
@@ -105,11 +105,11 @@ class TFDESolverServer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestRunTask(::grpc::ServerContext* context, ::PFDESolver::TClientConfig* request, ::grpc::ServerAsyncResponseWriter< ::PFDESolver::TResult>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRunTask(::grpc::ServerContext* context, ::PFDESolver::TClientConfig* request, ::grpc::ServerAsyncResponseWriter< ::PFDESolver::TResults>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -121,25 +121,25 @@ class TFDESolverServer final {
    public:
     WithCallbackMethod_RunTask() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::PFDESolver::TClientConfig, ::PFDESolver::TResult>(
+          new ::grpc::internal::CallbackUnaryHandler< ::PFDESolver::TClientConfig, ::PFDESolver::TResults>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response) { return this->RunTask(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response) { return this->RunTask(context, request, response); }));}
     void SetMessageAllocatorFor_RunTask(
-        ::grpc::MessageAllocator< ::PFDESolver::TClientConfig, ::PFDESolver::TResult>* allocator) {
+        ::grpc::MessageAllocator< ::PFDESolver::TClientConfig, ::PFDESolver::TResults>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::PFDESolver::TClientConfig, ::PFDESolver::TResult>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::PFDESolver::TClientConfig, ::PFDESolver::TResults>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_RunTask() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* RunTask(
-      ::grpc::CallbackServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_RunTask<Service > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -155,7 +155,7 @@ class TFDESolverServer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -172,7 +172,7 @@ class TFDESolverServer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -195,7 +195,7 @@ class TFDESolverServer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -210,10 +210,10 @@ class TFDESolverServer final {
     WithStreamedUnaryMethod_RunTask() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::PFDESolver::TClientConfig, ::PFDESolver::TResult>(
+          ::PFDESolver::TClientConfig, ::PFDESolver::TResults>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::PFDESolver::TClientConfig, ::PFDESolver::TResult>* streamer) {
+                     ::PFDESolver::TClientConfig, ::PFDESolver::TResults>* streamer) {
                        return this->StreamedRunTask(context,
                          streamer);
                   }));
@@ -222,12 +222,12 @@ class TFDESolverServer final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResult* /*response*/) override {
+    ::grpc::Status RunTask(::grpc::ServerContext* /*context*/, const ::PFDESolver::TClientConfig* /*request*/, ::PFDESolver::TResults* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRunTask(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::PFDESolver::TClientConfig,::PFDESolver::TResult>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRunTask(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::PFDESolver::TClientConfig,::PFDESolver::TResults>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_RunTask<Service > StreamedUnaryService;
   typedef Service SplitStreamedService;

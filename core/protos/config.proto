@@ -29,6 +29,7 @@ message TClientConfig {
     optional string RealSolution = 24;                  // функция u(x, t);
 }
 
+
 message TSolverConfig {
     uint64 SpaceCount = 1;      // количество ячеек по x
     uint64 TimeCount = 2;       // количество ячеек по t

@@ -35,23 +35,23 @@ TFDESolverServer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   : channel_(channel), rpcmethod_RunTask_(TFDESolverServer_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status TFDESolverServer::Stub::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResult* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::PFDESolver::TClientConfig, ::PFDESolver::TResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RunTask_, context, request, response);
+::grpc::Status TFDESolverServer::Stub::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::PFDESolver::TResults* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::PFDESolver::TClientConfig, ::PFDESolver::TResults, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RunTask_, context, request, response);
 }
 
-void TFDESolverServer::Stub::async::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::PFDESolver::TClientConfig, ::PFDESolver::TResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RunTask_, context, request, response, std::move(f));
+void TFDESolverServer::Stub::async::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::PFDESolver::TClientConfig, ::PFDESolver::TResults, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RunTask_, context, request, response, std::move(f));
 }
 
-void TFDESolverServer::Stub::async::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response, ::grpc::ClientUnaryReactor* reactor) {
+void TFDESolverServer::Stub::async::RunTask(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RunTask_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>* TFDESolverServer::Stub::PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::PFDESolver::TResult, ::PFDESolver::TClientConfig, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RunTask_, context, request);
+::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>* TFDESolverServer::Stub::PrepareAsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::PFDESolver::TResults, ::PFDESolver::TClientConfig, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RunTask_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::PFDESolver::TResult>* TFDESolverServer::Stub::AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::PFDESolver::TResults>* TFDESolverServer::Stub::AsyncRunTaskRaw(::grpc::ClientContext* context, const ::PFDESolver::TClientConfig& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncRunTaskRaw(context, request, cq);
   result->StartCall();
@@ -62,11 +62,11 @@ TFDESolverServer::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TFDESolverServer_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< TFDESolverServer::Service, ::PFDESolver::TClientConfig, ::PFDESolver::TResult, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< TFDESolverServer::Service, ::PFDESolver::TClientConfig, ::PFDESolver::TResults, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TFDESolverServer::Service* service,
              ::grpc::ServerContext* ctx,
              const ::PFDESolver::TClientConfig* req,
-             ::PFDESolver::TResult* resp) {
+             ::PFDESolver::TResults* resp) {
                return service->RunTask(ctx, req, resp);
              }, this)));
 }
@@ -74,7 +74,7 @@ TFDESolverServer::Service::Service() {
 TFDESolverServer::Service::~Service() {
 }
 
-::grpc::Status TFDESolverServer::Service::RunTask(::grpc::ServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResult* response) {
+::grpc::Status TFDESolverServer::Service::RunTask(::grpc::ServerContext* context, const ::PFDESolver::TClientConfig* request, ::PFDESolver::TResults* response) {
   (void) context;
   (void) request;
   (void) response;

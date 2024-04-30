@@ -13,8 +13,8 @@ using namespace ::PFDESolver;
 class TFDESolverServerImpl final : public PFDESolverServer::TFDESolverServer::Service {
 public:
 
-    Status RunTask(ServerContext* context, const TClientConfig* request, TResult* response) override {
-        
+    Status RunTask(ServerContext* context, const TClientConfig* request, TResults* response) override {
+        response->set_realsolutionname("Hello");
         return Status::OK;
     }
 };

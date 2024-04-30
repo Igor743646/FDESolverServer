@@ -6,5 +6,5 @@ import "config.proto";
 import "result.proto";
 
 service TFDESolverServer {
-    rpc RunTask(PFDESolver.TClientConfig) returns (PFDESolver.TResult) {}
+    rpc RunTask(PFDESolver.TClientConfig) returns (PFDESolver.TResults) {}
 }
