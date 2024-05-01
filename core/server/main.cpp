@@ -30,11 +30,8 @@ public:
 private:
 
     #define GetFunction1(var_name, function_name) [&config](f64 var_name){ \
-                std::cout << "Create calculator" << std::endl; \
                 antlrcpptest::MathExpressionCalculator calculator(config.function_name(), {#var_name}); \
-                std::cout << "Calculator created" << std::endl; \
                 calculator.SetVar(#var_name, var_name); \
-                std::cout << "Calculate" << std::endl; \
             return calculator.Calc();}
     #define GetFunction2(var_name1, var_name2, function_name) [&config](f64 var_name1, f64 var_name2){ \
                 antlrcpptest::MathExpressionCalculator calculator(config.function_name(), {#var_name1, #var_name2}); \
@@ -59,7 +56,6 @@ private:
         solverConfig.BetaLeft = config.betaleft();
         solverConfig.AlphaRight = config.alpharight(); 
         solverConfig.BetaRight = config.betaright();
-        std::cout << "Parse DiffusionCoefficient" << std::endl;
         solverConfig.DiffusionCoefficient = GetFunction1(x, diffusioncoefficient);
         solverConfig.DemolitionCoefficient = GetFunction1(x, demolitioncoefficient);
         solverConfig.ZeroTimeState = GetFunction1(x, zerotimestate);
@@ -70,8 +66,6 @@ private:
         solverConfig.StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000; 
         solverConfig.RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt;
         solverConfig.RealSolution = config.has_realsolution() ? std::optional(GetFunction2(x, t, realsolutionname)) : std::nullopt;
-
-        std::cout << "Parsed all" << std::endl;
 
         return solverConfig;
     }

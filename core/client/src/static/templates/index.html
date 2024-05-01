@@ -32,3 +32,10 @@
 </div>
 
 {% endblock %}
+
+
+{% block error_config %}
+{% if error %}
+    <div style="color: rgb(156, 0, 0);font-size: small;">Error: {{error}}</div>
+{% endif %}
+{% endblock %}
