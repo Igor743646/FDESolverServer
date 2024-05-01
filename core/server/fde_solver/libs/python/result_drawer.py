@@ -87,6 +87,9 @@ def draw_surface(config, results : Results):
 
     _, ax = plt.subplots(h, w, figsize=(10*w, 7), subplot_kw={"projection": "3d"})
 
+    if w == 1:
+        ax = [ax]
+
     X = np.linspace(config.LeftBound, config.RightBound, config.SpaceCount + 1)
     Y = np.linspace(0, config.MaxTime, config.TimeCount + 1)
     X, Y = np.meshgrid(X, Y)

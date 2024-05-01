@@ -18,13 +18,12 @@
             {% block config %}
             {% endblock %}
 
-            {% block error_config %}
-            {% endblock %}
-
             <button id="run_task">Run task</button>
         </div>
-        
-        
 
+        {% for image in images %}
+            <img src="data:image/png;base64,{{image}}" alt="Base64 encoded image">
+        {% endfor %}
+        
     </body>
 </html>
