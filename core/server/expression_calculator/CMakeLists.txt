@@ -7,8 +7,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 23)
 
 # required if linking to static library
-add_definitions(-DANTLR4CPP_STATIC)
-
+add_definitions(-DANTLR4CPP_EXPORTS)
+# set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MD")
 # using /MD flag for antlr4_runtime (for Visual C++ compilers only)
 set(ANTLR4_WITH_STATIC_CRT OFF)
 # add external build for antlrcpp
@@ -30,8 +30,8 @@ antlr_target(SampleGrammarParser "grammar/TParser.g4" PARSER
              DEPENDS_ANTLR SampleGrammarLexer
              COMPILE_FLAGS -visitor -listener -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 
-add_library(math_expression_calculator STATIC OBJECT 
-    math_expression_calculator.cpp
+add_library(math_expression_calculator STATIC OBJECT
+    math_expression_calculator.cpp math_expression_calculator.h
     ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
     ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
     ${ANTLR_SampleGrammarVisitor_CXX_OUTPUTS}

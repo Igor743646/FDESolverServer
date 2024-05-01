@@ -24,7 +24,7 @@ message TClientConfig {
     string LeftBoundState = 19;                         // функция u(L, t)
     string RightBoundState = 20;                        // функция u(R, t)
     bool BordersAvailable = 21;                         // стоит ли учитывать граничные условия  
-    optional string StochasticIterationCount = 22;      // количество иттераций для стохастического метода
+    optional uint64 StochasticIterationCount = 22;      // количество иттераций для стохастического метода
     optional string RealSolutionName = 23;              // названия истиного решения
     optional string RealSolution = 24;                  // функция u(x, t);
 }

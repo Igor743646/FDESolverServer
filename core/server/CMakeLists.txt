@@ -10,6 +10,7 @@ set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 set(CMAKE_BUILD_TYPE "Release")
 
 add_subdirectory(expression_calculator)
+add_subdirectory(fde_solver)
 
 include(../protos/cmake/common.cmake)
 set(CMAKE_PREFIX_PATH "C:/vcpkg/installed/x64-windows" "${CMAKE_PREFIX_PATH}")
@@ -18,17 +19,20 @@ find_package(gRPC REQUIRED)
 find_package(absl REQUIRED)
 
 # server
-add_executable(main "main.cpp")
-target_link_libraries(main 
-  math_expression_calculator 
+add_executable(main main.cpp)
+target_link_libraries(main PUBLIC
+  math_expression_calculator
+  solvers
   absl::check
   ${_REFLECTION}
   ${_GRPC_GRPCPP}
   ${_PROTOBUF_LIBPROTOBUF}
   proto_lib 
 )
-target_include_directories(main PUBLIC "${PROJECT_SOURCE_DIR}/protos/cpp/")
-target_include_directories(main PUBLIC "${PROJECT_SOURCE_DIR}/server/expression_calculator/")
+target_include_directories(main PUBLIC "../protos/cpp/")
+target_include_directories(main PUBLIC "expression_calculator/")
+target_include_directories(main PUBLIC "fde_solver/libs/")
+target_include_directories(main PUBLIC "fde_solver/")
 
 # Copy dll's for protobuf
 add_custom_command(TARGET main POST_BUILD

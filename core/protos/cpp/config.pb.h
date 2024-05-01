@@ -187,7 +187,6 @@ class TClientConfig final :
     kSourceFunctionFieldNumber = 18,
     kLeftBoundStateFieldNumber = 19,
     kRightBoundStateFieldNumber = 20,
-    kStochasticIterationCountFieldNumber = 22,
     kRealSolutionNameFieldNumber = 23,
     kRealSolutionFieldNumber = 24,
     kSpaceCountFieldNumber = 1,
@@ -204,6 +203,7 @@ class TClientConfig final :
     kBetaLeftFieldNumber = 12,
     kAlphaRightFieldNumber = 13,
     kBetaRightFieldNumber = 14,
+    kStochasticIterationCountFieldNumber = 22,
     kBordersAvailableFieldNumber = 21,
   };
   // string DiffusionCoefficient = 15;
@@ -288,24 +288,6 @@ class TClientConfig final :
   const std::string& _internal_rightboundstate() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_rightboundstate(const std::string& value);
   std::string* _internal_mutable_rightboundstate();
-  public:
-
-  // optional string StochasticIterationCount = 22;
-  bool has_stochasticiterationcount() const;
-  private:
-  bool _internal_has_stochasticiterationcount() const;
-  public:
-  void clear_stochasticiterationcount();
-  const std::string& stochasticiterationcount() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_stochasticiterationcount(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_stochasticiterationcount();
-  PROTOBUF_NODISCARD std::string* release_stochasticiterationcount();
-  void set_allocated_stochasticiterationcount(std::string* stochasticiterationcount);
-  private:
-  const std::string& _internal_stochasticiterationcount() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_stochasticiterationcount(const std::string& value);
-  std::string* _internal_mutable_stochasticiterationcount();
   public:
 
   // optional string RealSolutionName = 23;
@@ -478,6 +460,19 @@ class TClientConfig final :
   void _internal_set_betaright(double value);
   public:
 
+  // optional uint64 StochasticIterationCount = 22;
+  bool has_stochasticiterationcount() const;
+  private:
+  bool _internal_has_stochasticiterationcount() const;
+  public:
+  void clear_stochasticiterationcount();
+  uint64_t stochasticiterationcount() const;
+  void set_stochasticiterationcount(uint64_t value);
+  private:
+  uint64_t _internal_stochasticiterationcount() const;
+  void _internal_set_stochasticiterationcount(uint64_t value);
+  public:
+
   // bool BordersAvailable = 21;
   void clear_bordersavailable();
   bool bordersavailable() const;
@@ -503,7 +498,6 @@ class TClientConfig final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sourcefunction_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr leftboundstate_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr rightboundstate_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr stochasticiterationcount_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolutionname_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolution_;
     uint64_t spacecount_;
@@ -520,6 +514,7 @@ class TClientConfig final :
     double betaleft_;
     double alpharight_;
     double betaright_;
+    uint64_t stochasticiterationcount_;
     bool bordersavailable_;
   };
   union { Impl_ _impl_; };
@@ -840,7 +835,7 @@ class TSolverConfig final :
 
 // optional uint64 SpaceCount = 1;
 inline bool TClientConfig::_internal_has_spacecount() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool TClientConfig::has_spacecount() const {
@@ -848,7 +843,7 @@ inline bool TClientConfig::has_spacecount() const {
 }
 inline void TClientConfig::clear_spacecount() {
   _impl_.spacecount_ = uint64_t{0u};
-  _impl_._has_bits_[0] &= ~0x00000008u;
+  _impl_._has_bits_[0] &= ~0x00000004u;
 }
 inline uint64_t TClientConfig::_internal_spacecount() const {
   return _impl_.spacecount_;
@@ -858,7 +853,7 @@ inline uint64_t TClientConfig::spacecount() const {
   return _internal_spacecount();
 }
 inline void TClientConfig::_internal_set_spacecount(uint64_t value) {
-  _impl_._has_bits_[0] |= 0x00000008u;
+  _impl_._has_bits_[0] |= 0x00000004u;
   _impl_.spacecount_ = value;
 }
 inline void TClientConfig::set_spacecount(uint64_t value) {
@@ -868,7 +863,7 @@ inline void TClientConfig::set_spacecount(uint64_t value) {
 
 // optional uint64 TimeCount = 2;
 inline bool TClientConfig::_internal_has_timecount() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
   return value;
 }
 inline bool TClientConfig::has_timecount() const {
@@ -876,7 +871,7 @@ inline bool TClientConfig::has_timecount() const {
 }
 inline void TClientConfig::clear_timecount() {
   _impl_.timecount_ = uint64_t{0u};
-  _impl_._has_bits_[0] &= ~0x00000010u;
+  _impl_._has_bits_[0] &= ~0x00000008u;
 }
 inline uint64_t TClientConfig::_internal_timecount() const {
   return _impl_.timecount_;
@@ -886,7 +881,7 @@ inline uint64_t TClientConfig::timecount() const {
   return _internal_timecount();
 }
 inline void TClientConfig::_internal_set_timecount(uint64_t value) {
-  _impl_._has_bits_[0] |= 0x00000010u;
+  _impl_._has_bits_[0] |= 0x00000008u;
   _impl_.timecount_ = value;
 }
 inline void TClientConfig::set_timecount(uint64_t value) {
@@ -1454,77 +1449,37 @@ inline void TClientConfig::set_bordersavailable(bool value) {
   // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.BordersAvailable)
 }
 
-// optional string StochasticIterationCount = 22;
+// optional uint64 StochasticIterationCount = 22;
 inline bool TClientConfig::_internal_has_stochasticiterationcount() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
   return value;
 }
 inline bool TClientConfig::has_stochasticiterationcount() const {
   return _internal_has_stochasticiterationcount();
 }
 inline void TClientConfig::clear_stochasticiterationcount() {
-  _impl_.stochasticiterationcount_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.stochasticiterationcount_ = uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000010u;
 }
-inline const std::string& TClientConfig::stochasticiterationcount() const {
+inline uint64_t TClientConfig::_internal_stochasticiterationcount() const {
+  return _impl_.stochasticiterationcount_;
+}
+inline uint64_t TClientConfig::stochasticiterationcount() const {
   // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.StochasticIterationCount)
   return _internal_stochasticiterationcount();
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void TClientConfig::set_stochasticiterationcount(ArgT0&& arg0, ArgT... args) {
- _impl_._has_bits_[0] |= 0x00000001u;
- _impl_.stochasticiterationcount_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+inline void TClientConfig::_internal_set_stochasticiterationcount(uint64_t value) {
+  _impl_._has_bits_[0] |= 0x00000010u;
+  _impl_.stochasticiterationcount_ = value;
+}
+inline void TClientConfig::set_stochasticiterationcount(uint64_t value) {
+  _internal_set_stochasticiterationcount(value);
   // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.StochasticIterationCount)
-}
-inline std::string* TClientConfig::mutable_stochasticiterationcount() {
-  std::string* _s = _internal_mutable_stochasticiterationcount();
-  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.StochasticIterationCount)
-  return _s;
-}
-inline const std::string& TClientConfig::_internal_stochasticiterationcount() const {
-  return _impl_.stochasticiterationcount_.Get();
-}
-inline void TClientConfig::_internal_set_stochasticiterationcount(const std::string& value) {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  _impl_.stochasticiterationcount_.Set(value, GetArenaForAllocation());
-}
-inline std::string* TClientConfig::_internal_mutable_stochasticiterationcount() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  return _impl_.stochasticiterationcount_.Mutable(GetArenaForAllocation());
-}
-inline std::string* TClientConfig::release_stochasticiterationcount() {
-  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.StochasticIterationCount)
-  if (!_internal_has_stochasticiterationcount()) {
-    return nullptr;
-  }
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  auto* p = _impl_.stochasticiterationcount_.Release();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.stochasticiterationcount_.IsDefault()) {
-    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  return p;
-}
-inline void TClientConfig::set_allocated_stochasticiterationcount(std::string* stochasticiterationcount) {
-  if (stochasticiterationcount != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.stochasticiterationcount_.SetAllocated(stochasticiterationcount, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.stochasticiterationcount_.IsDefault()) {
-    _impl_.stochasticiterationcount_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.StochasticIterationCount)
 }
 
 // optional string RealSolutionName = 23;
 inline bool TClientConfig::_internal_has_realsolutionname() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
 inline bool TClientConfig::has_realsolutionname() const {
@@ -1532,7 +1487,7 @@ inline bool TClientConfig::has_realsolutionname() const {
 }
 inline void TClientConfig::clear_realsolutionname() {
   _impl_.realsolutionname_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline const std::string& TClientConfig::realsolutionname() const {
   // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RealSolutionName)
@@ -1541,7 +1496,7 @@ inline const std::string& TClientConfig::realsolutionname() const {
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void TClientConfig::set_realsolutionname(ArgT0&& arg0, ArgT... args) {
- _impl_._has_bits_[0] |= 0x00000002u;
+ _impl_._has_bits_[0] |= 0x00000001u;
  _impl_.realsolutionname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RealSolutionName)
 }
@@ -1554,11 +1509,11 @@ inline const std::string& TClientConfig::_internal_realsolutionname() const {
   return _impl_.realsolutionname_.Get();
 }
 inline void TClientConfig::_internal_set_realsolutionname(const std::string& value) {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.realsolutionname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* TClientConfig::_internal_mutable_realsolutionname() {
-  _impl_._has_bits_[0] |= 0x00000002u;
+  _impl_._has_bits_[0] |= 0x00000001u;
   return _impl_.realsolutionname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TClientConfig::release_realsolutionname() {
@@ -1566,7 +1521,7 @@ inline std::string* TClientConfig::release_realsolutionname() {
   if (!_internal_has_realsolutionname()) {
     return nullptr;
   }
-  _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
   auto* p = _impl_.realsolutionname_.Release();
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (_impl_.realsolutionname_.IsDefault()) {
@@ -1577,9 +1532,9 @@ inline std::string* TClientConfig::release_realsolutionname() {
 }
 inline void TClientConfig::set_allocated_realsolutionname(std::string* realsolutionname) {
   if (realsolutionname != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000002u;
+    _impl_._has_bits_[0] |= 0x00000001u;
   } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
+    _impl_._has_bits_[0] &= ~0x00000001u;
   }
   _impl_.realsolutionname_.SetAllocated(realsolutionname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1592,7 +1547,7 @@ inline void TClientConfig::set_allocated_realsolutionname(std::string* realsolut
 
 // optional string RealSolution = 24;
 inline bool TClientConfig::_internal_has_realsolution() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool TClientConfig::has_realsolution() const {
@@ -1600,7 +1555,7 @@ inline bool TClientConfig::has_realsolution() const {
 }
 inline void TClientConfig::clear_realsolution() {
   _impl_.realsolution_.ClearToEmpty();
-  _impl_._has_bits_[0] &= ~0x00000004u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 inline const std::string& TClientConfig::realsolution() const {
   // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RealSolution)
@@ -1609,7 +1564,7 @@ inline const std::string& TClientConfig::realsolution() const {
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void TClientConfig::set_realsolution(ArgT0&& arg0, ArgT... args) {
- _impl_._has_bits_[0] |= 0x00000004u;
+ _impl_._has_bits_[0] |= 0x00000002u;
  _impl_.realsolution_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RealSolution)
 }
@@ -1622,11 +1577,11 @@ inline const std::string& TClientConfig::_internal_realsolution() const {
   return _impl_.realsolution_.Get();
 }
 inline void TClientConfig::_internal_set_realsolution(const std::string& value) {
-  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.realsolution_.Set(value, GetArenaForAllocation());
 }
 inline std::string* TClientConfig::_internal_mutable_realsolution() {
-  _impl_._has_bits_[0] |= 0x00000004u;
+  _impl_._has_bits_[0] |= 0x00000002u;
   return _impl_.realsolution_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TClientConfig::release_realsolution() {
@@ -1634,7 +1589,7 @@ inline std::string* TClientConfig::release_realsolution() {
   if (!_internal_has_realsolution()) {
     return nullptr;
   }
-  _impl_._has_bits_[0] &= ~0x00000004u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
   auto* p = _impl_.realsolution_.Release();
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (_impl_.realsolution_.IsDefault()) {
@@ -1645,9 +1600,9 @@ inline std::string* TClientConfig::release_realsolution() {
 }
 inline void TClientConfig::set_allocated_realsolution(std::string* realsolution) {
   if (realsolution != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000004u;
+    _impl_._has_bits_[0] |= 0x00000002u;
   } else {
-    _impl_._has_bits_[0] &= ~0x00000004u;
+    _impl_._has_bits_[0] &= ~0x00000002u;
   }
   _impl_.realsolution_.SetAllocated(realsolution, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
