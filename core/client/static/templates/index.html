@@ -2,8 +2,9 @@
 
 {% block config %}
 
-<div>
-    <textarea  id="config_textarea" rows="27" cols="90" style="resize: none;">
+<div style="display: flex;flex-direction: row;justify-content: flex-start;align-items: flex-start;">
+    <div style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;">
+        <textarea  spellcheck="false" id="config_textarea" rows="27" cols="90">
 {
     "LeftBound": "-0.4",
     "RightBound": "0.4",   
@@ -12,11 +13,7 @@
     "Gamma": "0.9",            
     "SpaceStep": "0.02",
     "TimeStep": "0.001",     
-    "Beta": "0.5",                    
-    "AlphaLeft": "0",
-    "BetaLeft": "0",     
-    "AlphaRight": "0",
-    "BetaRight": "0",   
+    "Beta": "0.5",  
     "DiffusionCoefficient": "0.001",     
     "DemolitionCoefficient": "0.0",    
     "ZeroTimeState": "((-0.01 < x) && (x < 0.01)) ? 50.0 : 0.0",            
@@ -27,14 +24,42 @@
     "StochasticIterationCount": "1000",
     "RealSolutionName": "$u(x, t) = ??",                        
     "RealSolution" : "0.0"
-}</textarea>
+}   
+        </textarea>
 
-    {% if error %}
-        <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
-    {% endif %}
-    {% if work_time %}
-        <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
-    {% endif %}
+        {% if error %}
+            <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
+        {% endif %}
+        {% if work_time %}
+            <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
+        {% endif %}
+        <button class="glow-on-hover" id="run_task">Run task</button>
+    </div>
+
+    <div style="padding: 10px;">
+        <ul>
+            <li><p><b>LeftBound</b>                   - The variable <b>L</b> is the left boundary of the calculated grid</p></li>
+            <li><p><b>RightBound</b>                  - The variable <b>R</b> is the right boundary of the calculated grid</p></li>
+            <li><p><b>MaxTime</b>                     - The variable <b>T</b> is the max time boundary of the calculated grid</p></li>
+            <li><p><b>Alpha</b>                       - The variable <b>&alpha;</b> is the fractional exponent of the degree of differential in the variable x</p></li>
+            <li><p><b>Gamma</b>                       - The variable <b>&gamma;</b> is the fractional exponent of the degree of differential in the variable t</p></li>
+            <li><p><b>SpaceStep</b>                   - The variable <b>h</b> is the grid step by variable x</p></li>
+            <li><p><b>TimeStep</b>                    - The variable <b>&tau;</b> is the grid step by variable x</p></li>
+            <li><p><b>Beta</b>                        - The variable <b>&beta;</b> is the coefficient of equilibrium between the left and right fractional derivatives</p></li>
+            <li><p><b>DiffusionCoefficient</b>        - The function <b>D(x)</b> is a function of the diffusion coefficient depending on the variable x</p></li>
+            <li><p><b>DemolitionCoefficient</b>       - The function <b>V(x)</b> is a linear demolition function depending on the variable x</p></li>
+            <li><p><b>ZeroTimeState</b>               - The function <b>u(x, 0)</b> is the state function at the zero point in time</p></li>
+            <li><p><b>SourceFunction</b>              - The function <b>f(x, t)</b> is the source function depending on the variables x and t</p></li>
+            <li><p><b>LeftBoundState</b>              - The function <b>u(L, t)</b> is the state function on the left boundary</p></li>
+            <li><p><b>RightBoundState</b>             - The function <b>u(R, t)</b> is the state function on the right boundary</p></li>
+            <li><p><b>BordersAvailable</b>            - Whether to include the flag when calculating the border or not</p></li>
+            <li><p><b>StochasticIterationCount</b>    - The number of iterations for the stochastic method if it is enabled</p></li>
+            <li><p><b>RealSolutionName</b>            - If the problem has a solution, then you can enter the formula of this function for visualization here in latex format</p></li>
+            <li><p><b>RealSolution</b>                - The formula of the real solution itself</p></li>
+    
+            <li><p><b>Methods</b>                - (unimplemented)</p></li>
+        </ul>
+    </div>
 </div>
 
 {% endblock %}

@@ -7,25 +7,44 @@
         <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100&subset=cyrillic,latin">
         <script src="{{ url_for('static', path='/scripts/jquery.js') }}"></script>
         <script src="{{ url_for('static', path='/scripts/main.js') }}"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
     
     <body>
+        <div class="content">
+            <header>
+                FDESolver
+            </header>
 
-        <h1>FDESolver</h1>
-        <div id="config">
-            <h2>Config:<h2>
+            <div id="info">
+                <p>This solver made special for solving anomalus diffusion equations by numerical methods. The problem is:</p>
+                <p style="font-size: 75%;">
+                    $$
+                    \frac{\partial^\gamma}{\partial t^\gamma}u(x, t) = 
+                    D(x)\left( \frac{(1+\beta)}{2}\frac{\partial _+^\alpha}{\partial x^\alpha} + \frac{(1-\beta)}{2}\frac{\partial _-^\alpha}{\partial x^\alpha} \right)u(x, t) + V(x)\frac{\partial}{\partial x}u(x, t) + f(x, t)
+                    $$
 
-            {% block config %}
-            {% endblock %}
-
-            <button id="run_task">Run task</button>
+                    $$u(x, 0) = \psi(x)$$
+                    $$u(L, t) = \phi_L(t)$$
+                    $$u(R, t) = \phi_R(t)$$
+                    $$\alpha \in (1; 2); \gamma \in (0; 1); \beta \in [-1; 1]$$
+                </p>
+            </div>
+    
+            
+            <div id="config">
+                <p>Config:</p>
+    
+                {% block config %}
+                {% endblock %}
+    
+            </div>
+    
+            <div id="res_images">
+                {% for image in images %}
+                    <img src="data:image/png;base64,{{image}}" alt="Base64 encoded image">
+                {% endfor %}
+            </div>
         </div>
-
-        <div id="res_images">
-            {% for image in images %}
-                <img src="data:image/png;base64,{{image}}" alt="Base64 encoded image">
-            {% endfor %}
-        </div>
-
     </body>
 </html>
