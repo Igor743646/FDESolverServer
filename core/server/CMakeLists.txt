@@ -12,35 +12,27 @@ set(CMAKE_BUILD_TYPE "Release")
 add_subdirectory(expression_calculator)
 add_subdirectory(fde_solver)
 
-include(../protos/cmake/common.cmake)
-set(CMAKE_PREFIX_PATH "C:/vcpkg/installed/x64-windows" "${CMAKE_PREFIX_PATH}")
+set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
 find_package(absl REQUIRED)
 
 # server
-add_executable(main main.cpp)
-target_link_libraries(main PUBLIC
+add_executable(server server.cpp)
+target_link_libraries(server PUBLIC
   math_expression_calculator
   solvers
-  absl::check
-  ${_REFLECTION}
-  ${_GRPC_GRPCPP}
-  ${_PROTOBUF_LIBPROTOBUF}
+  gRPC::grpc++
   proto_lib 
 )
-target_include_directories(main PUBLIC "../protos/cpp/")
-target_include_directories(main PUBLIC "expression_calculator/")
-target_include_directories(main PUBLIC "fde_solver/libs/")
-target_include_directories(main PUBLIC "fde_solver/")
+target_include_directories(server PUBLIC "../protos/cpp/")
+target_include_directories(server PUBLIC "expression_calculator/")
+target_include_directories(server PUBLIC "fde_solver/libs/")
+target_include_directories(server PUBLIC "fde_solver/")
 
 # Copy dll's for protobuf
-add_custom_command(TARGET main POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:main> $<TARGET_RUNTIME_DLLS:main>
+add_custom_command(TARGET server POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:server> $<TARGET_RUNTIME_DLLS:server>
   COMMAND_EXPAND_LISTS
-  COMMENT "Copy dll's to binary ($<TARGET_FILE_DIR:main>/$<TARGET_FILE_NAME:main>) list: ($<TARGET_RUNTIME_DLLS:main>)"
+  COMMENT "Copy dll's to binary ($<TARGET_FILE_DIR:server>/$<TARGET_FILE_NAME:server>) list: ($<TARGET_RUNTIME_DLLS:server>)"
 )
-
-file(COPY "C:/vcpkg/installed/x64-windows/bin/zlib1.dll" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Debug/")
-file(COPY "C:/vcpkg/installed/x64-windows/bin/libssl-3-x64.dll" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Debug/")
-file(COPY "C:/vcpkg/installed/x64-windows/bin/libcrypto-3-x64.dll" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Debug/")

@@ -1,0 +1,49 @@
+
+h1 {
+    border: 0.2vh solid black;
+    border-radius: 3px;
+    padding: 15px 15px 15px 15px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 15%;
+    margin-right: 15%;
+    font-size: 3.2vh;
+}
+
+h2 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+textarea {
+    font-size: 0.9vw;
+    width: 60%;
+}
+
+div {
+    font-size: 0.9vw;
+}
+
+#config {
+    padding: 15px 15px 15px 15px;
+    border: 0.2vh solid black;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 15%;
+    margin-right: 15%;
+    font-size: 2.0vh;
+}
+
+#res_images {
+    padding: 15px 15px 15px 15px;
+    border: 0.2vh solid black;
+    border-radius: 3px;
+    display: flex;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+img {
+    width: 100%;
+}

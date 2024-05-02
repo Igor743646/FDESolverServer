@@ -1,14 +1,12 @@
+import base64
+import io
 from matplotlib import pyplot as plt
 import matplotlib.animation as animation
 import matplotlib as mpl
 import argparse
 from argparse import ArgumentParser
 import numpy as np
-
-try:
-    import result_pb2
-except:
-    from ...build.libs.python import result_pb2
+import result_pb2
 
 mpl.rcParams["savefig.format"] = "jpg"
 mpl.rcParams["savefig.dpi"] = 'figure'
@@ -61,6 +59,13 @@ def parse_args() -> argparse.Namespace:
                         help="Show images or not")
 
     return parser.parse_args()
+
+
+def ReturnBase64Image():
+    bio = io.BytesIO()
+    plt.savefig(bio, format="png", )
+    plt.close()
+    return base64.encodebytes(bio.getvalue()).decode()
 
 
 def draw_flat_field(config, results : list[Result]):

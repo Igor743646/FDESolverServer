@@ -4,19 +4,13 @@ project(FDESolverWebServiceProtoFiles
 
 message(STATUS "[***] Start generate ${PROJECT_NAME}")
 
-set(CMAKE_PREFIX_PATH "C:/vcpkg/installed/x64-windows" "${CMAKE_PREFIX_PATH}")
-
-# Include for gRPC generating
-include(cmake/common.cmake)
+set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
 
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
 
-add_library(PB_Files config.proto matrix.proto result.proto)
-add_library(GRPC_Files server.proto)
-
-target_link_libraries(PB_Files PUBLIC absl::check ${_REFLECTION} ${_GRPC_GRPCPP} ${_PROTOBUF_LIBPROTOBUF})
-target_link_libraries(GRPC_Files PUBLIC PB_Files)
+add_custom_target(PB_Files SOURCES "config.proto" "matrix.proto" "result.proto")
+add_custom_target(GRPC_Files SOURCES "server.proto")
 
 protobuf_generate(
     TARGET PB_Files
@@ -58,11 +52,8 @@ protobuf_generate(
 
 # Create library
 add_library(proto_lib STATIC OBJECT ${PROTO_SRCS_PB} ${PROTO_SRCS_GRPC} ${PROTO_SRCS_GRPC_GRPC})
-target_link_libraries(proto_lib
-    absl::check
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF})
+target_link_libraries(proto_lib)
 
-target_include_directories(proto_lib PUBLIC "${PROJECT_SOURCE_DIR}/cpp")
-target_include_directories(proto_lib PUBLIC "${Protobuf_INCLUDE_DIRS}")
+target_include_directories(proto_lib PUBLIC ${protobuf_INCLUDE_DIRS})
+target_include_directories(proto_lib PUBLIC ${gRPC_INCLUDE_DIRS})
+target_include_directories(proto_lib PUBLIC ${absl_INCLUDE_DIRS})

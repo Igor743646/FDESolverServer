@@ -41,6 +41,7 @@ void SolveTaskAndSave(NEquationSolver::IEquationSolver& solver,
     pbResult->Swap(new PFDESolver::TResult(result.ToProto()));
 
     const auto& config = solver.GetConfig();
+    results.mutable_task()->Swap(new PFDESolver::TSolverConfig(config.ToProto()));
 
     if (saveMeta && config.RealSolution.has_value()) {
         INFO_LOG << "Adding real solution" << Endl;
@@ -68,7 +69,8 @@ class TFDESolverServerImpl final : public PFDESolverServer::TFDESolverServer::Se
 public:
 
     Status RunTask(ServerContext* context, const TClientConfig* request, TResults* response) override {
-        
+        auto start = std::chrono::system_clock::now();
+
         try {
             NEquationSolver::TSolverConfig solverConfig = ParseClientConfig(*request);
             NEquationSolver::TMatrixFDES solver(solverConfig);
@@ -76,6 +78,12 @@ public:
         } catch (...) {
             gpr_log(GPR_ERROR, "Error while running task");
         }
+
+        auto stop = std::chrono::system_clock::now();
+        f64 workTime = std::chrono::duration<f64, std::milli>(stop - start).count();
+
+        context->AddTrailingMetadata("work-time", std::to_string(workTime));
+        context->AddTrailingMetadata("version", "0.1");
         
         return Status::OK;
     }

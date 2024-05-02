@@ -6,10 +6,9 @@
 #include <cmath>
 #include <functional>
 
-#include "antlr4-runtime.h"
-#include "TLexer.h"
-#include "TParser.h"
-#include "TParserBaseVisitor.h"
+#include <TLexer.h>
+#include <TParser.h>
+#include <TParserBaseVisitor.h>
 
 namespace antlrcpptest {
     class ExpressionVisitor : public TParserVisitor {
@@ -57,7 +56,6 @@ namespace antlrcpptest {
         MathExpressionCalculator(std::string expression, const std::vector<std::string>& variables) 
         : Expression(expression) {
             Expression = expression;
-            std::cout << expression << std::endl;
             for (auto& var : variables) {
                 Visitor.SetValue(var, 0.0);
             }
@@ -72,17 +70,10 @@ namespace antlrcpptest {
             antlrcpptest::TLexer lexer(&input);
             antlr4::CommonTokenStream tokens(&lexer);
             tokens.fill();
-            for (auto token : tokens.getTokens()) {
-                if (token) {
-                    std::cout << token->toString() << std::endl;
-                    std::cout << token->getText() << std::endl;
-                }
-            }
             antlrcpptest::TParser parser(&tokens);
             antlrcpptest::TParser::RootContext *tree = parser.root();
             
             if (tree == nullptr) {
-                std::cout << "Tree is nullptr" << std::endl;
                 throw "Tree is nullptr";
             }
             try{

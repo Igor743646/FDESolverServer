@@ -32,6 +32,9 @@
     {% if error %}
         <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
     {% endif %}
+    {% if work_time %}
+        <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
+    {% endif %}
 </div>
 
 {% endblock %}

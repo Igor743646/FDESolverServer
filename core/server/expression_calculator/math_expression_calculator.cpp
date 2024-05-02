@@ -15,7 +15,6 @@ namespace antlrcpptest {
     }
 
     std::any ExpressionVisitor::visitRoot(TParser::RootContext *context) {
-        std::cout << context->getText() << std::endl;
         std::any childResult = context->children[0]->accept(this);
         double result = std::any_cast<double>(childResult);
 
