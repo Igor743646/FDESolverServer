@@ -1,16 +1,18 @@
 import base64
 import io
+import matplotlib
+matplotlib.use("Agg")
+
 from matplotlib import pyplot as plt
-import matplotlib.animation as animation
-import matplotlib as mpl
+from matplotlib import animation
 import argparse
 from argparse import ArgumentParser
 import numpy as np
 import result_pb2
 
-mpl.rcParams["savefig.format"] = "jpg"
-mpl.rcParams["savefig.dpi"] = 'figure'
-mpl.rcParams["savefig.bbox"] = 'tight'
+matplotlib.rcParams["savefig.format"] = "jpg"
+matplotlib.rcParams["savefig.dpi"] = 'figure'
+matplotlib.rcParams["savefig.bbox"] = 'tight'
 plt.rcParams['animation.ffmpeg_path'] ='C:\\ProgramData\\chocolatey\\lib\\ffmpeg-full\\tools\\ffmpeg\\bin\\ffmpeg.exe'
 
 class Result(object):
