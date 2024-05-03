@@ -1,6 +1,6 @@
 #include "math_expression_calculator.h"
 
-namespace antlrcpptest {
+namespace ANTLRMathExpParser {
 
     void ExpressionVisitor::SetValue(std::string name, double val) {
         Values[name] = val;
@@ -85,7 +85,6 @@ namespace antlrcpptest {
         std::vector<double> arguments;
 
         for (int i = 2; i < context->children.size(); i += 2) {
-            std::cout << context->children[i]->getText() << std::endl;
             double temp = std::any_cast<double>(context->children[i]->accept(this));
             arguments.push_back(temp);
         }
@@ -102,3 +101,33 @@ namespace antlrcpptest {
     }
 }
 
+namespace ANTLRMathExpParser {
+    MathExpressionCalculator::MathExpressionCalculator(std::string expression, const std::vector<std::string>& variables) {
+        Input = std::make_unique<antlr4::ANTLRInputStream>(expression);
+        Lexer = std::make_unique<ANTLRMathExpParser::TLexer>(Input.get());
+        Tokens = std::make_unique<antlr4::CommonTokenStream>(Lexer.get());
+        Tokens->fill();
+        Parser = std::make_unique<ANTLRMathExpParser::TParser>(Tokens.get());
+        Tree = Parser->root();
+        
+        for (auto& var : variables) {
+            Visitor.SetValue(var, 0.0);
+        }
+    }
+
+    void MathExpressionCalculator::SetVar(std::string var, double value) {
+        Visitor.SetValue(var, value);
+    }
+
+    double MathExpressionCalculator::Calc() {
+        if (Tree) {
+            std::any result = Tree->accept(dynamic_cast<antlr4::tree::ParseTreeVisitor*>(&Visitor));
+            return std::any_cast<double>(result);
+        } 
+        
+        std::cout << Tree->toStringTree() << std::endl;
+        std::cout << Tree->toString() << std::endl;
+
+        throw "Can not calculate value because parse tree error (Tree = nullptr)";
+    }
+}

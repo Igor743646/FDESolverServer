@@ -49,7 +49,7 @@ async def favicon():
     return FileResponse(CLIENT_PROGRAM_PATH / "favicon.ico")
 
 @app.get("/{b64_json_config}")
-async def home(request: Request, b64_json_config: str):
+async def runTask(request: Request, b64_json_config: str):
     log.debug(b64_json_config)
 
     result = {

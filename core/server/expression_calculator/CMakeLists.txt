@@ -9,9 +9,9 @@ find_package(antlr4-runtime REQUIRED CONFIG)
 include(def_antlr_target)
 
 antlr_target(SampleGrammarLexer "grammar/TLexer.g4" LEXER
-             PACKAGE antlrcpptest)
+             PACKAGE ANTLRMathExpParser)
 antlr_target(SampleGrammarParser "grammar/TParser.g4" PARSER
-             PACKAGE antlrcpptest
+             PACKAGE ANTLRMathExpParser
              DEPENDS_ANTLR SampleGrammarLexer
              COMPILE_FLAGS -visitor -listener -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 

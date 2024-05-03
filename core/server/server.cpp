@@ -90,48 +90,51 @@ public:
 
 private:
 
-    #define GetFunction1(var_name, function_name) [&config](f64 var_name){ \
-                static antlrcpptest::MathExpressionCalculator calculator(config.function_name(), {#var_name}); \
-                calculator.SetVar(#var_name, var_name); \
-            return calculator.Calc();}
-    #define GetFunction2(var_name1, var_name2, function_name) [&config](f64 var_name1, f64 var_name2){ \
-                static antlrcpptest::MathExpressionCalculator calculator(config.function_name(), {#var_name1, #var_name2}); \
-                calculator.SetVar(#var_name1, var_name1); \
-                calculator.SetVar(#var_name2, var_name2); \
-            return calculator.Calc();}
+    auto GetFunction1(std::string expression, std::string var_name) {
+        auto calculator = make_shared<ANTLRMathExpParser::MathExpressionCalculator>(expression, std::vector{var_name});
+        return [calc=calculator, var_name](f64 var_value) -> f64 {
+            calc->SetVar(var_name, var_value);
+            return calc->Calc();
+        };
+    }
+
+    auto GetFunction2(std::string expression, std::string var_name1, std::string var_name2) {
+        auto calculator = make_shared<ANTLRMathExpParser::MathExpressionCalculator>(expression, std::vector{var_name1, var_name2});
+        return [calc=calculator, var_name1, var_name2](f64 var_value1, f64 var_value2) -> f64 {
+            calc->SetVar(var_name1, var_value1);
+            calc->SetVar(var_name2, var_value2);
+            return calc->Calc();
+        };
+    }
 
     NEquationSolver::TSolverConfig ParseClientConfig(const TClientConfig& config) {
-        NEquationSolver::TSolverConfig solverConfig;
-
-        solverConfig.SpaceCount = config.has_spacecount() ? config.spacecount() : 0; 
-        solverConfig.TimeCount = config.has_timecount() ? config.timecount() : 0; 
-        solverConfig.LeftBound = config.leftbound(); 
-        solverConfig.RightBound = config.rightbound();
-        solverConfig.MaxTime = config.maxtime();
-        solverConfig.Alpha = config.alpha(); 
-        solverConfig.Gamma = config.gamma();
-        solverConfig.SpaceStep = config.spacestep(); 
-        solverConfig.TimeStep = config.timestep();
-        solverConfig.Beta = config.beta();
-        solverConfig.AlphaLeft = config.alphaleft(); 
-        solverConfig.BetaLeft = config.betaleft();
-        solverConfig.AlphaRight = config.alpharight(); 
-        solverConfig.BetaRight = config.betaright();
-        solverConfig.DiffusionCoefficient = GetFunction1(x, diffusioncoefficient);
-        solverConfig.DemolitionCoefficient = GetFunction1(x, demolitioncoefficient);
-        solverConfig.ZeroTimeState = GetFunction1(x, zerotimestate);
-        solverConfig.SourceFunction = GetFunction2(x, t, sourcefunction);
-        solverConfig.LeftBoundState = GetFunction1(t, leftboundstate);
-        solverConfig.RightBoundState = GetFunction1(t, rightboundstate);
-        solverConfig.BordersAvailable = config.bordersavailable();
-        solverConfig.StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000; 
-        solverConfig.RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt;
-        solverConfig.RealSolution = config.has_realsolution() ? std::optional(GetFunction2(x, t, realsolution)) : std::nullopt;
-
-        return solverConfig;
+        return {
+            .SpaceCount = config.has_spacecount() ? config.spacecount() : 0, 
+            .TimeCount = config.has_timecount() ? config.timecount() : 0, 
+            .LeftBound = config.leftbound(), 
+            .RightBound = config.rightbound(),
+            .MaxTime = config.maxtime(),
+            .Alpha = config.alpha(), 
+            .Gamma = config.gamma(),
+            .SpaceStep = config.spacestep(), 
+            .TimeStep = config.timestep(),
+            .Beta = config.beta(),
+            .AlphaLeft = config.alphaleft(), 
+            .BetaLeft = config.betaleft(),
+            .AlphaRight = config.alpharight(), 
+            .BetaRight = config.betaright(),
+            .DiffusionCoefficient = GetFunction1(config.diffusioncoefficient(), "x"),
+            .DemolitionCoefficient = GetFunction1(config.demolitioncoefficient(), "x"),
+            .ZeroTimeState = GetFunction1(config.zerotimestate(), "x"),
+            .SourceFunction = GetFunction2(config.sourcefunction(), "x", "t"),
+            .LeftBoundState = GetFunction1(config.leftboundstate(), "t"),
+            .RightBoundState = GetFunction1(config.rightboundstate(), "t"),
+            .BordersAvailable = config.bordersavailable(),
+            .StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000, 
+            .RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
+            .RealSolution = config.has_realsolution() ? std::optional(GetFunction2(config.realsolution(), "x", "t")) : std::nullopt,
+        };
     }
-    #undef GetFunction1
-    #undef GetFunction2
 };
 
 void Init() {

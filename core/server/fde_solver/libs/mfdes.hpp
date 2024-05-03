@@ -85,7 +85,7 @@ namespace NEquationSolver {
             }
         }
 
-        void FillDestination(std::vector<f64>& d, const NLinalg::TMatrix& result, const usize k) {
+        void FillDestination(std::vector<f64>& d, const NLinalg::TMatrix& result, usize k) {
             const usize n = Config.SpaceCount;
             
             for (usize i = 0; i <= n; i++) {

@@ -10,7 +10,7 @@
 #include <TParser.h>
 #include <TParserBaseVisitor.h>
 
-namespace antlrcpptest {
+namespace ANTLRMathExpParser {
     class ExpressionVisitor : public TParserVisitor {
     public:
 
@@ -40,10 +40,9 @@ namespace antlrcpptest {
 
         static double Beta(double x, double y) {
             double res = Gamma(x) * Gamma(y) / Gamma(x + y);
-            if (std::isnan(res)) {
-                res = std::numeric_limits<double>::infinity();
-            }
-            return res;
+            return std::isnan(res) 
+                ? std::numeric_limits<double>::infinity() 
+                : res;
         }
 
         std::unordered_map<std::string, double> Values;
@@ -53,49 +52,20 @@ namespace antlrcpptest {
     class MathExpressionCalculator {
     public:
 
-        MathExpressionCalculator(std::string expression, const std::vector<std::string>& variables) 
-        : Expression(expression) {
-            Expression = expression;
-            for (auto& var : variables) {
-                Visitor.SetValue(var, 0.0);
-            }
-        }
+        MathExpressionCalculator(std::string, const std::vector<std::string>&);
 
-        void SetVar(std::string var, double value) {
-            Visitor.SetValue(var, value);
-        }
-
-        double Calc() {
-            antlr4::ANTLRInputStream input(Expression);
-            antlrcpptest::TLexer lexer(&input);
-            antlr4::CommonTokenStream tokens(&lexer);
-            tokens.fill();
-            antlrcpptest::TParser parser(&tokens);
-            antlrcpptest::TParser::RootContext *tree = parser.root();
-            
-            if (tree == nullptr) {
-                throw "Tree is nullptr";
-            }
-            try{
-                std::any result = tree->accept(dynamic_cast<antlr4::tree::ParseTreeVisitor*>(&Visitor));
-
-                if (result.has_value()) {
-                    return std::any_cast<double>(result);
-                }
-            } catch (...) {
-                std::cout << tree->toStringTree() << std::endl;
-                std::cout << tree->toString() << std::endl;
-            }
-            
-
-            throw "Can not calculate value";
-        }
+        void SetVar(std::string, double);
+        double Calc();
 
     private:
 
-        antlrcpptest::ExpressionVisitor Visitor;
+        ANTLRMathExpParser::ExpressionVisitor Visitor;
         std::unordered_map<std::string, double> Variables;
-        std::string Expression;
+        std::unique_ptr<antlr4::ANTLRInputStream> Input;
+        std::unique_ptr<ANTLRMathExpParser::TLexer> Lexer;
+        std::unique_ptr<antlr4::CommonTokenStream> Tokens;
+        std::unique_ptr<ANTLRMathExpParser::TParser> Parser;
+        ANTLRMathExpParser::TParser::RootContext* Tree;
     };
 }
 
