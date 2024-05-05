@@ -16,7 +16,8 @@ antlr_target(SampleGrammarParser "grammar/TParser.g4" PARSER
              COMPILE_FLAGS -visitor -listener -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 
 add_library(math_expression_calculator STATIC OBJECT
-    math_expression_calculator.cpp math_expression_calculator.h
+    "src/math_expression_calculator.cpp"
+    "src/math_expression_calculator.h"
     ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
     ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
     ${ANTLR_SampleGrammarVisitor_CXX_OUTPUTS}

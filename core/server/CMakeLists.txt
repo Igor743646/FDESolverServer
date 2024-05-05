@@ -17,7 +17,7 @@ find_package(gRPC REQUIRED)
 find_package(absl REQUIRED)
 
 # server
-add_executable(server server.cpp)
+add_executable(server "src/server.cpp")
 target_link_libraries(server PUBLIC
   math_expression_calculator
   solvers
@@ -25,9 +25,9 @@ target_link_libraries(server PUBLIC
   proto_lib 
 )
 target_include_directories(server PUBLIC "../protos/cpp/")
-target_include_directories(server PUBLIC "expression_calculator/")
-target_include_directories(server PUBLIC "fde_solver/libs/")
-target_include_directories(server PUBLIC "fde_solver/")
+target_include_directories(server PUBLIC "expression_calculator/src/")
+target_include_directories(server PUBLIC "fde_solver/src/")
+target_include_directories(server PUBLIC "fde_solver/utils/src/")
 
 # Copy dll's for protobuf
 add_custom_command(TARGET server POST_BUILD
