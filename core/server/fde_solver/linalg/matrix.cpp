@@ -11,7 +11,9 @@ namespace NLinalg {
 
     TMatrix::TMatrix(usize rows, usize columns, f64 fill) 
     : Rows(rows), Columns(columns) {
-        Matrix = new f64[rows * columns](fill);
+        usize length = rows * columns;
+        Matrix = new f64[length];
+        std::fill_n(Matrix, length, fill);
     }
 
     TMatrix::TMatrix(usize rows, usize columns, const std::vector<f64>& v)

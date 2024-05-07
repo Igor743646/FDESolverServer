@@ -17,4 +17,13 @@ TEST_CASE("MatrixConstructor", "[initialize]") {
             REQUIRE(matrix[i / 3][i % 3] == 0.2);
         }
     }
+
+    SECTION ("default constructor with one size value") {
+        NLinalg::TMatrix matrix(3);
+
+        REQUIRE(matrix.Shape() == std::pair{3, 3});
+        for (int i = 0; i < 9; i++) {
+            REQUIRE(matrix[i / 3][i % 3] == 0.0);
+        }
+    }
 }
