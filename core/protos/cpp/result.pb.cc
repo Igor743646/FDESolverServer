@@ -26,7 +26,6 @@ PROTOBUF_CONSTEXPR TResult::TResult(
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.methodname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.config_)*/nullptr
   , /*decltype(_impl_.field_)*/nullptr
   , /*decltype(_impl_.solvematrix_)*/nullptr} {}
 struct TResultDefaultTypeInternal {
@@ -68,10 +67,8 @@ const uint32_t TableStruct_result_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TResult, _impl_.methodname_),
-  PROTOBUF_FIELD_OFFSET(::PFDESolver::TResult, _impl_.config_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TResult, _impl_.field_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TResult, _impl_.solvematrix_),
-  ~0u,
   ~0u,
   ~0u,
   0,
@@ -91,8 +88,8 @@ const uint32_t TableStruct_result_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   0,
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 10, -1, sizeof(::PFDESolver::TResult)},
-  { 14, 24, -1, sizeof(::PFDESolver::TResults)},
+  { 0, 9, -1, sizeof(::PFDESolver::TResult)},
+  { 12, 22, -1, sizeof(::PFDESolver::TResults)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -102,17 +99,16 @@ static const ::_pb::Message* const file_default_instances[] = {
 
 const char descriptor_table_protodef_result_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014result.proto\022\nPFDESolver\032\014config.proto"
-  "\032\014matrix.proto\"\253\001\n\007TResult\022\022\n\nMethodName"
-  "\030\001 \001(\t\022)\n\006Config\030\002 \001(\0132\031.PFDESolver.TSol"
-  "verConfig\022\"\n\005Field\030\003 \001(\0132\023.PFDESolver.TM"
-  "atrix\022-\n\013SolveMatrix\030\004 \001(\0132\023.PFDESolver."
-  "TMatrixH\000\210\001\001B\016\n\014_SolveMatrix\"\316\001\n\010TResult"
-  "s\022\'\n\004Task\030\001 \001(\0132\031.PFDESolver.TSolverConf"
-  "ig\022$\n\007Results\030\002 \003(\0132\023.PFDESolver.TResult"
-  "\022.\n\014RealSolution\030\003 \001(\0132\023.PFDESolver.TMat"
-  "rixH\000\210\001\001\022\035\n\020RealSolutionName\030\004 \001(\tH\001\210\001\001B"
-  "\017\n\r_RealSolutionB\023\n\021_RealSolutionNameb\006p"
-  "roto3"
+  "\032\014matrix.proto\"\200\001\n\007TResult\022\022\n\nMethodName"
+  "\030\001 \001(\t\022\"\n\005Field\030\002 \001(\0132\023.PFDESolver.TMatr"
+  "ix\022-\n\013SolveMatrix\030\003 \001(\0132\023.PFDESolver.TMa"
+  "trixH\000\210\001\001B\016\n\014_SolveMatrix\"\316\001\n\010TResults\022\'"
+  "\n\004Task\030\001 \001(\0132\031.PFDESolver.TSolverConfig\022"
+  "$\n\007Results\030\002 \003(\0132\023.PFDESolver.TResult\022.\n"
+  "\014RealSolution\030\003 \001(\0132\023.PFDESolver.TMatrix"
+  "H\000\210\001\001\022\035\n\020RealSolutionName\030\004 \001(\tH\001\210\001\001B\017\n\r"
+  "_RealSolutionB\023\n\021_RealSolutionNameb\006prot"
+  "o3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_result_2eproto_deps[2] = {
   &::descriptor_table_config_2eproto,
@@ -120,7 +116,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_result_2eproto_deps
 };
 static ::_pbi::once_flag descriptor_table_result_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_result_2eproto = {
-    false, false, 445, descriptor_table_protodef_result_2eproto,
+    false, false, 402, descriptor_table_protodef_result_2eproto,
     "result.proto",
     &descriptor_table_result_2eproto_once, descriptor_table_result_2eproto_deps, 2, 2,
     schemas, file_default_instances, TableStruct_result_2eproto::offsets,
@@ -140,7 +136,6 @@ namespace PFDESolver {
 class TResult::_Internal {
  public:
   using HasBits = decltype(std::declval<TResult>()._impl_._has_bits_);
-  static const ::PFDESolver::TSolverConfig& config(const TResult* msg);
   static const ::PFDESolver::TMatrix& field(const TResult* msg);
   static const ::PFDESolver::TMatrix& solvematrix(const TResult* msg);
   static void set_has_solvematrix(HasBits* has_bits) {
@@ -148,10 +143,6 @@ class TResult::_Internal {
   }
 };
 
-const ::PFDESolver::TSolverConfig&
-TResult::_Internal::config(const TResult* msg) {
-  return *msg->_impl_.config_;
-}
 const ::PFDESolver::TMatrix&
 TResult::_Internal::field(const TResult* msg) {
   return *msg->_impl_.field_;
@@ -159,12 +150,6 @@ TResult::_Internal::field(const TResult* msg) {
 const ::PFDESolver::TMatrix&
 TResult::_Internal::solvematrix(const TResult* msg) {
   return *msg->_impl_.solvematrix_;
-}
-void TResult::clear_config() {
-  if (GetArenaForAllocation() == nullptr && _impl_.config_ != nullptr) {
-    delete _impl_.config_;
-  }
-  _impl_.config_ = nullptr;
 }
 void TResult::clear_field() {
   if (GetArenaForAllocation() == nullptr && _impl_.field_ != nullptr) {
@@ -189,7 +174,6 @@ TResult::TResult(const TResult& from)
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.methodname_){}
-    , decltype(_impl_.config_){nullptr}
     , decltype(_impl_.field_){nullptr}
     , decltype(_impl_.solvematrix_){nullptr}};
 
@@ -201,9 +185,6 @@ TResult::TResult(const TResult& from)
   if (!from._internal_methodname().empty()) {
     _this->_impl_.methodname_.Set(from._internal_methodname(), 
       _this->GetArenaForAllocation());
-  }
-  if (from._internal_has_config()) {
-    _this->_impl_.config_ = new ::PFDESolver::TSolverConfig(*from._impl_.config_);
   }
   if (from._internal_has_field()) {
     _this->_impl_.field_ = new ::PFDESolver::TMatrix(*from._impl_.field_);
@@ -222,7 +203,6 @@ inline void TResult::SharedCtor(
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.methodname_){}
-    , decltype(_impl_.config_){nullptr}
     , decltype(_impl_.field_){nullptr}
     , decltype(_impl_.solvematrix_){nullptr}
   };
@@ -244,7 +224,6 @@ TResult::~TResult() {
 inline void TResult::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.methodname_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.config_;
   if (this != internal_default_instance()) delete _impl_.field_;
   if (this != internal_default_instance()) delete _impl_.solvematrix_;
 }
@@ -260,10 +239,6 @@ void TResult::Clear() {
   (void) cached_has_bits;
 
   _impl_.methodname_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.config_ != nullptr) {
-    delete _impl_.config_;
-  }
-  _impl_.config_ = nullptr;
   if (GetArenaForAllocation() == nullptr && _impl_.field_ != nullptr) {
     delete _impl_.field_;
   }
@@ -294,25 +269,17 @@ const char* TResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
         } else
           goto handle_unusual;
         continue;
-      // .PFDESolver.TSolverConfig Config = 2;
+      // .PFDESolver.TMatrix Field = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_config(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // .PFDESolver.TMatrix Field = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_field(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // optional .PFDESolver.TMatrix SolveMatrix = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+      // optional .PFDESolver.TMatrix SolveMatrix = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_solvematrix(), ptr);
           CHK_(ptr);
         } else
@@ -358,24 +325,17 @@ uint8_t* TResult::_InternalSerialize(
         1, this->_internal_methodname(), target);
   }
 
-  // .PFDESolver.TSolverConfig Config = 2;
-  if (this->_internal_has_config()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::config(this),
-        _Internal::config(this).GetCachedSize(), target, stream);
-  }
-
-  // .PFDESolver.TMatrix Field = 3;
+  // .PFDESolver.TMatrix Field = 2;
   if (this->_internal_has_field()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::field(this),
+      InternalWriteMessage(2, _Internal::field(this),
         _Internal::field(this).GetCachedSize(), target, stream);
   }
 
-  // optional .PFDESolver.TMatrix SolveMatrix = 4;
+  // optional .PFDESolver.TMatrix SolveMatrix = 3;
   if (_internal_has_solvematrix()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(4, _Internal::solvematrix(this),
+      InternalWriteMessage(3, _Internal::solvematrix(this),
         _Internal::solvematrix(this).GetCachedSize(), target, stream);
   }
 
@@ -402,21 +362,14 @@ size_t TResult::ByteSizeLong() const {
         this->_internal_methodname());
   }
 
-  // .PFDESolver.TSolverConfig Config = 2;
-  if (this->_internal_has_config()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.config_);
-  }
-
-  // .PFDESolver.TMatrix Field = 3;
+  // .PFDESolver.TMatrix Field = 2;
   if (this->_internal_has_field()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.field_);
   }
 
-  // optional .PFDESolver.TMatrix SolveMatrix = 4;
+  // optional .PFDESolver.TMatrix SolveMatrix = 3;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
@@ -444,10 +397,6 @@ void TResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
 
   if (!from._internal_methodname().empty()) {
     _this->_internal_set_methodname(from._internal_methodname());
-  }
-  if (from._internal_has_config()) {
-    _this->_internal_mutable_config()->::PFDESolver::TSolverConfig::MergeFrom(
-        from._internal_config());
   }
   if (from._internal_has_field()) {
     _this->_internal_mutable_field()->::PFDESolver::TMatrix::MergeFrom(
@@ -484,9 +433,9 @@ void TResult::InternalSwap(TResult* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TResult, _impl_.solvematrix_)
       + sizeof(TResult::_impl_.solvematrix_)
-      - PROTOBUF_FIELD_OFFSET(TResult, _impl_.config_)>(
-          reinterpret_cast<char*>(&_impl_.config_),
-          reinterpret_cast<char*>(&other->_impl_.config_));
+      - PROTOBUF_FIELD_OFFSET(TResult, _impl_.field_)>(
+          reinterpret_cast<char*>(&_impl_.field_),
+          reinterpret_cast<char*>(&other->_impl_.field_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TResult::GetMetadata() const {

@@ -30,11 +30,8 @@ namespace NEquationSolver {
 
     PFDESolver::TResult IEquationSolver::TResult::ToProto() const {
         PFDESolver::TResult res;
-        PFDESolver::TSolverConfig conf(std::move(Config.ToProto()));
-        res.mutable_config()->Swap(&conf);
         res.set_methodname(MethodName);
-        PFDESolver::TMatrix field(std::move(Field.ToProto()));
-        res.mutable_field()->Swap(&field);
+        res.mutable_field()->Swap(new PFDESolver::TMatrix(std::move(Field.ToProto())));
 
         if (SolveMatrix.has_value()) {
             PFDESolver::TMatrix solveMatrix(std::move(SolveMatrix->ToProto()));

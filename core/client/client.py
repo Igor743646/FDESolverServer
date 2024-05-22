@@ -24,6 +24,6 @@ async def homeRedirect():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("client:app", host="localhost", port=8002, reload=True, 
+    uvicorn.run("client:app", host="localhost", port=8002, reload=True,
                 reload_dirs=[CLIENT_PROGRAM_PATH],
                 reload_includes=["*.css", "*.js", "*.html"])

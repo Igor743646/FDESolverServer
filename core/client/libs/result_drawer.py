@@ -20,7 +20,6 @@ class Result(object):
     def __init__(self, proto_res) -> None:
         self.proto_file = proto_res
         self.method_name : str = proto_res.MethodName
-        self.config = proto_res.Config
         self.solver_matrix : np.ndarray | None = None
 
         self.field = np.array(proto_res.Field.Data)

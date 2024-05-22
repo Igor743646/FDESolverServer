@@ -4,36 +4,17 @@
 
 <div style="display: flex;flex-direction: row;justify-content: flex-start;align-items: flex-start;">
     <div style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;">
-        <textarea  spellcheck="false" id="config_textarea" rows="27" cols="90">
-{
-    "LeftBound": "-0.4",
-    "RightBound": "0.4",   
-    "MaxTime": "0.2",                 
-    "Alpha": "1.8",
-    "Gamma": "0.9",            
-    "SpaceStep": "0.02",
-    "TimeStep": "0.001",     
-    "Beta": "0.5",  
-    "DiffusionCoefficient": "0.001",     
-    "DemolitionCoefficient": "0.0",    
-    "ZeroTimeState": "((-0.01 < x) && (x < 0.01)) ? 50.0 : 0.0",            
-    "SourceFunction": "0.0",   
-    "LeftBoundState": "0.0",           
-    "RightBoundState": "0.00000",          
-    "BordersAvailable": "false",          
-    "StochasticIterationCount": "1000",
-    "RealSolutionName": "$u(x, t) = ??",                        
-    "RealSolution" : "0.0"
-}   
-        </textarea>
+        <form method="POST">
+            <textarea name="config" spellcheck="false" id="config_textarea" rows="27" cols="90">{{config}}</textarea>
 
-        {% if error %}
-            <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
-        {% endif %}
-        {% if work_time %}
-            <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
-        {% endif %}
-        <button class="glow-on-hover" id="run_task">Run task</button>
+            {% if error %}
+                <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
+            {% endif %}
+            {% if work_time %}
+                <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
+            {% endif %}
+            <button class="glow-on-hover" id="run_task">Run task</button>
+        </form>
     </div>
 
     <div style="padding: 10px;">

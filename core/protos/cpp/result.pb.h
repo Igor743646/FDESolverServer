@@ -184,9 +184,8 @@ class TResult final :
 
   enum : int {
     kMethodNameFieldNumber = 1,
-    kConfigFieldNumber = 2,
-    kFieldFieldNumber = 3,
-    kSolveMatrixFieldNumber = 4,
+    kFieldFieldNumber = 2,
+    kSolveMatrixFieldNumber = 3,
   };
   // string MethodName = 1;
   void clear_methodname();
@@ -202,25 +201,7 @@ class TResult final :
   std::string* _internal_mutable_methodname();
   public:
 
-  // .PFDESolver.TSolverConfig Config = 2;
-  bool has_config() const;
-  private:
-  bool _internal_has_config() const;
-  public:
-  void clear_config();
-  const ::PFDESolver::TSolverConfig& config() const;
-  PROTOBUF_NODISCARD ::PFDESolver::TSolverConfig* release_config();
-  ::PFDESolver::TSolverConfig* mutable_config();
-  void set_allocated_config(::PFDESolver::TSolverConfig* config);
-  private:
-  const ::PFDESolver::TSolverConfig& _internal_config() const;
-  ::PFDESolver::TSolverConfig* _internal_mutable_config();
-  public:
-  void unsafe_arena_set_allocated_config(
-      ::PFDESolver::TSolverConfig* config);
-  ::PFDESolver::TSolverConfig* unsafe_arena_release_config();
-
-  // .PFDESolver.TMatrix Field = 3;
+  // .PFDESolver.TMatrix Field = 2;
   bool has_field() const;
   private:
   bool _internal_has_field() const;
@@ -238,7 +219,7 @@ class TResult final :
       ::PFDESolver::TMatrix* field);
   ::PFDESolver::TMatrix* unsafe_arena_release_field();
 
-  // optional .PFDESolver.TMatrix SolveMatrix = 4;
+  // optional .PFDESolver.TMatrix SolveMatrix = 3;
   bool has_solvematrix() const;
   private:
   bool _internal_has_solvematrix() const;
@@ -267,7 +248,6 @@ class TResult final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr methodname_;
-    ::PFDESolver::TSolverConfig* config_;
     ::PFDESolver::TMatrix* field_;
     ::PFDESolver::TMatrix* solvematrix_;
   };
@@ -553,92 +533,7 @@ inline void TResult::set_allocated_methodname(std::string* methodname) {
   // @@protoc_insertion_point(field_set_allocated:PFDESolver.TResult.MethodName)
 }
 
-// .PFDESolver.TSolverConfig Config = 2;
-inline bool TResult::_internal_has_config() const {
-  return this != internal_default_instance() && _impl_.config_ != nullptr;
-}
-inline bool TResult::has_config() const {
-  return _internal_has_config();
-}
-inline const ::PFDESolver::TSolverConfig& TResult::_internal_config() const {
-  const ::PFDESolver::TSolverConfig* p = _impl_.config_;
-  return p != nullptr ? *p : reinterpret_cast<const ::PFDESolver::TSolverConfig&>(
-      ::PFDESolver::_TSolverConfig_default_instance_);
-}
-inline const ::PFDESolver::TSolverConfig& TResult::config() const {
-  // @@protoc_insertion_point(field_get:PFDESolver.TResult.Config)
-  return _internal_config();
-}
-inline void TResult::unsafe_arena_set_allocated_config(
-    ::PFDESolver::TSolverConfig* config) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.config_);
-  }
-  _impl_.config_ = config;
-  if (config) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:PFDESolver.TResult.Config)
-}
-inline ::PFDESolver::TSolverConfig* TResult::release_config() {
-  
-  ::PFDESolver::TSolverConfig* temp = _impl_.config_;
-  _impl_.config_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::PFDESolver::TSolverConfig* TResult::unsafe_arena_release_config() {
-  // @@protoc_insertion_point(field_release:PFDESolver.TResult.Config)
-  
-  ::PFDESolver::TSolverConfig* temp = _impl_.config_;
-  _impl_.config_ = nullptr;
-  return temp;
-}
-inline ::PFDESolver::TSolverConfig* TResult::_internal_mutable_config() {
-  
-  if (_impl_.config_ == nullptr) {
-    auto* p = CreateMaybeMessage<::PFDESolver::TSolverConfig>(GetArenaForAllocation());
-    _impl_.config_ = p;
-  }
-  return _impl_.config_;
-}
-inline ::PFDESolver::TSolverConfig* TResult::mutable_config() {
-  ::PFDESolver::TSolverConfig* _msg = _internal_mutable_config();
-  // @@protoc_insertion_point(field_mutable:PFDESolver.TResult.Config)
-  return _msg;
-}
-inline void TResult::set_allocated_config(::PFDESolver::TSolverConfig* config) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.config_);
-  }
-  if (config) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(config));
-    if (message_arena != submessage_arena) {
-      config = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, config, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.config_ = config;
-  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TResult.Config)
-}
-
-// .PFDESolver.TMatrix Field = 3;
+// .PFDESolver.TMatrix Field = 2;
 inline bool TResult::_internal_has_field() const {
   return this != internal_default_instance() && _impl_.field_ != nullptr;
 }
@@ -723,7 +618,7 @@ inline void TResult::set_allocated_field(::PFDESolver::TMatrix* field) {
   // @@protoc_insertion_point(field_set_allocated:PFDESolver.TResult.Field)
 }
 
-// optional .PFDESolver.TMatrix SolveMatrix = 4;
+// optional .PFDESolver.TMatrix SolveMatrix = 3;
 inline bool TResult::_internal_has_solvematrix() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.solvematrix_ != nullptr);
