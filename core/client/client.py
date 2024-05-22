@@ -1,4 +1,5 @@
 import pathlib
+import argparse
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -21,9 +22,19 @@ async def homeRedirect():
     return RedirectResponse(url="/home")
 
 
+def parse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", 
+                        default="localhost", 
+                        help="Host for uvicorn")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("client:app", host="localhost", port=8002, reload=True,
+    args = parse()
+
+    uvicorn.run("client:app", host=args.host, port=8002, reload=True,
                 reload_dirs=[CLIENT_PROGRAM_PATH],
                 reload_includes=["*.css", "*.js", "*.html"])

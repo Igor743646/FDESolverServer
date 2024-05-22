@@ -1,9 +1,5 @@
-import sys
+import sys 
 import pathlib
-
-PROTOBUFS_DIR = str(pathlib.Path(__file__) / "../../../protos/py/")
-print(PROTOBUFS_DIR)
-sys.path.append(PROTOBUFS_DIR)
 
 import json
 import grpc
@@ -12,10 +8,10 @@ from urllib.parse import unquote
 from fastapi import APIRouter, Form, Request
 from fastapi.templating import Jinja2Templates
 
+from libs import result_drawer as ResultDrawer
+from libs.logger import log
 import config_pb2
 from server_pb2_grpc import TFDESolverServerStub
-import libs.result_drawer as ResultDrawer
-from libs.logger import log
 
 MODULE_PATH = pathlib.Path(__file__).parent.resolve()
 DEPENDENCIES_FILES_PATH = MODULE_PATH / "../static"

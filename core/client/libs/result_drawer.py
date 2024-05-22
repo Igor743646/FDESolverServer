@@ -1,3 +1,9 @@
+import sys 
+import pathlib
+
+PROTOBUFS_DIR = str(pathlib.Path(__file__) / "../generated/")
+sys.path.append(PROTOBUFS_DIR)
+
 import base64
 import io
 import matplotlib
@@ -8,7 +14,7 @@ from matplotlib import animation
 import argparse
 from argparse import ArgumentParser
 import numpy as np
-import result_pb2
+from .generated import result_pb2
 
 matplotlib.rcParams["savefig.format"] = "jpg"
 matplotlib.rcParams["savefig.dpi"] = 'figure'

@@ -63,6 +63,6 @@ add_custom_target(py_proto_lib ALL SOURCES ${PY_PROTO_SRCS_PB} ${PY_PROTO_SRCS_G
 
 # Copy python files
 add_custom_command(TARGET py_proto_lib POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${CMAKE_CURRENT_BINARY_DIR}/py/"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../client/libs/generated/"
     COMMENT "Copy python protos"
 )
