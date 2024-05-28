@@ -5,6 +5,7 @@
 #include <numeric>
 #include <cmath>
 #include <functional>
+#include <optional>
 
 #include <TLexer.h>
 #include <TParser.h>

@@ -192,7 +192,7 @@ namespace NEquationSolver {
 
         f64 left = diffusionCMax * PowTCGamma / PowSCAlpha;
         f64 right = Config.Gamma / Config.Alpha;
-        INFO_LOG << std::format("Left: {} ({}) Right: {}", left, diffusionCMaxId - DiffusionCoefficient.begin(), right) << Endl;
+        INFO_LOG << "Left: " << left << " (" << (diffusionCMaxId - DiffusionCoefficient.begin()) << " Right: " << right << Endl;
         if (left > right) {
             WARNING_LOG << "May be problem with condition" << Endl
                         << "\t\tD * pow(tau, gamma) / pow(h, alpha): " << left << Endl

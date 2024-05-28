@@ -28,7 +28,7 @@ namespace NEquationSolver {
             const usize k = Config.TimeCount;
             const usize count = Config.StochasticIterationCount;
 
-            DEBUG_LOG << std::format("n: {} k: {} count: {}", n, k, count) << Endl;
+            DEBUG_LOG << "n: " << n <<  " k: " <<  k <<  " count: " << count  << Endl;
 
             NLinalg::TMatrix result(k + 1, n + 1, 0.0);
             NLinalg::TMatrix probabilities(n - 1, 2 * n + 2 + k, 0.0);

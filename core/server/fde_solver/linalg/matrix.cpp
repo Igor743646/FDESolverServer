@@ -1,7 +1,12 @@
 #include "matrix.hpp"
 #include <cassert>
 #include <optional>
-#include <intrin.h>
+#ifdef __linux__
+    #define data_prefetch(pointer) __builtin_prefetch((pointer), 0, 1)  
+#else 
+    #include <intrin.h>
+    #define data_prefetch(pointer) _mm_prefetch((pointer), _MM_HINT_T1)    
+#endif
 #include <matrix.pb.h>
 
 namespace NLinalg {
@@ -207,7 +212,7 @@ namespace NLinalg {
 
         // 1. Вычисляем P^(T)b = bP = y (1 x n)
         std::vector<f64> y(P.size());
-        _mm_prefetch((const char*)y.data(), _MM_HINT_T1);
+        data_prefetch((const char*)y.data());
 
         for (usize i = 0; i < P.size(); i++) {
             y[i] = b[P[i]];
@@ -215,7 +220,7 @@ namespace NLinalg {
 
         // 2. Вычисляем L * z = y;
         for (usize i = 0; i < P.size(); i++) {
-            _mm_prefetch((const char*)LU[i], _MM_HINT_T1);
+            data_prefetch((const char*)LU[i]);
             for (usize j = 0; j < i; j++) {
                 y[i] -= LU[i][j] * y[j];
             }
@@ -223,7 +228,7 @@ namespace NLinalg {
 
         // 3. Вычисляем U * x = z
         for (usize i = P.size(); i-- > 0;) {
-            _mm_prefetch((const char*)LU[i], _MM_HINT_T1);
+            data_prefetch((const char*)LU[i]);
             for (usize j = i + 1; j < P.size(); j++) {
                 y[i] -= LU[i][j] * y[j];
             }

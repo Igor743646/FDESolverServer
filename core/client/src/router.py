@@ -1,4 +1,4 @@
-import sys 
+import sys, os
 import pathlib
 
 import json
@@ -22,6 +22,13 @@ router = APIRouter(
     prefix="/home",
     tags=["Home"]
 )
+
+FDESolverServerHost = os.getenv("SERVER_HOST", "localhost")
+print(f"FDESolverServerHost : {FDESolverServerHost}")
+FDESolverServerChannel = grpc.insecure_channel(
+    f"{FDESolverServerHost}:50051"
+)
+FDESolverServerClient = TFDESolverServerStub(FDESolverServerChannel)
 
 templates = Jinja2Templates(directory=TEMPLATES_FILES_PATH)
 
@@ -72,24 +79,23 @@ async def runTask(request: Request, config: str = Form(...)):
 
     proto_request = json_format.ParseDict(json_object, config_pb2.TClientConfig(), ignore_unknown_fields=True)
     log.debug(proto_request)
-    with grpc.insecure_channel('localhost:50051') as channel:
-        stub = TFDESolverServerStub(channel)
-        try:
-            response, call = stub.RunTask.with_call(proto_request)
-            dcall = dict(call.trailing_metadata())
-            if "work-time" in dcall:
-                result["work_time"] = dcall["work-time"]
-            rdResult = ResultDrawer.Results(response)
-            result["images"] = []
-            ResultDrawer.draw_surface(rdResult.config, rdResult)
-            result["images"].append(ResultDrawer.ReturnBase64Image())
-        except grpc.RpcError as exception:
-            log.error(f"Rpc server not working: {exception}")
-            result["error"] = str(exception)
-            return templates.TemplateResponse("index.html", result)
-        except BaseException as undefined_error:
-            log.error(f"Unknown error: {undefined_error}")
-            result["error"] = str(undefined_error)
-            return templates.TemplateResponse("index.html", result)
+    
+    try:
+        response, call = FDESolverServerClient.RunTask.with_call(proto_request)
+        dcall = dict(call.trailing_metadata())
+        if "work-time" in dcall:
+            result["work_time"] = dcall["work-time"]
+        rdResult = ResultDrawer.Results(response)
+        result["images"] = []
+        ResultDrawer.draw_surface(rdResult.config, rdResult)
+        result["images"].append(ResultDrawer.ReturnBase64Image())
+    except grpc.RpcError as exception:
+        log.error(f"Rpc server not working: {exception}")
+        result["error"] = str(exception)
+        return templates.TemplateResponse("index.html", result)
+    except BaseException as undefined_error:
+        log.error(f"Unknown error: {undefined_error}")
+        result["error"] = str(undefined_error)
+        return templates.TemplateResponse("index.html", result)
 
     return templates.TemplateResponse("index.html", result)

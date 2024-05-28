@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
 project(LinalgLib LANGUAGES CXX)
 
 add_library(linalg STATIC 
@@ -10,7 +10,7 @@ target_include_directories(linalg PUBLIC "../utils/")
 target_include_directories(linalg PUBLIC ${protobuf_INCLUDE_DIRS})
 target_include_directories(linalg PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(linalg PUBLIC ${absl_INCLUDE_DIRS})
-target_include_directories(linalg PUBLIC "${CMAKE_SOURCE_DIR}/core/protos/cpp")
+target_include_directories(linalg PUBLIC "../../protos/cpp")
 
 # Tests
 
@@ -26,5 +26,5 @@ target_include_directories(linalg_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(linalg_test PUBLIC ${protobuf_INCLUDE_DIRS})
 target_include_directories(linalg_test PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(linalg_test PUBLIC ${absl_INCLUDE_DIRS})
-target_include_directories(linalg_test PUBLIC "${CMAKE_SOURCE_DIR}/core/protos/cpp")
+target_include_directories(linalg_test PUBLIC "../../protos/cpp")
 target_include_directories(linalg_test PUBLIC ${catch2_INCLUDE_DIRS_RELEASE})

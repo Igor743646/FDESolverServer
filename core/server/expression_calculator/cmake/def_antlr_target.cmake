@@ -1,4 +1,4 @@
-
+find_package(Java)
 macro(ANTLR_TARGET Name InputFile)
     set(ANTLR_OPTIONS LEXER PARSER LISTENER VISITOR)
     set(ANTLR_ONE_VALUE_ARGS PACKAGE OUTPUT_DIRECTORY DEPENDS_ANTLR)
@@ -79,7 +79,7 @@ macro(ANTLR_TARGET Name InputFile)
 
     add_custom_command(
         OUTPUT ${ANTLR_${Name}_OUTPUTS}
-        COMMAND antlr4
+        COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${CMAKE_CURRENT_SOURCE_DIR}/../bin/antlr-4.13.1-complete.jar"
                 ${InputFile}
                 -o ${ANTLR_${Name}_OUTPUT_DIR}
                 -no-listener

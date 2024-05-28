@@ -3,9 +3,29 @@ version: '3'
 services:
   web-server:
     container_name: WebServer
+    image: fdewebserver:0.1.0
     build: core/client/
-    command: python ./client.py --host 0.0.0.0
+    command: python3 ./client.py --host 0.0.0.0
     ports: 
       - 13000:8002
     environment:
-      - PYTHONPATH=libs/generated
+      PYTHONPATH: libs/generated
+      SERVER_HOST: FDESolverServer
+    depends_on:
+      - fdes-server
+    networks:
+      - client-server
+
+  fdes-server:
+    container_name: FDESolverServer
+    image: fdeserver:0.1.0
+    build: core/server/
+    command: ./build/server
+    expose: 
+      - 50051
+    networks:
+      - client-server
+
+networks:
+  client-server:
+    driver: bridge

@@ -21,7 +21,7 @@ namespace NEquationSolver {
     };
 
     struct TMFDESRule {
-        static constexpr std::string Name() { return "Grunwald-Letnikov approximation"; }; 
+        static std::string Name() { return "Grunwald-Letnikov approximation"; }; 
         static f64 FillMatrix(IEquationSolver const *const, usize, usize);
         static f64 FillDestination(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
         static f64 FillProbabilities(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
@@ -30,7 +30,7 @@ namespace NEquationSolver {
     };
 
     struct TRLFDESRule {
-        static constexpr std::string Name() { return "Riemann-Liouville approximation"; };
+        static std::string Name() { return "Riemann-Liouville approximation"; };
         static f64 FillMatrix(IEquationSolver const *const, usize, usize);
         static f64 FillDestination(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
         static f64 FillProbabilities(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);

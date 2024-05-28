@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.26.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
 project(FDESolverWebServiceProtoFiles 
         LANGUAGES C CXX)
 
-message(STATUS "[***] Start generate ${PROJECT_NAME}")
+message(STATUS "[****] Start generate ${PROJECT_NAME}")
 
 set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
+set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/Release/generators/" "${CMAKE_PREFIX_PATH}")
 
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
@@ -63,6 +64,6 @@ add_custom_target(py_proto_lib ALL SOURCES ${PY_PROTO_SRCS_PB} ${PY_PROTO_SRCS_G
 
 # Copy python files
 add_custom_command(TARGET py_proto_lib POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../client/libs/generated/"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../../client/libs/generated/"
     COMMENT "Copy python protos"
 )

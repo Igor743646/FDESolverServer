@@ -1,10 +1,13 @@
 #pragma once
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <chrono>
 #include <thread>
+#include <iomanip>
+#include <cstring>
 
-#ifdef __GNU__ 
+#ifdef __linux__ 
     #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #else
     #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
@@ -32,9 +35,10 @@ namespace NLogger {
                 started = true;
             }
 
-            if (LogLevel <= GetUserLogLevel())
-                out << std::format("[ {0:>5s} ]{1:>30s}({2}) Thread id: {3} Message: ", 
-                                    name, file, line, std::this_thread::get_id());
+            if (LogLevel <= GetUserLogLevel()) {
+                out << "[ " << std::setw(5) << name << " ]" << file << "(" << line << ")";
+                out << " Thread id: " << std::this_thread::get_id() << " Message: ";
+            }
         }
 
         TLogHelper& operator=(const TLogHelper&) = delete;

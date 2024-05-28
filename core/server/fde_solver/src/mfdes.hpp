@@ -4,6 +4,7 @@
 #include "rules_impl.hpp"
 #include <matrix.hpp>
 #include <concepts>
+#include <cstring>
 
 namespace NEquationSolver {
 

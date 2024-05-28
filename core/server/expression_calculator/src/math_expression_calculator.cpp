@@ -123,10 +123,7 @@ namespace ANTLRMathExpParser {
         if (Tree) {
             std::any result = Tree->accept(dynamic_cast<antlr4::tree::ParseTreeVisitor*>(&Visitor));
             return std::any_cast<double>(result);
-        } 
-        
-        std::cout << Tree->toStringTree() << std::endl;
-        std::cout << Tree->toString() << std::endl;
+        }
 
         throw "Can not calculate value because parse tree error (Tree = nullptr)";
     }

@@ -142,7 +142,7 @@ void Init() {
 }
 
 void RunServer() {
-    std::string server_address("localhost:50051");
+    std::string server_address("[::]:50051");
     TFDESolverServerImpl service;
 
     ServerBuilder builder;
@@ -154,7 +154,7 @@ void RunServer() {
         gpr_log(GPR_DEBUG, "Server listening on address: %s", server_address.c_str());
         server->Wait();
     } else {
-        gpr_log(GPR_DEBUG, "Can not run server on address: %s", server_address);
+        gpr_log(GPR_DEBUG, "Can not run server on address: %s", server_address.c_str());
     }
 }
 

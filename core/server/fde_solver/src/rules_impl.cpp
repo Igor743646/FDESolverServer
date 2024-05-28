@@ -1,4 +1,5 @@
 #include "rules_impl.hpp"
+#include <utils.hpp>
 
 namespace NEquationSolver {
     f64 TMFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
