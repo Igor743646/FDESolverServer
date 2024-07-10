@@ -4,6 +4,7 @@
         "conan": {}
     },
     "include": [
-        "C:\\Users\\Igor\\Desktop\\FDESolverServer\\core\\server\\build\\generators\\CMakePresets.json"
+        "C:\\Users\\Igor\\Desktop\\FDESolverServer\\core\\server\\build\\generators\\CMakePresets.json",
+        "build\\generators\\CMakePresets.json"
     ]
 }

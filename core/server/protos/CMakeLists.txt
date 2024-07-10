@@ -9,6 +9,7 @@ set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/Release/generators/" "${CMAKE_PREFIX_
 
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
+find_package(absl REQUIRED)
 
 add_custom_target(PB_Files SOURCES "config.proto" "matrix.proto" "result.proto")
 add_custom_target(GRPC_Files SOURCES "server.proto")
@@ -55,7 +56,8 @@ protobuf_generate(
 
 # Create library
 add_library(proto_lib STATIC OBJECT ${PROTO_SRCS_PB} ${PROTO_SRCS_GRPC} ${PROTO_SRCS_GRPC_GRPC})
-target_link_libraries(proto_lib)
+target_link_libraries(proto_lib PUBLIC gRPC::grpc++ protobuf::libprotoc protobuf::protobuf)
+target_include_directories(proto_lib PUBLIC "cpp/")
 target_include_directories(proto_lib PUBLIC ${protobuf_INCLUDE_DIRS})
 target_include_directories(proto_lib PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(proto_lib PUBLIC ${absl_INCLUDE_DIRS})

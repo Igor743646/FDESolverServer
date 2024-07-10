@@ -1,6 +1,8 @@
 #pragma once
 
-#include <utils.hpp>
+#include <math_utils.hpp>
+#include <logger.hpp>
+#include <stacktracer.hpp>
 #include <fstream>
 
 namespace PFDESolver {
@@ -18,8 +20,8 @@ namespace NLinalg {
         TMatrix(usize, usize, const std::vector<f64>&);
         TMatrix(const TMatrix&);
         TMatrix(TMatrix&&);
-        TMatrix(const std::vector<f64>&);
-        TMatrix(usize);
+        explicit TMatrix(const std::vector<f64>&);
+        explicit TMatrix(usize);
         TMatrix& operator=(const TMatrix&);
         TMatrix& operator=(TMatrix&&);
         ~TMatrix();
@@ -38,9 +40,9 @@ namespace NLinalg {
         /// @return Возвращает x - решение системы уравнений вида Ax = b 
         std::optional<std::vector<f64>> Solve(const std::vector<f64>&);
         static std::optional<std::vector<f64>> Solve(const TPluResult&, const std::vector<f64>&);
-
-        const f64* operator[](usize) const;
-        f64* operator[](usize);
+        
+        std::span<f64> operator[](usize) const;
+        std::span<f64> operator[](usize);
         friend TMatrix operator*(const TMatrix&, const TMatrix&);
         friend std::vector<f64> operator*(const std::vector<f64>&, const TMatrix&);
 

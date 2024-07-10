@@ -1,21 +1,20 @@
 import sys 
 import pathlib
+import base64
+import io
+import matplotlib
+import argparse
+from argparse import ArgumentParser
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import animation
 
 PROTOBUFS_DIR = str(pathlib.Path(__file__) / "../generated/")
 sys.path.append(PROTOBUFS_DIR)
 
-import base64
-import io
-import matplotlib
-matplotlib.use("Agg")
-
-from matplotlib import pyplot as plt
-from matplotlib import animation
-import argparse
-from argparse import ArgumentParser
-import numpy as np
 from .generated import result_pb2
 
+matplotlib.use("Agg")
 matplotlib.rcParams["savefig.format"] = "jpg"
 matplotlib.rcParams["savefig.dpi"] = 'figure'
 matplotlib.rcParams["savefig.bbox"] = 'tight'
@@ -142,7 +141,7 @@ def draw_error(config, results : Results):
         ax1[i].zaxis.set_rotate_label(False)
         ax2[i].boxplot(error.T, showmeans=True, showfliers=False)
         ax2[i].set_xticks(ax2[i].get_xticks()[::max(len(Y)//11, 2)], Y[::max(len(Y)//11, 2)])
-        ax2[i].set_title(f"Error increasing")
+        ax2[i].set_title("Error increasing")
 
 
 def draw_time_slice(config, time_slice : int, results : Results):
@@ -220,12 +219,12 @@ def draw_slices_gif(config, results : Results):
 
 def draw(results : Results, arguments : argparse.Namespace):
     outputs = {
-        "SM" : arguments.out + f'Solve Matrix A',
-        "HM" : arguments.out + f'Solution Heat Map',
-        "SS" : arguments.out + f'Solution Surface',
-        "ER" : arguments.out + f'Error',
-        "TS" : arguments.out + f'Time Slice',
-        "DS" : arguments.out + f'Dynamic time slices',
+        "SM" : arguments.out + 'Solve Matrix A',
+        "HM" : arguments.out + 'Solution Heat Map',
+        "SS" : arguments.out + 'Solution Surface',
+        "ER" : arguments.out + 'Error',
+        "TS" : arguments.out + 'Time Slice',
+        "DS" : arguments.out + 'Dynamic time slices',
     }
 
     draw_flat_field(results.config, results.results)

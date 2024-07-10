@@ -1,4 +1,4 @@
-import sys, os
+import os
 import pathlib
 
 import json
@@ -50,7 +50,8 @@ DEFAULT_CONFIG = '''{
     "BordersAvailable": false,          
     "StochasticIterationCount": "1000",
     "RealSolutionName": "$u(x, t) = ??",                        
-    "RealSolution" : "0.0"
+    "RealSolution" : "0.0",
+    "SolveMethods": "MGL;MRL;SGL;SRL"
 }'''
 
 @router.get("")

@@ -3,10 +3,11 @@
 namespace NLogger { 
 
     unsigned char ChangeLogLevel(unsigned char logLevel) {
-        static unsigned char UserLogLevel = 1;
-        if (logLevel != 0)
-            UserLogLevel = logLevel;
-        return UserLogLevel;
+        static unsigned char stUserLogLevel = 1;
+        if (logLevel != 0) {
+            stUserLogLevel = logLevel;
+        }
+        return stUserLogLevel;
     }
 
     int GetUserLogLevel() {

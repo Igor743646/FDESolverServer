@@ -14,7 +14,7 @@
 #endif
 
 namespace {
-    auto LogFileName = "log.log";
+    const auto LogFileName = "log.log";
 }
 
 namespace NLogger {
@@ -36,8 +36,8 @@ namespace NLogger {
             }
 
             if (LogLevel <= GetUserLogLevel()) {
-                out << "[ " << std::setw(5) << name << " ]" << file << "(" << line << ")";
-                out << " Thread id: " << std::this_thread::get_id() << " Message: ";
+                Out << "[ " << std::setw(5) << name << " ]" << file << "(" << line << ")";
+                Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
             }
         }
 
@@ -49,24 +49,25 @@ namespace NLogger {
                 std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::app);
 
                 if (file.is_open()) {
-                    file << out.str();
+                    file << Out.str();
                     file.close();
                 } else {
-                    std::cerr << out.str();
+                    std::cerr << Out.str();
                 }
             }
         }
 
         template<class T>
         friend TLogHelper&& operator<<(TLogHelper&& out, const T& mes) {
-            if (LogLevel <= GetUserLogLevel())
-                out.out << mes;
+            if (LogLevel <= GetUserLogLevel()) {
+                out.Out << mes;
+            }
             return std::move(out);
         }
 
     private:
 
-        std::ostringstream out;
+        std::ostringstream Out;
     };
 }
 

@@ -224,7 +224,7 @@ namespace NEquationSolver {
             return DoSolve(saveMeta);
         } catch(...) {
             ERROR_LOG << "Something wrong with solving" << Endl;
-            throw "Solve error";
+            std::rethrow_exception(std::current_exception());
         }
     }
 }

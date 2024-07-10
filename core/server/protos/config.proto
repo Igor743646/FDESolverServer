@@ -27,6 +27,8 @@ message TClientConfig {
     optional uint64 StochasticIterationCount = 22;      // количество иттераций для стохастического метода
     optional string RealSolutionName = 23;              // названия истиного решения
     optional string RealSolution = 24;                  // функция u(x, t);
+
+    optional string SolveMethods = 25;                  // методы для решения 
 }
 
 

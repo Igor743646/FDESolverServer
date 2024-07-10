@@ -33,6 +33,7 @@ PROTOBUF_CONSTEXPR TClientConfig::TClientConfig(
   , /*decltype(_impl_.rightboundstate_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.realsolutionname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.realsolution_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.solvemethods_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.spacecount_)*/uint64_t{0u}
   , /*decltype(_impl_.timecount_)*/uint64_t{0u}
   , /*decltype(_impl_.leftbound_)*/0
@@ -121,30 +122,32 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.stochasticiterationcount_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.realsolutionname_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.realsolution_),
-  2,
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.solvemethods_),
   3,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
   4,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
+  5,
   0,
   1,
+  2,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TSolverConfig, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -168,8 +171,8 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TSolverConfig, _impl_.bordersavailable_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 30, -1, sizeof(::PFDESolver::TClientConfig)},
-  { 54, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
+  { 0, 31, -1, sizeof(::PFDESolver::TClientConfig)},
+  { 56, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -178,7 +181,7 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014config.proto\022\nPFDESolver\"\215\005\n\rTClientCo"
+  "\n\014config.proto\022\nPFDESolver\"\271\005\n\rTClientCo"
   "nfig\022\027\n\nSpaceCount\030\001 \001(\004H\000\210\001\001\022\026\n\tTimeCou"
   "nt\030\002 \001(\004H\001\210\001\001\022\021\n\tLeftBound\030\003 \001(\001\022\022\n\nRigh"
   "tBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005Alpha\030\006"
@@ -192,21 +195,22 @@ const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "\n\017RightBoundState\030\024 \001(\t\022\030\n\020BordersAvaila"
   "ble\030\025 \001(\010\022%\n\030StochasticIterationCount\030\026 "
   "\001(\004H\002\210\001\001\022\035\n\020RealSolutionName\030\027 \001(\tH\003\210\001\001\022"
-  "\031\n\014RealSolution\030\030 \001(\tH\004\210\001\001B\r\n\013_SpaceCoun"
-  "tB\014\n\n_TimeCountB\033\n\031_StochasticIterationC"
-  "ountB\023\n\021_RealSolutionNameB\017\n\r_RealSoluti"
-  "on\"\245\002\n\rTSolverConfig\022\022\n\nSpaceCount\030\001 \001(\004"
-  "\022\021\n\tTimeCount\030\002 \001(\004\022\021\n\tLeftBound\030\003 \001(\001\022\022"
-  "\n\nRightBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005A"
-  "lpha\030\006 \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceStep\030\010"
-  " \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022\021\n\t"
-  "AlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n\nAlp"
-  "haRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020Bord"
-  "ersAvailable\030\017 \001(\010b\006proto3"
+  "\031\n\014RealSolution\030\030 \001(\tH\004\210\001\001\022\031\n\014SolveMetho"
+  "ds\030\031 \001(\tH\005\210\001\001B\r\n\013_SpaceCountB\014\n\n_TimeCou"
+  "ntB\033\n\031_StochasticIterationCountB\023\n\021_Real"
+  "SolutionNameB\017\n\r_RealSolutionB\017\n\r_SolveM"
+  "ethods\"\245\002\n\rTSolverConfig\022\022\n\nSpaceCount\030\001"
+  " \001(\004\022\021\n\tTimeCount\030\002 \001(\004\022\021\n\tLeftBound\030\003 \001"
+  "(\001\022\022\n\nRightBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022"
+  "\r\n\005Alpha\030\006 \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceSt"
+  "ep\030\010 \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001"
+  "\022\021\n\tAlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n"
+  "\nAlphaRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020"
+  "BordersAvailable\030\017 \001(\010b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_config_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
-    false, false, 986, descriptor_table_protodef_config_2eproto,
+    false, false, 1030, descriptor_table_protodef_config_2eproto,
     "config.proto",
     &descriptor_table_config_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_config_2eproto::offsets,
@@ -227,19 +231,22 @@ class TClientConfig::_Internal {
  public:
   using HasBits = decltype(std::declval<TClientConfig>()._impl_._has_bits_);
   static void set_has_spacecount(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
-  }
-  static void set_has_timecount(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
   }
-  static void set_has_stochasticiterationcount(HasBits* has_bits) {
+  static void set_has_timecount(HasBits* has_bits) {
     (*has_bits)[0] |= 16u;
+  }
+  static void set_has_stochasticiterationcount(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
   }
   static void set_has_realsolutionname(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
   static void set_has_realsolution(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
+  }
+  static void set_has_solvemethods(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
   }
 };
 
@@ -263,6 +270,7 @@ TClientConfig::TClientConfig(const TClientConfig& from)
     , decltype(_impl_.rightboundstate_){}
     , decltype(_impl_.realsolutionname_){}
     , decltype(_impl_.realsolution_){}
+    , decltype(_impl_.solvemethods_){}
     , decltype(_impl_.spacecount_){}
     , decltype(_impl_.timecount_){}
     , decltype(_impl_.leftbound_){}
@@ -345,6 +353,14 @@ TClientConfig::TClientConfig(const TClientConfig& from)
     _this->_impl_.realsolution_.Set(from._internal_realsolution(), 
       _this->GetArenaForAllocation());
   }
+  _impl_.solvemethods_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.solvemethods_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (from._internal_has_solvemethods()) {
+    _this->_impl_.solvemethods_.Set(from._internal_solvemethods(), 
+      _this->GetArenaForAllocation());
+  }
   ::memcpy(&_impl_.spacecount_, &from._impl_.spacecount_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.bordersavailable_) -
     reinterpret_cast<char*>(&_impl_.spacecount_)) + sizeof(_impl_.bordersavailable_));
@@ -366,6 +382,7 @@ inline void TClientConfig::SharedCtor(
     , decltype(_impl_.rightboundstate_){}
     , decltype(_impl_.realsolutionname_){}
     , decltype(_impl_.realsolution_){}
+    , decltype(_impl_.solvemethods_){}
     , decltype(_impl_.spacecount_){uint64_t{0u}}
     , decltype(_impl_.timecount_){uint64_t{0u}}
     , decltype(_impl_.leftbound_){0}
@@ -415,6 +432,10 @@ inline void TClientConfig::SharedCtor(
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.realsolution_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.solvemethods_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.solvemethods_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 TClientConfig::~TClientConfig() {
@@ -436,6 +457,7 @@ inline void TClientConfig::SharedDtor() {
   _impl_.rightboundstate_.Destroy();
   _impl_.realsolutionname_.Destroy();
   _impl_.realsolution_.Destroy();
+  _impl_.solvemethods_.Destroy();
 }
 
 void TClientConfig::SetCachedSize(int size) const {
@@ -455,15 +477,18 @@ void TClientConfig::Clear() {
   _impl_.leftboundstate_.ClearToEmpty();
   _impl_.rightboundstate_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       _impl_.realsolutionname_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
       _impl_.realsolution_.ClearNonDefaultToEmpty();
     }
+    if (cached_has_bits & 0x00000004u) {
+      _impl_.solvemethods_.ClearNonDefaultToEmpty();
+    }
   }
-  if (cached_has_bits & 0x0000000cu) {
+  if (cached_has_bits & 0x00000018u) {
     ::memset(&_impl_.spacecount_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&_impl_.timecount_) -
         reinterpret_cast<char*>(&_impl_.spacecount_)) + sizeof(_impl_.timecount_));
@@ -692,6 +717,16 @@ const char* TClientConfig::_InternalParse(const char* ptr, ::_pbi::ParseContext*
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.RealSolution"));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string SolveMethods = 25;
+      case 25:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 202)) {
+          auto str = _internal_mutable_solvemethods();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.SolveMethods"));
         } else
           goto handle_unusual;
         continue;
@@ -949,6 +984,16 @@ uint8_t* TClientConfig::_InternalSerialize(
         24, this->_internal_realsolution(), target);
   }
 
+  // optional string SolveMethods = 25;
+  if (_internal_has_solvemethods()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_solvemethods().data(), static_cast<int>(this->_internal_solvemethods().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.SolveMethods");
+    target = stream->WriteStringMaybeAliased(
+        25, this->_internal_solvemethods(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1008,7 +1053,7 @@ size_t TClientConfig::ByteSizeLong() const {
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 0x0000001fu) {
     // optional string RealSolutionName = 23;
     if (cached_has_bits & 0x00000001u) {
       total_size += 2 +
@@ -1023,13 +1068,20 @@ size_t TClientConfig::ByteSizeLong() const {
           this->_internal_realsolution());
     }
 
-    // optional uint64 SpaceCount = 1;
+    // optional string SolveMethods = 25;
     if (cached_has_bits & 0x00000004u) {
+      total_size += 2 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+          this->_internal_solvemethods());
+    }
+
+    // optional uint64 SpaceCount = 1;
+    if (cached_has_bits & 0x00000008u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_spacecount());
     }
 
     // optional uint64 TimeCount = 2;
-    if (cached_has_bits & 0x00000008u) {
+    if (cached_has_bits & 0x00000010u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_timecount());
     }
 
@@ -1143,7 +1195,7 @@ size_t TClientConfig::ByteSizeLong() const {
   }
 
   // optional uint64 StochasticIterationCount = 22;
-  if (cached_has_bits & 0x00000010u) {
+  if (cached_has_bits & 0x00000020u) {
     total_size += 2 +
       ::_pbi::WireFormatLite::UInt64Size(
         this->_internal_stochasticiterationcount());
@@ -1191,7 +1243,7 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
     _this->_internal_set_rightboundstate(from._internal_rightboundstate());
   }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 0x0000001fu) {
     if (cached_has_bits & 0x00000001u) {
       _this->_internal_set_realsolutionname(from._internal_realsolutionname());
     }
@@ -1199,9 +1251,12 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
       _this->_internal_set_realsolution(from._internal_realsolution());
     }
     if (cached_has_bits & 0x00000004u) {
-      _this->_impl_.spacecount_ = from._impl_.spacecount_;
+      _this->_internal_set_solvemethods(from._internal_solvemethods());
     }
     if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.spacecount_ = from._impl_.spacecount_;
+    }
+    if (cached_has_bits & 0x00000010u) {
       _this->_impl_.timecount_ = from._impl_.timecount_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -1290,7 +1345,7 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   if (raw_betaright != 0) {
     _this->_internal_set_betaright(from._internal_betaright());
   }
-  if (cached_has_bits & 0x00000010u) {
+  if (cached_has_bits & 0x00000020u) {
     _this->_internal_set_stochasticiterationcount(from._internal_stochasticiterationcount());
   }
   if (from._internal_bordersavailable() != 0) {
@@ -1347,6 +1402,10 @@ void TClientConfig::InternalSwap(TClientConfig* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.realsolution_, lhs_arena,
       &other->_impl_.realsolution_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.solvemethods_, lhs_arena,
+      &other->_impl_.solvemethods_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TClientConfig, _impl_.bordersavailable_)

@@ -9,9 +9,7 @@ set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC REQUIRED)
 
-add_subdirectory(logger)
 add_subdirectory(linalg)
-add_subdirectory(utils)
 
 add_library(solvers STATIC
     "src/equation_solver.cpp"
@@ -19,9 +17,9 @@ add_library(solvers STATIC
     "src/sfdes.cpp"
     "src/rules_impl.cpp"
 )
-target_link_libraries(solvers PUBLIC logger linalg proto_lib)
+target_link_libraries(solvers PUBLIC MathUtils AsynchronicLogger LinalgLib proto_lib)
 target_include_directories(solvers PUBLIC 
-    "logger/"
     "linalg/"
-    "utils/"
+    "../utils/logger"
+    "../utils/math"
     ${Protobuf_INCLUDE_DIRS})

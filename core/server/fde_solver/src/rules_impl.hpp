@@ -3,6 +3,9 @@
 #include "equation_solver.hpp"
 
 namespace NEquationSolver {
+
+    constexpr size_t MethodsCount = 4;
+
     template<class T>
     concept TMatrixFillRuleConcept = requires (IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize j) {
         requires !std::is_destructible_v<T>;

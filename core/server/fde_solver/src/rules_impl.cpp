@@ -1,5 +1,4 @@
 #include "rules_impl.hpp"
-#include <utils.hpp>
 
 namespace NEquationSolver {
     f64 TMFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
@@ -32,16 +31,16 @@ namespace NEquationSolver {
     f64 TMFDESRule::FillDestination(IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize k) {
         const usize n = solver->GetConfig().SpaceCount;
 
-        f64 d_i = 0.0;
+        f64 di = 0.0;
 
-        d_i -= result[0][i];
-        d_i -= solver->PowTCGamma * solver->SourceFunction[k][i];
+        di -= result[0][i];
+        di -= solver->PowTCGamma * solver->SourceFunction[k][i];
 
         for (usize j = 1; j <= k; j++) {
-            d_i += solver->CoefGGamma(j) * (result[k-j][i] - result[0][i]);
+            di += solver->CoefGGamma(j) * (result[k-j][i] - result[0][i]);
         }
 
-        return d_i;
+        return di;
     }
 
     f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
@@ -69,7 +68,7 @@ namespace NEquationSolver {
             return -solver->CoefGGamma(p - 2 * n + 1);
         } 
 
-        return 1.0 - std::accumulate(probabilities[i - 1], probabilities[i], 0.0);
+        return 1.0 - std::accumulate(probabilities[i - 1].cbegin(), probabilities[i - 1].cend(), 0.0);
     }
 
     /*
@@ -79,14 +78,14 @@ namespace NEquationSolver {
     */
     f64 TRLFDESRule::CoefGMatrix(IEquationSolver const *const solver, usize k) {
         const f64 alpha = solver->GetConfig().Alpha;
-        const f64 C0 = 1.0 / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
+        const f64 c0 = 1.0 / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
         
         if (k == 0) {
-            return C0;
+            return c0;
         } else if (k == 1) {
-            return C0 * (std::pow(3.0, 2.0 - alpha) - 2.0);
+            return c0 * (std::pow(3.0, 2.0 - alpha) - 2.0);
         }
-        return C0 * (std::pow(2.0 * k - 3.0, 2.0 - alpha) - 2.0 * std::pow(2.0 * k - 1.0, 2.0 - alpha) + std::pow(2.0 * k + 1.0, 2.0 - alpha));
+        return c0 * (std::pow(2.0 * k - 3.0, 2.0 - alpha) - 2.0 * std::pow(2.0 * k - 1.0, 2.0 - alpha) + std::pow(2.0 * k + 1.0, 2.0 - alpha));
     }
 
     f64 TRLFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
@@ -134,29 +133,29 @@ namespace NEquationSolver {
     */
     f64 TRLFDESRule::CoefGDestination(IEquationSolver const *const solver, usize k) {
         const f64 gamma = solver->GetConfig().Gamma;
-        const f64 C0 = 1.0 / NFunctions::Gamma(2.0 - gamma);
+        const f64 c0 = 1.0 / NFunctions::Gamma(2.0 - gamma);
         
         if (k == 0) {
-            return C0;
+            return c0;
         } 
         
-        return C0 * (std::pow(k, 1.0 - gamma) - std::pow(k - 1.0, 1.0 - gamma));
+        return c0 * (std::pow(k, 1.0 - gamma) - std::pow(k - 1.0, 1.0 - gamma));
     }
 
     // Math: d_i^k = -\theta_{k}u_i^0 + \sum_{j=1}^{k-1}{(\theta_{k-j+1}-\theta_{k-j})u_i^{j}} - \tau^\gamma f(x_i, t_j)
     f64 TRLFDESRule::FillDestination(IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize k) {
         const usize n = solver->GetConfig().SpaceCount;
 
-        f64 d_i = 0.0;
+        f64 di = 0.0;
 
-        d_i -= CoefGDestination(solver, k) * result[0][i];
+        di -= CoefGDestination(solver, k) * result[0][i];
         for (usize j = 1; j < k; j++) {
-            d_i += (CoefGDestination(solver, k-j+1) - CoefGDestination(solver, k-j)) * result[j][i];
+            di += (CoefGDestination(solver, k-j+1) - CoefGDestination(solver, k-j)) * result[j][i];
         }
 
-        d_i -= solver->PowTCGamma * solver->SourceFunction[k][i];
+        di -= solver->PowTCGamma * solver->SourceFunction[k][i];
         
-        return d_i;
+        return di;
     }
 
     f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
@@ -205,7 +204,7 @@ namespace NEquationSolver {
         }
 
         if (p == 2 * n + k + 1) {
-            return 1.0 - std::accumulate(probabilities[i - 1], probabilities[i], 0.0);
+            return 1.0 - std::accumulate(probabilities[i - 1].cbegin(), probabilities[i - 1].cend(), 0.0);
         }
 
         return 0.0;

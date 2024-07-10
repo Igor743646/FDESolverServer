@@ -8,7 +8,8 @@
 #include <functional>
 #include <unordered_map>
 #include <iostream>
-#include <utils.hpp>
+#include <math_utils.hpp>
+#include <logger.hpp>
 #include <matrix.hpp>
 
 namespace PFDESolver {
@@ -30,19 +31,18 @@ namespace NEquationSolver {
         f64 AlphaLeft, BetaLeft;     // коэффициенты граничных условий третьего рода для x == L
         f64 AlphaRight, BetaRight;   // коэффициенты граничных условий третьего рода для x == R
 
-        std::function<f64(f64)> DiffusionCoefficient;     // коэффициент диффузии при дробной производной по пространству
-        std::function<f64(f64)> DemolitionCoefficient;    // коэффициент сноса при производной первой степени
-        std::function<f64(f64)> ZeroTimeState;            // начальное условие при t = 0, u(x, 0) = psi(x)
-        std::function<f64(f64, f64)> SourceFunction;   // функция источник
-        std::function<f64(f64)> LeftBoundState;           // граничное условие u(L, t) = phiL(t)
-        std::function<f64(f64)> RightBoundState;          // граничное условие u(R, t) = phiR(t)
+        std::function<f64(f64)> DiffusionCoefficient;       // коэффициент диффузии при дробной производной по пространству
+        std::function<f64(f64)> DemolitionCoefficient;      // коэффициент сноса при производной первой степени
+        std::function<f64(f64)> ZeroTimeState;              // начальное условие при t = 0, u(x, 0) = psi(x)
+        std::function<f64(f64, f64)> SourceFunction;        // функция источник
+        std::function<f64(f64)> LeftBoundState;             // граничное условие u(L, t) = phiL(t)
+        std::function<f64(f64)> RightBoundState;            // граничное условие u(R, t) = phiR(t)
 
-        bool BordersAvailable;           // стоит ли учитывать граничные условия
-
+        bool BordersAvailable;                  // стоит ли учитывать граничные условия
         usize StochasticIterationCount = 10;    // количество итераций для стохастического алгоритма
 
-        std::optional<std::string> RealSolutionName;                        // latex формула функции c эталонным решением обрамленная $$
-        std::optional<std::function<f64(f64, f64)>> RealSolution;  // функция с эталонным решением
+        std::optional<std::string> RealSolutionName;                // latex формула функции c эталонным решением обрамленная $$
+        std::optional<std::function<f64(f64, f64)>> RealSolution;   // функция с эталонным решением
 
         friend std::ostream& operator<<(std::ostream&, const TSolverConfig&);
         PFDESolver::TSolverConfig ToProto() const;

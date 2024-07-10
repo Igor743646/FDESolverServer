@@ -21,8 +21,6 @@
     using f64 = _Float64;
 #else
     #define Y_UNLIKELY(exp) (exp)
-    [[noreturn]] __forceinline void __builtin_unreachable() { __assume(false); }
-    [[noreturn]] __forceinline void UNIMPLEMENTED(char const *const s) { throw s; }
     #include <stdfloat>
     using f32 = float;
     using f64 = long double;
@@ -85,16 +83,16 @@ namespace std {
     }
 
     template<class TupType, size_t... I>
-    void _print(std::ostream& out, const TupType& _tup, std::index_sequence<I...>)
+    void Print(std::ostream& out, const TupType& tup, std::index_sequence<I...>)
     {
         out << "Tupple:";
-        (..., (out << "\nIndex " << I << ":\n" << std::get<I>(_tup)));
+        (..., (out << "\nIndex " << I << ":\n" << std::get<I>(tup)));
     }
 
     template<class... Args>
-    std::ostream& operator<<(std::ostream& out, const std::tuple<Args...>& _tup)
+    std::ostream& operator<<(std::ostream& out, const std::tuple<Args...>& tup)
     {
-        _print(out, _tup, std::make_index_sequence<sizeof...(Args)>());
+        _print(out, tup, std::make_index_sequence<sizeof...(Args)>());
 
         return out;
     }

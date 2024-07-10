@@ -36,12 +36,12 @@ namespace NEquationSolver {
             // for (usize i = 0; i <= n; i++) {
             //     result[0][i] = ZeroTimeState[i];
             // }
-            std::memcpy(result[0], ZeroTimeState.data(), (n + 1) * sizeof(f64));
+            std::memcpy(result[0].data(), ZeroTimeState.data(), (n + 1) * sizeof(f64));
 
-            TMatrix A(n + 1);
-            FillMatrix(A);
+            TMatrix matrix(n + 1);
+            FillMatrix(matrix);
 
-            auto plu = A.LUFactorizing();
+            auto plu = matrix.LUFactorizing();
             
             // Math: Au^k=d^k
             std::vector<f64> d(n + 1, 0.0);
@@ -51,14 +51,14 @@ namespace NEquationSolver {
                 
                 // solve system
                 const auto r = TMatrix::Solve(plu, d).value();
-                std::memcpy(result[t], r.data(), r.size() * sizeof(f64));
+                std::memcpy(result[t].data(), r.data(), r.size() * sizeof(f64));
             }
 
             TResult res = {
                 .MethodName = Name(),
                 .Config = Config, 
                 .Field = std::move(result),
-                .SolveMatrix = !saveMeta ? std::nullopt : std::optional(std::move(A)),
+                .SolveMatrix = !saveMeta ? std::nullopt : std::optional(std::move(matrix)),
             };
 
             return res;
@@ -66,23 +66,23 @@ namespace NEquationSolver {
 
     private:
 
-        void FillMatrix(TMatrix& A) {
+        void FillMatrix(TMatrix& matrix) {
             const usize n = Config.SpaceCount;
 
             // create matrix A
             for (usize i = 0; i <= n; i++) {
                 for (usize j = 0; j <= n; j++) {
-                    A[i][j] = TFiller::FillMatrix(this, i, j);
+                    matrix[i][j] = TFiller::FillMatrix(this, i, j);
                 }
             }
 
             //// 1-border conditions
             if (Config.BordersAvailable) {
-                std::fill(A[0], A[1], 0.0);
-                std::fill(A[n], &A[n][n + 1], 0.0);
+                std::fill(matrix[0].begin(), matrix[0].end(), 0.0);
+                std::fill(matrix[n].begin(), matrix[n].end(), 0.0);
 
-                A[0][0] = 1.0;
-                A[n][n] = 1.0;
+                matrix[0][0] = 1.0;
+                matrix[n][n] = 1.0;
             }
         }
 

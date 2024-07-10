@@ -1,35 +1,84 @@
 lexer grammar TLexer;
 
-// Standart operators
-Plus: 		'+';
-Minus: 		'-';
-Mul: 		'*';
-Div: 		'/';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+DIV: '/';
 
-// Boolean operators
-LT: 	'<';
-GT:  	'>';
-LEQ: 	'<=';
-GEQ: 	'>=';
-Equal: 	'==';
-And: 	'&&';
-Or: 	'||';
+LPAREN: '(';
+RPAREN: ')';
 
-// Other
-OpenPar: 	'(';
-ClosePar: 	')';
-Comma: 		',';
-Dot:        '.';
-Qmark:      '?';
-Colon:      ':';
+LT: '<';
+GT: '>';
+LEQ: '<=';
+GEQ: '>=';
+EQ: '==';
+NEQ: '!=';
+NOT: '!';
+AND: '&&';
+OR: '||';
 
-fragment Digit: 	    [0-9];
-Int:    Digit+;
-Float:  Digit* Dot Digit+;
+COMMA: ',';
+DOT: '.';
+QUESTION: '?';
+COLON: ':';
 
-fragment Letter: [a-zA-Z];
-Id: Letter (Letter | '0'..'9')*;
+Identifier
+    : IdentifierNondigit (IdentifierNondigit | Digit)*
+    ;
 
+Constant
+    : IntegerConstant
+    | FloatingConstant
+    ;
 
+DigitSequence
+    : Digit+
+    ;
 
-WS : [ \r\t\n]+ -> skip;
+fragment IdentifierNondigit
+    : [a-zA-Z_]
+    ;
+
+fragment Digit
+    : [0-9]
+    ;
+
+fragment NonzeroDigit
+    : [1-9]
+    ;
+
+fragment IntegerConstant
+    : DecimalConstant
+    ;
+
+fragment DecimalConstant
+    : NonzeroDigit Digit*
+    | Digit
+    ;
+
+fragment FloatingConstant
+    : DecimalFloatingConstant
+    ;
+
+fragment DecimalFloatingConstant
+    : FractionalConstant ExponentPart? 
+    | DigitSequence ExponentPart 
+    ;
+
+fragment FractionalConstant
+    : DigitSequence? '.' DigitSequence
+    | DigitSequence '.'
+    ;
+
+fragment ExponentPart
+    : [eE] Sign? DigitSequence
+    ;
+
+fragment Sign
+    : [+-]
+    ;
+
+WS
+    : [ \r\n\t]+ -> skip
+    ;
