@@ -7,4 +7,5 @@
 
 An application for calculating fractional differential equations
 
-![](https://github.com/Igor743646/FDESolverServer/blob/master/images/FDESolver.jpg)
+![](https://github.com/Igor743646/FDESolverServer/blob/master/images/FDESolver1.png)
+![](https://github.com/Igor743646/FDESolverServer/blob/master/images/FDESolver2.png)

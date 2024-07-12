@@ -17,7 +17,7 @@
         </form>
     </div>
 
-    <div style="padding: 10px;">
+    <div style="padding: 0 10px 0 10px;">
         <ul>
             <li><p><b>LeftBound</b>                   - The variable <b>L</b> is the left boundary of the calculated grid</p></li>
             <li><p><b>RightBound</b>                  - The variable <b>R</b> is the right boundary of the calculated grid</p></li>
@@ -37,8 +37,13 @@
             <li><p><b>StochasticIterationCount</b>    - The number of iterations for the stochastic method if it is enabled</p></li>
             <li><p><b>RealSolutionName</b>            - If the problem has a solution, then you can enter the formula of this function for visualization here in latex format</p></li>
             <li><p><b>RealSolution</b>                - The formula of the real solution itself</p></li>
-    
-            <li><p><b>Methods</b>                - (unimplemented)</p></li>
+            <li>
+                <p><b>Methods</b>                     - Choose solve methods: MGL, MRL, SGL, SRL. Methods are specified without spaces separated by a colon.</p>
+                <p>&nbsp;&nbsp;&nbsp;MGL - Matrix Grünwald-Letnikov method</p>
+                <p>&nbsp;&nbsp;&nbsp;MRL - Matrix Riemann-Liouville method</p>
+                <p>&nbsp;&nbsp;&nbsp;SGL - Stochastic Grünwald-Letnikov method</p>
+                <p>&nbsp;&nbsp;&nbsp;SRL - Stochastic Riemann-Liouville method</p>
+            </li>
         </ul>
     </div>
 </div>
