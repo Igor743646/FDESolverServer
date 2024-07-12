@@ -41,7 +41,7 @@ namespace NLinalg {
         std::optional<std::vector<f64>> Solve(const std::vector<f64>&);
         static std::optional<std::vector<f64>> Solve(const TPluResult&, const std::vector<f64>&);
         
-        std::span<f64> operator[](usize) const;
+        const std::span<f64> operator[](usize) const;
         std::span<f64> operator[](usize);
         friend TMatrix operator*(const TMatrix&, const TMatrix&);
         friend std::vector<f64> operator*(const std::vector<f64>&, const TMatrix&);

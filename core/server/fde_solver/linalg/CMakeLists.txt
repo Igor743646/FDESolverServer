@@ -16,7 +16,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC "../../protos/cpp")
 
 # Tests
 
-find_package(Catch2 3 REQUIRED CONFIG)
+find_package(Catch2 REQUIRED)
 
 add_executable(linalg_test
     "tests/linalg_test.cpp"
@@ -31,4 +31,4 @@ target_include_directories(linalg_test PUBLIC ${protobuf_INCLUDE_DIRS})
 target_include_directories(linalg_test PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(linalg_test PUBLIC ${absl_INCLUDE_DIRS})
 target_include_directories(linalg_test PUBLIC "../../protos/cpp")
-target_include_directories(linalg_test PUBLIC ${catch2_INCLUDE_DIRS_RELEASE})
+target_include_directories(linalg_test PUBLIC ${Catch2_INCLUDE_DIRS})

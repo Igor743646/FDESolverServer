@@ -22,25 +22,33 @@ namespace NLogger {
     unsigned char ChangeLogLevel(unsigned char logLevel);
     int GetUserLogLevel();
 
+    class TLogHelperBase {
+    public:
+        TLogHelperBase() {
+            static bool started = false;
+            if (!started) { // Just for truncating
+                std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::trunc);
+                started = true;
+                file.close();
+            }
+        }
+    };
+
     template<unsigned char LogLevel = 0>
-    class TLogHelper {
+    class TLogHelper : public TLogHelperBase {
     public:
 
         static_assert(LogLevel == 1 || LogLevel == 2 || LogLevel == 3);
 
-        TLogHelper(const char* name, const char* file, int line, const char* color) {
-            static bool started = false;
-            if (!started) {
-                std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::trunc);
-                started = true;
-            }
-
+        TLogHelper(const char* name, const char* file, int line, const char* color) : TLogHelperBase() {
             if (LogLevel <= GetUserLogLevel()) {
                 Out << "[ " << std::setw(5) << name << " ]" << file << "(" << line << ")";
                 Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
             }
         }
 
+        TLogHelper(const TLogHelper&) = delete;
+        TLogHelper(TLogHelper&&) = default;
         TLogHelper& operator=(const TLogHelper&) = delete;
         TLogHelper& operator=(TLogHelper&&) = delete;
         

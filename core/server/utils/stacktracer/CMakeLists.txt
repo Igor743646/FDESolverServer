@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Boost REQUIRED)
 
 add_library(${PROJECT_NAME} STATIC
-    stacktracer.cpp
+    "stacktracer.cpp" "stacktracer.hpp"
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC Boost::stacktrace Boost::exception)
-target_include_directories(${PROJECT_NAME} PUBLIC ${boost_INCLUDE_DIRS_RELEASE})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})

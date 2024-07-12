@@ -51,10 +51,14 @@ namespace NLinalg {
         Columns = matrix.Columns;
 
         if (Matrix != nullptr) {
-            delete[] Matrix;
+            if (Rows * Columns != matrix.Rows * matrix.Columns) {
+                delete[] Matrix;
+                Matrix = new f64[Rows * Columns];
+            }
+        } else {
+            Matrix = new f64[Rows * Columns];
         }
 
-        Matrix = new f64[Rows * Columns];
         std::memcpy(Matrix, matrix.Matrix, Rows * Columns * sizeof(f64));
 
         return *this;
@@ -75,19 +79,19 @@ namespace NLinalg {
         }
     }
 
-    std::span<f64> TMatrix::operator[](usize i) const {
-        NStackTracer::Assert(i < Rows, std::format("i = {} >= Rows = {}", i, Rows));
+    const std::span<f64> TMatrix::operator[](usize i) const {
+        NStackTracer::Assert(i < Rows, std::format("i ({}) >= Rows ({})", i, Rows));
         return std::span<f64>(Matrix + i * Columns, Columns);
     }
 
     std::span<f64> TMatrix::operator[](usize i) {
-        NStackTracer::Assert(i < Rows, std::format("i = {} >= Rows = {}", i, Rows));
+        NStackTracer::Assert(i < Rows, std::format("i ({}) >= Rows ({})", i, Rows));
         return std::span<f64>(Matrix + i * Columns, Columns);
     }
 
     TMatrix operator*(const TMatrix& lhs, const TMatrix& rhs) {
         NStackTracer::Assert(lhs.Columns == rhs.Rows, 
-                             std::format("lhs.Columns = {} != rhs.Rows = {}", lhs.Columns, rhs.Rows));
+                             std::format("lhs.Columns ({}) != rhs.Rows ({})", lhs.Columns, rhs.Rows));
 
         TMatrix result(lhs.Rows, rhs.Columns);
 
@@ -103,7 +107,8 @@ namespace NLinalg {
     }
 
     std::vector<f64> operator*(const std::vector<f64>& lhs, const TMatrix& rhs) {
-        assert(lhs.size() == rhs.Rows);
+        NStackTracer::Assert(lhs.size() == rhs.Rows, 
+                             std::format("lhs.size() ({}) != rhs.Rows ({})", lhs.size(), rhs.Rows));
 
         std::vector<f64> result(rhs.Columns, 0.0);
         for (usize i = 0; i < rhs.Columns; i++) {
@@ -120,7 +125,8 @@ namespace NLinalg {
     }
 
     void TMatrix::SwapRows(usize i, usize j) {
-        assert(i < Rows && j < Rows);
+        NStackTracer::Assert(i < Rows && j < Rows, 
+                             std::format("i ({}) or j ({}) >= Rows ({})", i, j, Rows));
 
         if (i == j) {
             return;
@@ -132,8 +138,8 @@ namespace NLinalg {
     }
 
     void TMatrix::SwapColumns(usize i, usize j) {
-        assert(i < Columns && j < Columns);
-
+        NStackTracer::Assert(i < Columns && j < Columns, 
+                             std::format("i ({}) or j ({}) >= Columns ({})", i, j, Columns));
         if (i == j) {
             return;
         }
@@ -144,7 +150,8 @@ namespace NLinalg {
     }
 
     TMatrix::TPluResult TMatrix::LUFactorizing() {
-        assert(Columns == Rows);
+        NStackTracer::Assert(Columns == Rows, 
+                             std::format("Rows ({}) != Columns ({})", Rows, Columns));
 
         std::vector<usize> p(Rows);
         TMatrix l = E(Rows);
@@ -199,7 +206,8 @@ namespace NLinalg {
     }
 
     std::optional<std::vector<f64>> TMatrix::Solve(const std::vector<f64>& b) {
-        assert(Rows == Columns && Columns == b.size());
+        NStackTracer::Assert(Rows == Columns && Columns == b.size(), 
+                             std::format("Rows ({}) != Columns ({}) or Columns ({}) != b.size() ({})", Rows, Columns, Columns, b.size()));
 
         // 1. Делаем LU - разложение
         auto plu = LUFactorizing();
@@ -210,8 +218,10 @@ namespace NLinalg {
     std::optional<std::vector<f64>> TMatrix::Solve(const TPluResult& plu, const std::vector<f64>& b) {
         auto& [P, LU] = plu;
 
-        assert(P.size() == b.size());
-        assert(LU.Shape().first == LU.Shape().second && LU.Shape().second == b.size());
+        NStackTracer::Assert(P.size() == b.size(), 
+                             std::format("P.size() ({}) != b.size() ({})", P.size(), b.size()));
+        NStackTracer::Assert(LU.Shape().first == LU.Shape().second && LU.Shape().second == b.size(), 
+                             std::format("Bad size plu with b vector"));
 
         // 1. Вычисляем P^(T)b = bP = y (1 x n)
         std::vector<f64> y(P.size());

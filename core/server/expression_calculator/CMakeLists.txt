@@ -27,5 +27,5 @@ target_link_libraries(math_expression_calculator_test PUBLIC Catch2::Catch2WithM
 target_include_directories(math_expression_calculator_test PUBLIC "${ANTLR_SampleGrammarLexer_OUTPUT_DIR}")
 target_include_directories(math_expression_calculator_test PUBLIC "${ANTLR_SampleGrammarParser_OUTPUT_DIR}")
 target_include_directories(math_expression_calculator_test PUBLIC "${ANTLR_SampleGrammarVisitor_OUTPUT_DIR}")
-target_include_directories(math_expression_calculator_test PUBLIC ${catch2_INCLUDE_DIRS_RELEASE})
+target_include_directories(math_expression_calculator_test PUBLIC ${Catch2_INCLUDE_DIRS})
 target_include_directories(math_expression_calculator_test PUBLIC "src")

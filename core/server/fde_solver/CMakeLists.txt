@@ -11,14 +11,14 @@ find_package(gRPC REQUIRED)
 
 add_subdirectory(linalg)
 
-add_library(solvers STATIC
+add_library(${PROJECT_NAME} STATIC
     "src/equation_solver.cpp"
     "src/mfdes.cpp"
     "src/sfdes.cpp"
     "src/rules_impl.cpp"
 )
-target_link_libraries(solvers PUBLIC MathUtils AsynchronicLogger LinalgLib proto_lib)
-target_include_directories(solvers PUBLIC 
+target_link_libraries(${PROJECT_NAME} PUBLIC MathUtils AsynchronicLogger LinalgLib proto_lib)
+target_include_directories(${PROJECT_NAME} PUBLIC 
     "linalg/"
     "../utils/logger"
     "../utils/math"

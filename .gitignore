@@ -3,3 +3,4 @@
 **/__pycache__/
 Arch.drawio
 core/client/venv/*
+core/server/graph.html
