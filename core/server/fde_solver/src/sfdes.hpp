@@ -51,24 +51,20 @@ namespace NEquationSolver {
             }
 
             // Симуляция
+            NTimer::TTimer timer;
             std::random_device device;
             std::knuth_b engine(device());  // knuth better than mt19937
             std::uniform_real_distribution<f64> generator(0.0, 1.0);
 
-            std::vector<f64> randoms(count * (k) * k * (n - 1));
-            std::generate(randoms.begin(), randoms.end(), [&generator, &engine](){return generator(engine);});
-
-            for (i64 i = 1; i < n; i++) {
-                for (i64 j = 1; j <= k; j++) {
+            for (i64 j = 1; j <= k; j++) {
+                for (i64 i = 1; i < n; i++) {
                     for (i64 _n = 0; _n < count; _n++) {
                         i64 x = i, y = j;
-
-                        usize rnd_id = _n * ((k) * k * (n - 1)) + (j-1) * (k * (n - 1)) + (i-1) * (k);
                         f64 sf = 0.0;
 
                         while (y > 0 && x < n && x > 0) {
-                            f64 rnd = randoms[rnd_id + y - 1];
-                            ptrdiff_t idx = std::lower_bound(prefsumProbs[x - 1].cbegin(), prefsumProbs[x - 1].cend(), rnd) - prefsumProbs[x - 1].cbegin();
+                            f64 rnd = generator(engine);
+                            i64 idx = std::lower_bound(prefsumProbs[x - 1].cbegin(), prefsumProbs[x - 1].cend(), rnd) - prefsumProbs[x - 1].cbegin();
 
                             sf += SourceFunction[y][x];
 
@@ -94,10 +90,18 @@ namespace NEquationSolver {
                             }
                         }
                     }
+                    
+                }
+            }
 
+            // Scaling
+            for (i64 j = 1; j <= k; j++) {
+                for (i64 i = 1; i < n; i++) {
                     result[j][i] /= static_cast<f64>(count);
                 }
             }
+            
+            DEBUG_LOG << std::format("Simulation time: {}", timer.MilliSeconds()) << Endl;
 
             TResult res = {
                 .MethodName = Name(),

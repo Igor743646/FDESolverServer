@@ -1,9 +1,12 @@
 #include "server_impl.hpp"
 
+#include <timer.hpp>
+
 
 TFDESolverServerImpl::TStatus TFDESolverServerImpl::RunTask(TServerContext* context, const TClientConfig* request, TResults* response) {
     gpr_log(GPR_INFO, "Start task");
-    auto start = std::chrono::system_clock::now();
+    
+    NTimer::TTimer timer;
 
     try {
         DoRunTask(request, response);
@@ -17,8 +20,7 @@ TFDESolverServerImpl::TStatus TFDESolverServerImpl::RunTask(TServerContext* cont
         return TStatus(::grpc::StatusCode::UNKNOWN, "Unexpected exception");
     }
 
-    auto stop = std::chrono::system_clock::now();
-    f64 workTime = std::chrono::duration<f64, std::milli>(stop - start).count();
+    auto workTime = timer.MilliSeconds().count();
 
     context->AddTrailingMetadata("work-time", std::to_string(workTime));
     context->AddTrailingMetadata("version", "0.1");

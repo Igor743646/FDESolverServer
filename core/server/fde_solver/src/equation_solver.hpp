@@ -11,6 +11,7 @@
 #include <math_utils.hpp>
 #include <logger.hpp>
 #include <matrix.hpp>
+#include <timer.hpp>
 
 namespace PFDESolver {
     class TSolverConfig;

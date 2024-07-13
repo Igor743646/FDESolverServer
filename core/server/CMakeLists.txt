@@ -26,6 +26,7 @@ target_link_libraries(server PUBLIC
   math_expression_calculator
   math_expression_grammar
   FDESolverLib
+  Timer
   gRPC::grpc++
   proto_lib 
 )
@@ -33,7 +34,7 @@ target_include_directories(server PUBLIC "protos/cpp/")
 target_include_directories(server PUBLIC "protos/")
 target_include_directories(server PUBLIC "expression_calculator/src/")
 target_include_directories(server PUBLIC "fde_solver/src/")
-target_include_directories(server PUBLIC "utils/logger" "utils/math" "utils/stacktracer")
+target_include_directories(server PUBLIC "utils/logger" "utils/math" "utils/stacktracer" "utils/timer")
 
 # # Copy dll's for protobuf
 # add_custom_command(TARGET server POST_BUILD

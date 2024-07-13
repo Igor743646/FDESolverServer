@@ -36,14 +36,17 @@ namespace NStackTracer {
         }
 
     };
-
-    inline void Assert(bool expression, const std::string& message = "") {
-#ifdef NDEBUG
-#else 
-        (void) (
-            (!!(expression)) ||
-            (TStackTracer::ThrowWithMessage<std::exception>(message), 0)
-        );
-#endif
-    }
 }
+
+#ifdef NDEBUG
+
+    #define STACK_ASSERT(expression, message) ((void)0)
+
+#else
+
+    #define STACK_ASSERT(expression, message) (void)(                                \
+            (static_cast<bool>(expression)) ||                                          \
+            (::NStackTracer::TStackTracer::ThrowWithMessage<std::exception>(message), 0) \
+        )
+
+#endif

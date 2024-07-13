@@ -42,7 +42,7 @@ namespace NLogger {
 
         TLogHelper(const char* name, const char* file, int line, const char* color) : TLogHelperBase() {
             if (LogLevel <= GetUserLogLevel()) {
-                Out << "[ " << std::setw(5) << name << " ]" << file << "(" << line << ")";
+                Out << "[ " << std::setw(5) << name << " ] " << file << "(" << line << ")";
                 Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
             }
         }

@@ -82,10 +82,13 @@ namespace NEquationSolver {
         
         if (k == 0) {
             return c0;
-        } else if (k == 1) {
+        }
+        
+        if (k == 1) {
             return c0 * (std::pow(3.0, 2.0 - alpha) - 2.0);
         }
-        return c0 * (std::pow(2.0 * k - 3.0, 2.0 - alpha) - 2.0 * std::pow(2.0 * k - 1.0, 2.0 - alpha) + std::pow(2.0 * k + 1.0, 2.0 - alpha));
+        
+        return c0 * (std::pow(2 * k - 3, 2.0 - alpha) - 2.0 * std::pow(2 * k - 1, 2.0 - alpha) + std::pow(2 * k + 1, 2.0 - alpha));
     }
 
     f64 TRLFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {

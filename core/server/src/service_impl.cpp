@@ -1,5 +1,7 @@
 #include "service_impl.hpp"
 
+#include <timer.hpp>
+
 namespace NFDESolverService {
 
     void TFDESolverService::DoRunTask(const TClientConfig* request, TResults* response) {
@@ -8,8 +10,15 @@ namespace NFDESolverService {
 
         for (auto& solver : solvers) {
             if (solver) {
+                NTimer::TTimer timer;
                 SolveTask(*solver, *response, true);
+
+                INFO_LOG << std::format("Method {} elapsed: {}", solver->Name(), timer.MilliSeconds()) << Endl;
             }
+        }
+
+        if (solverConfig.RealSolution.has_value()) {
+            AddRealSolution(solverConfig, *response);
         }
     }
     
@@ -26,10 +35,6 @@ namespace NFDESolverService {
         const auto& config = solver.GetConfig();
         PFDESolver::TSolverConfig pbConfig = config.ToProto();
         response.mutable_task()->Swap(&pbConfig);
-
-        if (saveMeta && config.RealSolution.has_value()) {
-            AddRealSolution(config, response);
-        }
     }
 
     void TFDESolverService::AddRealSolution(const TSolverConfig& config, TResults& response) {

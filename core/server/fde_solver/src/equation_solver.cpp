@@ -58,13 +58,17 @@ namespace NEquationSolver {
 
     IEquationSolver::IEquationSolver(const TSolverConfig& config) : Config(config) {
         Init();
+        NTimer::TTimer timer;
         PrefetchData();
+        DEBUG_LOG << std::format("Prefetch data time: {}", timer.MilliSeconds()) << Endl;
         Validate();
     }
 
     IEquationSolver::IEquationSolver(TSolverConfig&& config) : Config(std::move(config)) {
         Init();
+        NTimer::TTimer timer;
         PrefetchData();
+        DEBUG_LOG << std::format("Prefetch data time: {}", timer.MilliSeconds()) << Endl;
         Validate();
     }
 
