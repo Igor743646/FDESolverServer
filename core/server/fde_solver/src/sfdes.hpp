@@ -17,7 +17,7 @@ namespace NEquationSolver {
         TStochasticFDES(const TSolverConfig& config) : IEquationSolver(config) {}
         TStochasticFDES(TSolverConfig&& config) :  IEquationSolver(std::move(config)) {}
 
-        virtual std::string Name() {
+        virtual std::string Name() const override {
             return "Stochastic method with " + TFiller::Name();
         }
 
@@ -42,12 +42,12 @@ namespace NEquationSolver {
 
             // Учёт начального и граничных условий
             for (usize i = 0; i <= n; i++) {
-                result[0][i] = ZeroTimeState[i];
+                result[0][i] = Config.ZeroTimeState[i];
             }
 
             for (usize j = 1; j <= k; j++) {
-                result[j][0] = LeftBoundState[j];
-                result[j][n] = RightBoundState[j];
+                result[j][0] = Config.LeftBoundState[j];
+                result[j][n] = Config.RightBoundState[j];
             }
 
             // Симуляция
@@ -66,7 +66,7 @@ namespace NEquationSolver {
                             f64 rnd = generator(engine);
                             i64 idx = std::lower_bound(prefsumProbs[x - 1].cbegin(), prefsumProbs[x - 1].cend(), rnd) - prefsumProbs[x - 1].cbegin();
 
-                            sf += SourceFunction[y][x];
+                            sf += Config.SourceFunction[y][x];
 
                             if (idx <= 2 * n) { // перемещение по пространству
                                 x += n - idx;
@@ -81,12 +81,12 @@ namespace NEquationSolver {
                         result[j][i] += sf * PowTCGamma;
 
                         if (y <= 0 && (x >= 0) && (x <= n)) {
-                            result[j][i] += ZeroTimeState[x];
+                            result[j][i] += Config.ZeroTimeState[x];
                         } else if (Config.BordersAvailable) {
                             if (x <= 0 && y > 0) {
-                                result[j][i] += LeftBoundState[y];
+                                result[j][i] += Config.LeftBoundState[y];
                             } else if (x >= n && y > 0) {
-                                result[j][i] += RightBoundState[y];
+                                result[j][i] += Config.RightBoundState[y];
                             }
                         }
                     }

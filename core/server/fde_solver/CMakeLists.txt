@@ -12,6 +12,7 @@ find_package(gRPC REQUIRED)
 add_subdirectory(linalg)
 
 add_library(${PROJECT_NAME} STATIC
+    "src/config.cpp"
     "src/equation_solver.cpp"
     "src/mfdes.cpp"
     "src/sfdes.cpp"

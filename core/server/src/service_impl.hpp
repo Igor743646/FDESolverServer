@@ -9,6 +9,8 @@
 namespace NFDESolverService {
 
     using NEquationSolver::IEquationSolver;
+    using NEquationSolver::TSolverConfigBase;
+    using NEquationSolver::TParsedSolverConfig;
     using NEquationSolver::TSolverConfig;
     using NEquationSolver::TMatrixFDES;
     using NEquationSolver::TMFDESRule;
@@ -66,7 +68,7 @@ namespace NFDESolverService {
 
         auto GetFunction1(std::string, std::string);
         auto GetFunction2(std::string, std::string, std::string);
-        TSolverConfig ParseClientConfig(const TClientConfig&);
+        TParsedSolverConfig ParseClientConfig(const TClientConfig&);
         TSolvers ParseSolveMethods(const TClientConfig&, const TSolverConfig&);
 
     private:

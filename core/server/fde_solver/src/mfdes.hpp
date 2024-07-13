@@ -19,7 +19,7 @@ namespace NEquationSolver {
         TMatrixFDES(const TSolverConfig& config) : IEquationSolver(config) { }
         TMatrixFDES(TSolverConfig&& config) : IEquationSolver(std::move(config)) { }
 
-        virtual std::string Name() {
+        virtual std::string Name() const override {
             return "Matrix method with " + TFiller::Name();
         }
 
@@ -34,9 +34,9 @@ namespace NEquationSolver {
             
             // Math: u_i^0=\psi(x_i)
             // for (usize i = 0; i <= n; i++) {
-            //     result[0][i] = ZeroTimeState[i];
+            //     result[0][i] = Config.ZeroTimeState[i];
             // }
-            std::memcpy(result[0].data(), ZeroTimeState.data(), (n + 1) * sizeof(f64));
+            std::memcpy(result[0].data(), Config.ZeroTimeState.data(), (n + 1) * sizeof(f64));
 
             TMatrix matrix(n + 1);
             FillMatrix(matrix);
@@ -95,8 +95,8 @@ namespace NEquationSolver {
 
             // borders
             if (Config.BordersAvailable) {
-                d[0] = LeftBoundState[k];
-                d[n] = RightBoundState[k];
+                d[0] = Config.LeftBoundState[k];
+                d[n] = Config.RightBoundState[k];
             }
         }
     };

@@ -5,7 +5,8 @@
 namespace NFDESolverService {
 
     void TFDESolverService::DoRunTask(const TClientConfig* request, TResults* response) {
-        TSolverConfig solverConfig = ParseClientConfig(*request);
+        TParsedSolverConfig parsedSolverConfig = ParseClientConfig(*request);
+        TSolverConfig solverConfig(parsedSolverConfig);
         TSolvers solvers = ParseSolveMethods(*request, solverConfig);
 
         for (auto& solver : solvers) {
@@ -46,9 +47,9 @@ namespace NFDESolverService {
         for (usize j = 0; j <= k; j++) {
             for (usize i = 0; i <= n; i++) {
                 if (i == n) {
-                    realSolution[j][i] = config.RightBoundState(static_cast<f64>(j) * config.TimeStep);
+                    realSolution[j][i] = config.RightBoundState[j];
                 } else {
-                    realSolution[j][i] = (*config.RealSolution)(config.LeftBound + static_cast<f64>(i) * config.SpaceStep, static_cast<f64>(j) * config.TimeStep);
+                    realSolution[j][i] = (*config.RealSolution)[j][i];
                 }
             }
         }
@@ -75,32 +76,34 @@ namespace NFDESolverService {
         };
     }
 
-    TSolverConfig TFDESolverService::ParseClientConfig(const TClientConfig& config) {
+    TParsedSolverConfig TFDESolverService::ParseClientConfig(const TClientConfig& config) {
         return {
-            .SpaceCount = config.has_spacecount() ? config.spacecount() : 0, 
-            .TimeCount = config.has_timecount() ? config.timecount() : 0, 
-            .LeftBound = config.leftbound(), 
-            .RightBound = config.rightbound(),
-            .MaxTime = config.maxtime(),
-            .Alpha = config.alpha(), 
-            .Gamma = config.gamma(),
-            .SpaceStep = config.spacestep(), 
-            .TimeStep = config.timestep(),
-            .Beta = config.beta(),
-            .AlphaLeft = config.alphaleft(), 
-            .BetaLeft = config.betaleft(),
-            .AlphaRight = config.alpharight(), 
-            .BetaRight = config.betaright(),
-            .DiffusionCoefficient = GetFunction1(config.diffusioncoefficient(), "x"),
-            .DemolitionCoefficient = GetFunction1(config.demolitioncoefficient(), "x"),
-            .ZeroTimeState = GetFunction1(config.zerotimestate(), "x"),
-            .SourceFunction = GetFunction2(config.sourcefunction(), "x", "t"),
-            .LeftBoundState = GetFunction1(config.leftboundstate(), "t"),
-            .RightBoundState = GetFunction1(config.rightboundstate(), "t"),
-            .BordersAvailable = config.bordersavailable(),
-            .StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000, 
-            .RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
-            .RealSolution = config.has_realsolution() ? std::optional(GetFunction2(config.realsolution(), "x", "t")) : std::nullopt,
+            TSolverConfigBase {
+                .SpaceCount = static_cast<usize>((config.rightbound() - config.leftbound()) / config.spacestep()), 
+                .TimeCount = static_cast<usize>(config.maxtime() / config.timestep()), 
+                .LeftBound = config.leftbound(), 
+                .RightBound = config.rightbound(),
+                .MaxTime = config.maxtime(),
+                .Alpha = config.alpha(), 
+                .Gamma = config.gamma(),
+                .SpaceStep = config.spacestep(), 
+                .TimeStep = config.timestep(),
+                .Beta = config.beta(),
+                .AlphaLeft = config.alphaleft(), 
+                .BetaLeft = config.betaleft(),
+                .AlphaRight = config.alpharight(), 
+                .BetaRight = config.betaright(),
+                .BordersAvailable = config.bordersavailable(),
+                .StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000, 
+                .RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
+            },
+            /* .DiffusionCoefficient =*/ GetFunction1(config.diffusioncoefficient(), "x"),
+            /* .DemolitionCoefficient =*/ GetFunction1(config.demolitioncoefficient(), "x"),
+            /* .ZeroTimeState =*/ GetFunction1(config.zerotimestate(), "x"),
+            /* .SourceFunction =*/ GetFunction2(config.sourcefunction(), "x", "t"),
+            /* .LeftBoundState =*/ GetFunction1(config.leftboundstate(), "t"),
+            /* .RightBoundState =*/ GetFunction1(config.rightboundstate(), "t"),
+            /* .RealSolution =*/ config.has_realsolution() ? std::optional(GetFunction2(config.realsolution(), "x", "t")) : std::nullopt,
         };
     }
 

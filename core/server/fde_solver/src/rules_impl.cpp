@@ -34,7 +34,7 @@ namespace NEquationSolver {
         f64 di = 0.0;
 
         di -= result[0][i];
-        di -= solver->PowTCGamma * solver->SourceFunction[k][i];
+        di -= solver->PowTCGamma * solver->GetConfig().SourceFunction[k][i];
 
         for (usize j = 1; j <= k; j++) {
             di += solver->CoefGGamma(j) * (result[k-j][i] - result[0][i]);
@@ -156,7 +156,7 @@ namespace NEquationSolver {
             di += (CoefGDestination(solver, k-j+1) - CoefGDestination(solver, k-j)) * result[j][i];
         }
 
-        di -= solver->PowTCGamma * solver->SourceFunction[k][i];
+        di -= solver->PowTCGamma * solver->GetConfig().SourceFunction[k][i];
         
         return di;
     }

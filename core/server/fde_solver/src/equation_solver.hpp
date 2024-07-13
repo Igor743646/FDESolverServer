@@ -13,41 +13,14 @@
 #include <matrix.hpp>
 #include <timer.hpp>
 
+#include "config.hpp"
+
 namespace PFDESolver {
     class TSolverConfig;
     class TResult;
 }
 
 namespace NEquationSolver {
-    
-    struct TSolverConfig {
-        usize SpaceCount, TimeCount;    // количество ячеек по x и t координатах соответственно
-
-        f64 LeftBound, RightBound;   // границы отрезка сетки по x координате
-        f64 MaxTime;                 // граница отрезка времени по t координате
-        f64 Alpha, Gamma;            // степени производных по x и t координатах соответственно
-        f64 SpaceStep, TimeStep;     // шаги по сетки по x и t координатах соответственно
-        f64 Beta;                    // коэффициент доли лево/правосторонней производных [-1; +1]
-
-        f64 AlphaLeft, BetaLeft;     // коэффициенты граничных условий третьего рода для x == L
-        f64 AlphaRight, BetaRight;   // коэффициенты граничных условий третьего рода для x == R
-
-        std::function<f64(f64)> DiffusionCoefficient;       // коэффициент диффузии при дробной производной по пространству
-        std::function<f64(f64)> DemolitionCoefficient;      // коэффициент сноса при производной первой степени
-        std::function<f64(f64)> ZeroTimeState;              // начальное условие при t = 0, u(x, 0) = psi(x)
-        std::function<f64(f64, f64)> SourceFunction;        // функция источник
-        std::function<f64(f64)> LeftBoundState;             // граничное условие u(L, t) = phiL(t)
-        std::function<f64(f64)> RightBoundState;            // граничное условие u(R, t) = phiR(t)
-
-        bool BordersAvailable;                  // стоит ли учитывать граничные условия
-        usize StochasticIterationCount = 10;    // количество итераций для стохастического алгоритма
-
-        std::optional<std::string> RealSolutionName;                // latex формула функции c эталонным решением обрамленная $$
-        std::optional<std::function<f64(f64, f64)>> RealSolution;   // функция с эталонным решением
-
-        friend std::ostream& operator<<(std::ostream&, const TSolverConfig&);
-        PFDESolver::TSolverConfig ToProto() const;
-    };
 
     class IEquationSolver {
     protected:
@@ -55,16 +28,7 @@ namespace NEquationSolver {
         std::vector<f64> GAlpha;
         std::vector<f64> GGamma;
 
-    public:
-        /* From config */
-        std::vector<f64> DiffusionCoefficient;
-        std::vector<f64> DemolitionCoefficient;
-        std::vector<f64> ZeroTimeState;
-        NLinalg::TMatrix SourceFunction;
-        std::vector<f64> LeftBoundState;
-        std::vector<f64> RightBoundState;
-
-    private:
+    protected:
 
         void PrefetchData();
         void Init();
@@ -91,9 +55,6 @@ namespace NEquationSolver {
 
         f64 Space(usize) const;
         f64 Time(usize) const;
-        f64 CoefA(f64) const;
-        f64 CoefB(f64) const;
-        f64 CoefC(f64) const;
         f64 CoefA(usize) const;
         f64 CoefB(usize) const;
         f64 CoefC(usize) const;
@@ -101,7 +62,7 @@ namespace NEquationSolver {
         f64 CoefGAlpha(usize) const;
         f64 CoefGGamma(usize) const;
 
-        virtual std::string Name() = 0;
+        virtual std::string Name() const = 0;
         virtual TResult Solve(bool saveMeta) final;
         virtual TResult DoSolve(bool saveMeta) = 0;
 
@@ -109,7 +70,7 @@ namespace NEquationSolver {
         virtual void Validate() const final;
 
         friend std::ostream& operator<<(std::ostream& out, const IEquationSolver& solver) {
-            out << "Parameters:\n" << solver.Config << Endl;
+            out << solver.Name() << Endl;
             return out;
         }
     };
