@@ -1,6 +1,6 @@
 import os
 import pathlib
-
+import traceback
 import json
 import grpc
 from google.protobuf import json_format
@@ -11,6 +11,7 @@ from fastapi.templating import Jinja2Templates
 from libs import result_drawer as ResultDrawer
 from libs.logger import log
 import config_pb2
+import result_pb2
 from server_pb2_grpc import TFDESolverServerStub
 
 MODULE_PATH = pathlib.Path(__file__).parent.resolve()
@@ -33,24 +34,24 @@ FDESolverServerClient = TFDESolverServerStub(FDESolverServerChannel)
 templates = Jinja2Templates(directory=TEMPLATES_FILES_PATH)
 
 DEFAULT_CONFIG = '''{
-    "LeftBound": "-0.4",
-    "RightBound": "0.4",   
-    "MaxTime": "0.2",                 
-    "Alpha": "1.8",
+    "LeftBound": "0.0",
+    "RightBound": "1.0",   
+    "MaxTime": "1.0",                 
+    "Alpha": "1.5",
     "Gamma": "0.9",            
-    "SpaceStep": "0.02",
-    "TimeStep": "0.001",     
-    "Beta": "0.5",  
-    "DiffusionCoefficient": "0.001",     
+    "SpaceStep": "0.052",
+    "TimeStep": "0.01",     
+    "Beta": "1.0",  
+    "DiffusionCoefficient": "0.0001 * Gamma(3.0 - 1.5) / Gamma(3.0) * pow(x, 1.5)",     
     "DemolitionCoefficient": "0.0",    
-    "ZeroTimeState": "((-0.01 < x) && (x < 0.01)) ? 50.0 : 0.0",            
-    "SourceFunction": "0.0",   
+    "ZeroTimeState": "0.0",            
+    "SourceFunction": "Gamma(3.0) / Gamma(3.0 - 0.9) * (pow(t, 2.0 - 0.9) * pow(x, 2.0)) - 0.0001 * pow(x, 2.0) * pow(t, 2.0)",   
     "LeftBoundState": "0.0",           
-    "RightBoundState": "0.00000",          
-    "BordersAvailable": false,          
-    "StochasticIterationCount": "1000",
-    "RealSolutionName": "$u(x, t) = ??",                        
-    "RealSolution" : "0.0",
+    "RightBoundState": "pow(t, 2.0)",          
+    "BordersAvailable": true,          
+    "StochasticIterationCount": "80",
+    "RealSolutionName": "$u(x, t) = x^2 \\\\cdot t^2$",                        
+    "RealSolution" : "pow(x, 2.0) * pow(t, 2.0)",
     "SolveMethods": "MGL;MRL;SGL;SRL"
 }'''
 
@@ -86,17 +87,21 @@ async def runTask(request: Request, config: str = Form(...)):
         dcall = dict(call.trailing_metadata())
         if "work-time" in dcall:
             result["work_time"] = dcall["work-time"]
-        rdResult = ResultDrawer.Results(response)
+        rdResults = ResultDrawer.Results(response)
         result["images"] = []
-        ResultDrawer.draw_surface(rdResult.config, rdResult)
+        ResultDrawer.draw_flat_field(rdResults.config, rdResults.results)
+        result["images"].append(ResultDrawer.ReturnBase64Image())
+        ResultDrawer.draw_surface(rdResults.config, rdResults)
+        result["images"].append(ResultDrawer.ReturnBase64Image())
+        ResultDrawer.draw_error(rdResults.config, rdResults)
         result["images"].append(ResultDrawer.ReturnBase64Image())
     except grpc.RpcError as exception:
         log.error(f"Rpc server not working: {exception}")
-        result["error"] = str(exception)
+        result["error"] = str(exception) + f" Stack: {traceback.format_exc()}"
         return templates.TemplateResponse("index.html", result)
     except BaseException as undefined_error:
         log.error(f"Unknown error: {undefined_error}")
-        result["error"] = str(undefined_error)
+        result["error"] = str(undefined_error) + f" Stack: {traceback.format_exc()}"
         return templates.TemplateResponse("index.html", result)
 
     return templates.TemplateResponse("index.html", result)

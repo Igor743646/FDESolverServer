@@ -13,36 +13,30 @@ PROTOBUFS_DIR = str(pathlib.Path(__file__) / "../generated/")
 sys.path.append(PROTOBUFS_DIR)
 
 from .generated import result_pb2
+from .generated import config_pb2
 
 matplotlib.use("Agg")
 matplotlib.rcParams["savefig.format"] = "jpg"
 matplotlib.rcParams["savefig.dpi"] = 'figure'
 matplotlib.rcParams["savefig.bbox"] = 'tight'
-plt.rcParams['animation.ffmpeg_path'] ='C:\\ProgramData\\chocolatey\\lib\\ffmpeg-full\\tools\\ffmpeg\\bin\\ffmpeg.exe'
+
 
 class Result(object):
 
-    def __init__(self, proto_res) -> None:
-        self.proto_file = proto_res
+    def __init__(self, proto_res : result_pb2.TResult) -> None:
         self.method_name : str = proto_res.MethodName
-        self.solver_matrix : np.ndarray | None = None
-
-        self.field = np.array(proto_res.Field.Data)
+        self.field : np.ndarray = np.array(proto_res.Field.Data)
         self.field.resize((proto_res.Field.Rows, proto_res.Field.Columns))
-
-        if proto_res.HasField("SolveMatrix"):
-            self.solver_matrix = np.array(proto_res.SolveMatrix.Data)
-            self.solver_matrix.resize((proto_res.SolveMatrix.Rows, proto_res.SolveMatrix.Columns))
 
 
 class Results(object):
 
-    def __init__(self, results):
+    def __init__(self, results : result_pb2.TResults):
         self.results : list[Result] = []
         self.real_solution : np.ndarray | None = None
         self.real_solution_name : str | None = None 
+        self.config : config_pb2.TSolverConfig = results.Task
 
-        self.config = results.Task
         for result in results.Results:
             self.results.append(Result(result))
 
@@ -67,7 +61,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def ReturnBase64Image():
+def ReturnBase64Image() -> bytes:
     bio = io.BytesIO()
     plt.savefig(bio, format="png", )
     plt.close()
@@ -121,6 +115,9 @@ def draw_surface(config, results : Results):
 def draw_error(config, results : Results):
     tasks = results.results
 
+    if results.real_solution is None:
+        return
+
     h, w = 1, len(tasks)
 
     fig = plt.figure(figsize=(10*w, 8))
@@ -140,7 +137,7 @@ def draw_error(config, results : Results):
         ax1[i].set(xlabel='x', ylabel="y", zlabel="u(x, t)")
         ax1[i].zaxis.set_rotate_label(False)
         ax2[i].boxplot(error.T, showmeans=True, showfliers=False)
-        ax2[i].set_xticks(ax2[i].get_xticks()[::max(len(Y)//11, 2)], Y[::max(len(Y)//11, 2)])
+        ax2[i].set_xticks(ax2[i].get_xticks()[::10], Y[::10])
         ax2[i].set_title("Error increasing")
 
 
@@ -163,15 +160,6 @@ def draw_time_slice(config, time_slice : int, results : Results):
     ax.grid(True)
     ax.set_title(f"Time slice t={time_slice * config.TimeStep}")
     ax.set(xlabel='x', ylabel=f"u(x, {time_slice * config.TimeStep})")
-
-
-def draw_text_matrix(matrix):
-    fig, ax = plt.subplots(1, 1, figsize=(10, 7))
-    fig.patch.set_visible(False)
-    ax.axis('off')
-    ax.set_title("Matrix A")
-    str_matrix = " \n ".join([" ".join([f"{i:.3f}" for i in row]) for row in matrix.tolist()])
-    ax.text(0.5, 0.5, str_matrix, ha="center", va="center")
 
 
 def draw_slices_gif(config, results : Results):
@@ -219,7 +207,6 @@ def draw_slices_gif(config, results : Results):
 
 def draw(results : Results, arguments : argparse.Namespace):
     outputs = {
-        "SM" : arguments.out + 'Solve Matrix A',
         "HM" : arguments.out + 'Solution Heat Map',
         "SS" : arguments.out + 'Solution Surface',
         "ER" : arguments.out + 'Error',
@@ -247,12 +234,6 @@ def draw(results : Results, arguments : argparse.Namespace):
     FFwriter = animation.FFMpegWriter(fps=60)
     gif.save(outputs["DS"] + ".mp4", writer = FFwriter)
     gif.save(outputs["DS"] + ".gif", fps=60)
-
-    if arguments.verbose:
-        for task in results.results:
-            if task.solver_matrix is not None:
-                draw_text_matrix(task.solver_matrix)
-        plt.show()
 
 
 def main(arguments : argparse.Namespace):

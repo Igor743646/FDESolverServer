@@ -18,9 +18,7 @@ namespace NFDESolverService {
             }
         }
 
-        if (solverConfig.RealSolution.has_value()) {
-            AddRealSolution(solverConfig, *response);
-        }
+        AddRealSolution(solverConfig, *response);
     }
     
     void TFDESolverService::SolveTask(IEquationSolver& solver, 
@@ -39,7 +37,12 @@ namespace NFDESolverService {
     }
 
     void TFDESolverService::AddRealSolution(const TSolverConfig& config, TResults& response) {
-        INFO_LOG << "Adding real solution" << Endl;
+        if (!config.RealSolution.has_value()) {
+            DEBUG_LOG << "No real solution" << Endl;
+            return;
+        }
+
+        INFO_LOG << std::format("Adding real solution: {}", config.RealSolutionName.value()) << Endl;
         const usize n = config.SpaceCount;
         const usize k = config.TimeCount;
 

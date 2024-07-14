@@ -15,15 +15,15 @@ import config_pb2 as config__pb2
 import matrix_pb2 as matrix__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cresult.proto\x12\nPFDESolver\x1a\x0c\x63onfig.proto\x1a\x0cmatrix.proto\"\x80\x01\n\x07TResult\x12\x12\n\nMethodName\x18\x01 \x01(\t\x12\"\n\x05\x46ield\x18\x02 \x01(\x0b\x32\x13.PFDESolver.TMatrix\x12-\n\x0bSolveMatrix\x18\x03 \x01(\x0b\x32\x13.PFDESolver.TMatrixH\x00\x88\x01\x01\x42\x0e\n\x0c_SolveMatrix\"\xce\x01\n\x08TResults\x12\'\n\x04Task\x18\x01 \x01(\x0b\x32\x19.PFDESolver.TSolverConfig\x12$\n\x07Results\x18\x02 \x03(\x0b\x32\x13.PFDESolver.TResult\x12.\n\x0cRealSolution\x18\x03 \x01(\x0b\x32\x13.PFDESolver.TMatrixH\x00\x88\x01\x01\x12\x1d\n\x10RealSolutionName\x18\x04 \x01(\tH\x01\x88\x01\x01\x42\x0f\n\r_RealSolutionB\x13\n\x11_RealSolutionNameb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cresult.proto\x12\nPFDESolver\x1a\x0c\x63onfig.proto\x1a\x0cmatrix.proto\"A\n\x07TResult\x12\x12\n\nMethodName\x18\x01 \x01(\t\x12\"\n\x05\x46ield\x18\x02 \x01(\x0b\x32\x13.PFDESolver.TMatrix\"\xce\x01\n\x08TResults\x12\'\n\x04Task\x18\x01 \x01(\x0b\x32\x19.PFDESolver.TSolverConfig\x12$\n\x07Results\x18\x02 \x03(\x0b\x32\x13.PFDESolver.TResult\x12.\n\x0cRealSolution\x18\x03 \x01(\x0b\x32\x13.PFDESolver.TMatrixH\x00\x88\x01\x01\x12\x1d\n\x10RealSolutionName\x18\x04 \x01(\tH\x01\x88\x01\x01\x42\x0f\n\r_RealSolutionB\x13\n\x11_RealSolutionNameb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'result_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _TRESULT._serialized_start=57
-  _TRESULT._serialized_end=185
-  _TRESULTS._serialized_start=188
-  _TRESULTS._serialized_end=394
+  _TRESULT._serialized_start=56
+  _TRESULT._serialized_end=121
+  _TRESULTS._serialized_start=124
+  _TRESULTS._serialized_end=330
 # @@protoc_insertion_point(module_scope)

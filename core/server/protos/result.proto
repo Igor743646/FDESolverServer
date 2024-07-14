@@ -8,7 +8,6 @@ import "matrix.proto";
 message TResult {
     string MethodName = 1;
     TMatrix Field = 2;
-    optional TMatrix SolveMatrix = 3;
 }
 
 message TResults {

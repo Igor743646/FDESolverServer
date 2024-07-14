@@ -185,7 +185,6 @@ class TResult final :
   enum : int {
     kMethodNameFieldNumber = 1,
     kFieldFieldNumber = 2,
-    kSolveMatrixFieldNumber = 3,
   };
   // string MethodName = 1;
   void clear_methodname();
@@ -219,24 +218,6 @@ class TResult final :
       ::PFDESolver::TMatrix* field);
   ::PFDESolver::TMatrix* unsafe_arena_release_field();
 
-  // optional .PFDESolver.TMatrix SolveMatrix = 3;
-  bool has_solvematrix() const;
-  private:
-  bool _internal_has_solvematrix() const;
-  public:
-  void clear_solvematrix();
-  const ::PFDESolver::TMatrix& solvematrix() const;
-  PROTOBUF_NODISCARD ::PFDESolver::TMatrix* release_solvematrix();
-  ::PFDESolver::TMatrix* mutable_solvematrix();
-  void set_allocated_solvematrix(::PFDESolver::TMatrix* solvematrix);
-  private:
-  const ::PFDESolver::TMatrix& _internal_solvematrix() const;
-  ::PFDESolver::TMatrix* _internal_mutable_solvematrix();
-  public:
-  void unsafe_arena_set_allocated_solvematrix(
-      ::PFDESolver::TMatrix* solvematrix);
-  ::PFDESolver::TMatrix* unsafe_arena_release_solvematrix();
-
   // @@protoc_insertion_point(class_scope:PFDESolver.TResult)
  private:
   class _Internal;
@@ -245,11 +226,9 @@ class TResult final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr methodname_;
     ::PFDESolver::TMatrix* field_;
-    ::PFDESolver::TMatrix* solvematrix_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_result_2eproto;
@@ -616,93 +595,6 @@ inline void TResult::set_allocated_field(::PFDESolver::TMatrix* field) {
   }
   _impl_.field_ = field;
   // @@protoc_insertion_point(field_set_allocated:PFDESolver.TResult.Field)
-}
-
-// optional .PFDESolver.TMatrix SolveMatrix = 3;
-inline bool TResult::_internal_has_solvematrix() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.solvematrix_ != nullptr);
-  return value;
-}
-inline bool TResult::has_solvematrix() const {
-  return _internal_has_solvematrix();
-}
-inline const ::PFDESolver::TMatrix& TResult::_internal_solvematrix() const {
-  const ::PFDESolver::TMatrix* p = _impl_.solvematrix_;
-  return p != nullptr ? *p : reinterpret_cast<const ::PFDESolver::TMatrix&>(
-      ::PFDESolver::_TMatrix_default_instance_);
-}
-inline const ::PFDESolver::TMatrix& TResult::solvematrix() const {
-  // @@protoc_insertion_point(field_get:PFDESolver.TResult.SolveMatrix)
-  return _internal_solvematrix();
-}
-inline void TResult::unsafe_arena_set_allocated_solvematrix(
-    ::PFDESolver::TMatrix* solvematrix) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.solvematrix_);
-  }
-  _impl_.solvematrix_ = solvematrix;
-  if (solvematrix) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:PFDESolver.TResult.SolveMatrix)
-}
-inline ::PFDESolver::TMatrix* TResult::release_solvematrix() {
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::PFDESolver::TMatrix* temp = _impl_.solvematrix_;
-  _impl_.solvematrix_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::PFDESolver::TMatrix* TResult::unsafe_arena_release_solvematrix() {
-  // @@protoc_insertion_point(field_release:PFDESolver.TResult.SolveMatrix)
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::PFDESolver::TMatrix* temp = _impl_.solvematrix_;
-  _impl_.solvematrix_ = nullptr;
-  return temp;
-}
-inline ::PFDESolver::TMatrix* TResult::_internal_mutable_solvematrix() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.solvematrix_ == nullptr) {
-    auto* p = CreateMaybeMessage<::PFDESolver::TMatrix>(GetArenaForAllocation());
-    _impl_.solvematrix_ = p;
-  }
-  return _impl_.solvematrix_;
-}
-inline ::PFDESolver::TMatrix* TResult::mutable_solvematrix() {
-  ::PFDESolver::TMatrix* _msg = _internal_mutable_solvematrix();
-  // @@protoc_insertion_point(field_mutable:PFDESolver.TResult.SolveMatrix)
-  return _msg;
-}
-inline void TResult::set_allocated_solvematrix(::PFDESolver::TMatrix* solvematrix) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.solvematrix_);
-  }
-  if (solvematrix) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(solvematrix));
-    if (message_arena != submessage_arena) {
-      solvematrix = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, solvematrix, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.solvematrix_ = solvematrix;
-  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TResult.SolveMatrix)
 }
 
 // -------------------------------------------------------------------

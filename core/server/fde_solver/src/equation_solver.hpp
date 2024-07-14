@@ -41,7 +41,6 @@ namespace NEquationSolver {
             std::string MethodName;
             const TSolverConfig& Config;
             NLinalg::TMatrix Field;
-            std::optional<NLinalg::TMatrix> SolveMatrix;
 
             PFDESolver::TResult ToProto() const;
             bool SaveToFile(std::string name) const;

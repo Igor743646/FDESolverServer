@@ -10,12 +10,6 @@ namespace NEquationSolver {
         PFDESolver::TResult res;
         res.set_methodname(MethodName);
         res.mutable_field()->Swap(new PFDESolver::TMatrix(std::move(Field.ToProto())));
-
-        if (SolveMatrix.has_value()) {
-            PFDESolver::TMatrix solveMatrix(std::move(SolveMatrix->ToProto()));
-            res.mutable_solvematrix()->Swap(&solveMatrix);
-        }
-        
         return res;
     }
 
@@ -36,17 +30,13 @@ namespace NEquationSolver {
 
     IEquationSolver::IEquationSolver(const TSolverConfig& config) : Config(config) {
         Init();
-        NTimer::TTimer timer;
         PrefetchData();
-        DEBUG_LOG << std::format("Prefetch data time: {}", timer.MilliSeconds()) << Endl;
         Validate();
     }
 
     IEquationSolver::IEquationSolver(TSolverConfig&& config) : Config(std::move(config)) {
         Init();
-        NTimer::TTimer timer;
         PrefetchData();
-        DEBUG_LOG << std::format("Prefetch data time: {}", timer.MilliSeconds()) << Endl;
         Validate();
     }
 

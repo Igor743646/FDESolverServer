@@ -288,10 +288,6 @@ namespace ANTLRMathExpParser {
         for (auto& var : variables) {
             Visitor.SetValue(var, 0.0);
         }
-
-        for (auto& var : variables) {
-            Visitor.SetValue(var, 0.0);
-        }
     }
 
     void MathExpressionCalculator::SetVar(std::string var, double value) {

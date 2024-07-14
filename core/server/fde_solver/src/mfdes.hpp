@@ -57,8 +57,7 @@ namespace NEquationSolver {
             TResult res = {
                 .MethodName = Name(),
                 .Config = Config, 
-                .Field = std::move(result),
-                .SolveMatrix = !saveMeta ? std::nullopt : std::optional(std::move(matrix)),
+                .Field = std::move(result)
             };
 
             return res;
