@@ -1,5 +1,3 @@
-import sys 
-import pathlib
 import base64
 import io
 import matplotlib
@@ -9,41 +7,128 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
 
-PROTOBUFS_DIR = str(pathlib.Path(__file__) / "../generated/")
-sys.path.append(PROTOBUFS_DIR)
-
-from .generated import result_pb2
-from .generated import config_pb2
+from .results import result_pb2
+from .results import Result, Results
 
 matplotlib.use("Agg")
-matplotlib.rcParams["savefig.format"] = "jpg"
+matplotlib.rcParams["savefig.format"] = "png"
 matplotlib.rcParams["savefig.dpi"] = 'figure'
 matplotlib.rcParams["savefig.bbox"] = 'tight'
 
-
-class Result(object):
-
-    def __init__(self, proto_res : result_pb2.TResult) -> None:
-        self.method_name : str = proto_res.MethodName
-        self.field : np.ndarray = np.array(proto_res.Field.Data)
-        self.field.resize((proto_res.Field.Rows, proto_res.Field.Columns))
-
-
-class Results(object):
+class ResultDrawer:
 
     def __init__(self, results : result_pb2.TResults):
-        self.results : list[Result] = []
-        self.real_solution : np.ndarray | None = None
-        self.real_solution_name : str | None = None 
-        self.config : config_pb2.TSolverConfig = results.Task
+        self.results = Results(results)
+        self.config = self.results.config
 
-        for result in results.Results:
-            self.results.append(Result(result))
 
-        if results.HasField("RealSolution"):
-            self.real_solution = np.array(results.RealSolution.Data)
-            self.real_solution.resize((results.RealSolution.Rows, results.RealSolution.Columns))
-            self.real_solution_name = results.RealSolutionName
+    def ResetSettings(self):
+        matplotlib.rcParams["figure.titlesize"] = "xx-large"
+        matplotlib.rcParams['axes.titlesize'] = "large"
+
+
+    def RealSolutionSettings(self):
+        matplotlib.rcParams["figure.titlesize"] = 28
+        matplotlib.rcParams['axes.titlesize'] = 22
+
+
+    def ReturnBase64Image(self) -> bytes:
+        bio = io.BytesIO()
+        plt.savefig(bio, bbox_inches="tight", pad_inches=0.3)
+        plt.close()
+        return base64.encodebytes(bio.getvalue()).decode()
+    
+
+    def DrawResults(self) -> list[bytes]:
+        self.ResetSettings()
+        images = []
+
+        for result in self.results.results:
+            images.append(self.DrawResult(result))
+        
+        return images
+
+
+    def DrawResult(self, result : Result) -> bytes:
+        if self.results.HasRealSolution():
+            self.RealSolutionSettings()
+            figure = plt.figure(figsize=(10 * 3, 18), layout="compressed")
+            subfigures = figure.subfigures(2, 1)
+            subfigures1 = subfigures[0].subfigures(1, 2) # first row
+            subfigures2 = subfigures[1].subfigures(1, 3) # second row
+        else:
+            figure = plt.figure(figsize=(10 * 2, 8), layout="compressed")
+            subfigures1 = figure.subfigures(1, 2)
+
+        figure.suptitle(result.method_name)
+        self.DrawHeatMap(subfigures1[0], result)
+        self.DrawSurface(subfigures1[1], result)
+
+        if self.results.HasRealSolution():
+            self.DrawRealSolution(subfigures2[0])
+            self.DrawErrorSurface(subfigures2[1], result)
+            self.DrawErrorMean(subfigures2[2], result)
+
+        return self.ReturnBase64Image()
+
+
+    def DrawHeatMap(self, subfigure : matplotlib.figure.SubFigure, result : Result):
+        ax = subfigure.subplots(1, 1)
+
+        im = ax.imshow(result.field, origin="lower", aspect='equal',
+                                  extent=(self.config.LeftBound, self.config.RightBound, 0, self.config.MaxTime))
+        ax.set(xlabel='x', ylabel="t")
+        ax.set_title("Heat Map")
+
+        subfigure.colorbar(im, ax=ax)
+
+
+    def DrawSurface(self, subfigure : matplotlib.figure.SubFigure, result : Result):
+        ax = subfigure.subplots(1, 1, subplot_kw={"projection": "3d"})
+
+        X = np.linspace(self.config.LeftBound, self.config.RightBound, self.config.SpaceCount + 1)
+        Y = np.linspace(0, self.config.MaxTime, self.config.TimeCount + 1)
+        X, Y = np.meshgrid(X, Y)
+
+        ax.plot_surface(X, Y, result.field)
+        ax.set(xlabel='x', ylabel="t", zlabel="u(x, t)")
+        ax.set_title("FDESolver Solution")
+
+
+    def DrawRealSolution(self, subfigure : matplotlib.figure.SubFigure):
+        ax = subfigure.subplots(1, 1, subplot_kw={"projection": "3d"})
+
+        X = np.linspace(self.config.LeftBound, self.config.RightBound, self.config.SpaceCount + 1)
+        Y = np.linspace(0, self.config.MaxTime, self.config.TimeCount + 1)
+        Xm, Ym = np.meshgrid(X, Y)
+
+        ax.plot_surface(Xm, Ym, self.results.real_solution)
+        ax.set_title(self.results.real_solution_name)
+        ax.set(xlabel='x', ylabel="t", zlabel="u(x, t)")
+
+
+    def DrawErrorSurface(self, subfigure : matplotlib.figure.SubFigure, result : Result):
+        ax = subfigure.subplots(1, 1, subplot_kw={"projection": "3d"})
+
+        X = np.linspace(self.config.LeftBound, self.config.RightBound, self.config.SpaceCount + 1)
+        Y = np.linspace(0, self.config.MaxTime, self.config.TimeCount + 1)
+        Xm, Ym = np.meshgrid(X, Y)
+
+        error = np.abs(result.field - self.results.real_solution)
+        ax.plot_surface(Xm, Ym, error)
+        ax.set_title("Error")
+        ax.set(xlabel='x', ylabel="t", zlabel="u(x, t)")
+
+
+    def DrawErrorMean(self, subfigure : matplotlib.figure.SubFigure, result : Result):
+        ax = subfigure.subplots(1, 1)
+
+        Y = np.linspace(0, self.config.MaxTime, self.config.TimeCount + 1)
+
+        error = np.abs(result.field - self.results.real_solution)
+        ax.boxplot(error.T, showmeans=True, showfliers=False)
+        ax.set_xticks(ax.get_xticks()[::10], Y[::10])
+        ax.set_title("Mean by x error changing")
 
 
 def parse_args() -> argparse.Namespace:
@@ -59,86 +144,6 @@ def parse_args() -> argparse.Namespace:
                         help="Show images or not")
 
     return parser.parse_args()
-
-
-def ReturnBase64Image() -> bytes:
-    bio = io.BytesIO()
-    plt.savefig(bio, format="png", )
-    plt.close()
-    return base64.encodebytes(bio.getvalue()).decode()
-
-
-def draw_flat_field(config, results : list[Result]):
-    h, w = 1, len(results)
-
-    fig, ax = plt.subplots(h, w, figsize=(10*w, 7))
-
-    for result_id, result in enumerate(results):
-        im = ax[result_id].imshow(result.field, origin="lower", aspect='auto',
-              extent=(config.LeftBound, config.RightBound, 0, config.MaxTime))
-        ax[result_id].set(xlabel='x', ylabel="t")
-        ax[result_id].set_title(result.method_name)
-
-        fig.colorbar(im, ax=ax[result_id])
-
-
-def draw_surface(config, results : Results):
-    tasks = results.results
-
-    h, w = 1, len(tasks)
-
-    if results.real_solution is not None:
-        w += 1
-
-    _, ax = plt.subplots(h, w, figsize=(10*w, 7), subplot_kw={"projection": "3d"})
-
-    if w == 1:
-        ax = [ax]
-
-    X = np.linspace(config.LeftBound, config.RightBound, config.SpaceCount + 1)
-    Y = np.linspace(0, config.MaxTime, config.TimeCount + 1)
-    X, Y = np.meshgrid(X, Y)
-
-    for i, task in enumerate(tasks):
-        ax[i].plot_surface(X, Y, task.field)
-        ax[i].set_title(task.method_name)
-        ax[i].set(xlabel='x', ylabel="y", zlabel="u(x, t)")
-        ax[i].zaxis.set_rotate_label(False)
-
-    if results.real_solution is not None:
-        ax[-1].plot_surface(X, Y, results.real_solution)
-        ax[-1].set_title(results.real_solution_name)
-        ax[-1].set(xlabel='x', ylabel="y", zlabel="u(x, t)")
-        ax[-1].zaxis.set_rotate_label(False)
-
-
-def draw_error(config, results : Results):
-    tasks = results.results
-
-    if results.real_solution is None:
-        return
-
-    h, w = 1, len(tasks)
-
-    fig = plt.figure(figsize=(10*w, 8))
-    figs = fig.subfigures(2, 1)
-
-    ax1 = figs[0].subplots(h, w, subplot_kw={"projection": "3d"})
-    ax2 = figs[1].subplots(h, w)
-
-    X = np.linspace(config.LeftBound, config.RightBound, config.SpaceCount + 1)
-    Y = np.linspace(0, config.MaxTime, config.TimeCount + 1)
-    Xm, Ym = np.meshgrid(X, Y)
-
-    for i, task in enumerate(tasks):
-        error = np.abs(task.field - results.real_solution)
-        ax1[i].plot_surface(Xm, Ym, error)
-        ax1[i].set_title(task.method_name, fontsize=12)
-        ax1[i].set(xlabel='x', ylabel="y", zlabel="u(x, t)")
-        ax1[i].zaxis.set_rotate_label(False)
-        ax2[i].boxplot(error.T, showmeans=True, showfliers=False)
-        ax2[i].set_xticks(ax2[i].get_xticks()[::10], Y[::10])
-        ax2[i].set_title("Error increasing")
 
 
 def draw_time_slice(config, time_slice : int, results : Results):
@@ -207,18 +212,9 @@ def draw_slices_gif(config, results : Results):
 
 def draw(results : Results, arguments : argparse.Namespace):
     outputs = {
-        "HM" : arguments.out + 'Solution Heat Map',
-        "SS" : arguments.out + 'Solution Surface',
-        "ER" : arguments.out + 'Error',
         "TS" : arguments.out + 'Time Slice',
         "DS" : arguments.out + 'Dynamic time slices',
     }
-
-    draw_flat_field(results.config, results.results)
-    plt.savefig(outputs['HM'])
-
-    draw_surface(results.config, results)
-    plt.savefig(outputs['SS'])
 
     if arguments.time_slice is not None:
         draw_time_slice(results.config, 
@@ -226,10 +222,6 @@ def draw(results : Results, arguments : argparse.Namespace):
                         results)
         plt.savefig(outputs['TS'])
     
-    if results.real_solution is not None:
-        draw_error(results.config, results)
-        plt.savefig(outputs['ER'])
-
     gif = draw_slices_gif(results.config, results)
     FFwriter = animation.FFMpegWriter(fps=60)
     gif.save(outputs["DS"] + ".mp4", writer = FFwriter)

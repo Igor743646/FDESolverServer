@@ -87,14 +87,16 @@ async def runTask(request: Request, config: str = Form(...)):
         dcall = dict(call.trailing_metadata())
         if "work-time" in dcall:
             result["work_time"] = dcall["work-time"]
-        rdResults = ResultDrawer.Results(response)
-        result["images"] = []
-        ResultDrawer.draw_flat_field(rdResults.config, rdResults.results)
-        result["images"].append(ResultDrawer.ReturnBase64Image())
-        ResultDrawer.draw_surface(rdResults.config, rdResults)
-        result["images"].append(ResultDrawer.ReturnBase64Image())
-        ResultDrawer.draw_error(rdResults.config, rdResults)
-        result["images"].append(ResultDrawer.ReturnBase64Image())
+        drawer = ResultDrawer.ResultDrawer(response)
+        result["images"] = drawer.DrawResults()
+        # rdResults = ResultDrawer.Results(response)
+        # result["images"] = []
+        # ResultDrawer.draw_flat_field(rdResults.config, rdResults.results)
+        # result["images"].append(ResultDrawer.ReturnBase64Image())
+        # ResultDrawer.draw_surface(rdResults.config, rdResults)
+        # result["images"].append(ResultDrawer.ReturnBase64Image())
+        # ResultDrawer.draw_error(rdResults.config, rdResults)
+        # result["images"].append(ResultDrawer.ReturnBase64Image())
     except grpc.RpcError as exception:
         log.error(f"Rpc server not working: {exception}")
         result["error"] = str(exception) + f" Stack: {traceback.format_exc()}"
