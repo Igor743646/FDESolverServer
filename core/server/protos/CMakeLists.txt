@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
-project(FDESolverWebServiceProtoFiles 
+project(FDESolverProtoFiles 
         LANGUAGES C CXX)
 
 message(STATUS "[****] Start generate ${PROJECT_NAME}")
@@ -55,17 +55,21 @@ protobuf_generate(
     GENERATE_EXTENSIONS _pb2_grpc.py)
 
 # Create library
-add_library(proto_lib STATIC OBJECT ${PROTO_SRCS_PB} ${PROTO_SRCS_GRPC} ${PROTO_SRCS_GRPC_GRPC})
-target_link_libraries(proto_lib PUBLIC gRPC::grpc++ protobuf::libprotoc protobuf::protobuf)
-target_include_directories(proto_lib PUBLIC "cpp/")
-target_include_directories(proto_lib PUBLIC ${protobuf_INCLUDE_DIRS})
-target_include_directories(proto_lib PUBLIC ${gRPC_INCLUDE_DIRS})
-target_include_directories(proto_lib PUBLIC ${absl_INCLUDE_DIRS})
+add_library(${PROJECT_NAME} STATIC ${PROTO_SRCS_PB} ${PROTO_SRCS_GRPC} ${PROTO_SRCS_GRPC_GRPC})
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+    gRPC::grpc 
+    gRPC::grpc++ 
+    protobuf::protobuf
+)
+target_include_directories(${PROJECT_NAME} PUBLIC "cpp/")
+target_include_directories(${PROJECT_NAME} PUBLIC ${protobuf_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${gRPC_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${absl_INCLUDE_DIRS})
 
-add_custom_target(py_proto_lib ALL SOURCES ${PY_PROTO_SRCS_PB} ${PY_PROTO_SRCS_GRPC} ${PY_PROTO_SRCS_GRPC_GRPC})
+add_custom_target(PY_${PROJECT_NAME} ALL SOURCES ${PY_PROTO_SRCS_PB} ${PY_PROTO_SRCS_GRPC} ${PY_PROTO_SRCS_GRPC_GRPC})
 
 # Copy python files
-add_custom_command(TARGET py_proto_lib POST_BUILD
+add_custom_command(TARGET PY_${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../../client/libs/generated/"
     COMMENT "Copy python protos"
 )

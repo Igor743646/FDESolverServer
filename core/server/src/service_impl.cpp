@@ -14,7 +14,7 @@ namespace NFDESolverService {
                 NTimer::TTimer timer;
                 SolveTask(*solver, *response, true);
 
-                INFO_LOG << std::format("Method {} elapsed: {}", solver->Name(), timer.MilliSeconds()) << Endl;
+                INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
             }
         }
 
@@ -42,7 +42,7 @@ namespace NFDESolverService {
             return;
         }
 
-        INFO_LOG << std::format("Adding real solution: {}", config.RealSolutionName.value()) << Endl;
+        INFO_LOG << "Adding real solution: " << config.RealSolutionName.value() << Endl;
         const usize n = config.SpaceCount;
         const usize k = config.TimeCount;
 
@@ -114,21 +114,28 @@ namespace NFDESolverService {
         TFDESolverService::TSolvers solvers;
         const std::string& methods = config.solvemethods();
         DEBUG_LOG << "Methods: " << methods << Endl;
+
+        auto view = methods
+            | std::ranges::views::split(';')
+            | std::ranges::views::transform([](auto &&rng) {
+                    return std::string_view(&*rng.begin(), std::ranges::distance(rng));
+            });
         
-        for (const auto strMethod : std::views::split(methods, ';')) {
-            auto method = Methods.find(std::string(std::string_view(strMethod)));
+        for (const auto& svMethod : view) {
+            std::string strMethod = std::string(svMethod);
+            
+            auto method = Methods.find(strMethod);
             if (method != Methods.end()) {
-                DEBUG_LOG << "Get solver: " << std::string_view(strMethod) << Endl;
+                DEBUG_LOG << "Get solver: " << strMethod << Endl;
 
                 if (method->second->Number() < solvers.size()) {
                     solvers[method->second->Number()] = method->second->GetMethod(solverConfig);
                 } else {
-                    ERROR_LOG << "Method: " << std::string_view(strMethod) << " unimplemented" << Endl;
-                    NStackTracer::TStackTracer::Throw<std::runtime_error>(
-                        std::format("Method {} unimplemented", std::string_view(strMethod)));
+                    ERROR_LOG << "Method: " << strMethod << " unimplemented" << Endl;
+                    NStackTracer::TStackTracer::ThrowWithMessage("Method " + strMethod + " unimplemented");
                 }
             } else {
-                INFO_LOG << "No solver: " << std::string_view(strMethod) << Endl;
+                INFO_LOG << "No solver: " << strMethod << Endl;
             }
         }
 

@@ -1,5 +1,8 @@
 #include "math_expression_calculator.hpp"
 #include <random>
+#include <stacktracer.hpp>
+#include <utility>
+#include <utils.hpp>
 
 namespace {
     constexpr size_t ArgumentListMax = 5;
@@ -40,7 +43,8 @@ namespace ANTLRMathExpParser {
             return Values[val];
         }
 
-        throw std::exception("Error: Identifier not found");
+        NStackTracer::TStackTracer::ThrowWithMessage("Error: Identifier not found");
+        NUtils::Unreachable();
     }
 
     std::any ExpressionVisitor::visitConditionalExpression(TParser::ConditionalExpressionContext *context) {
@@ -217,7 +221,8 @@ namespace ANTLRMathExpParser {
             return Values[val];
         }
 
-        throw std::exception("Error: Identifier not found");
+        NStackTracer::TStackTracer::ThrowWithMessage("Error: Identifier not found");
+        NUtils::Unreachable();
     }
 
     std::any ExpressionVisitor::visitUnaryExpressionUnCastExpr(TParser::UnaryExpressionUnCastExprContext *context) {
@@ -261,7 +266,8 @@ namespace ANTLRMathExpParser {
             if (functionName == "pow") {return std::pow(arguments[0], arguments[1]);}
         }
 
-        throw "visitFunc";
+        NStackTracer::TStackTracer::ThrowWithMessage("No function: unimpemented");
+        NUtils::Unreachable();
     }
 
     std::any ExpressionVisitor::visitArgumentExpressionList(TParser::ArgumentExpressionListContext *context) {
@@ -300,6 +306,7 @@ namespace ANTLRMathExpParser {
             return std::any_cast<double>(result);
         }
 
-        throw "Can not calculate value because parse tree error (Tree = nullptr)";
+        NStackTracer::TStackTracer::ThrowWithMessage("Can not calculate value because parse tree error (Tree = nullptr)");
+        NUtils::Unreachable();
     }
 }

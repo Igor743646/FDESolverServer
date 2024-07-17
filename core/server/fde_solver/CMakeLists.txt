@@ -18,7 +18,16 @@ add_library(${PROJECT_NAME} STATIC
     "src/sfdes.cpp"
     "src/rules_impl.cpp"
 )
-target_link_libraries(${PROJECT_NAME} PUBLIC MathUtils Timer AsynchronicLogger LinalgLib proto_lib)
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+    MathUtils 
+    Timer 
+    AsynchronicLogger
+    LinalgLib 
+    FDESolverProtoFiles 
+    gRPC::grpc 
+    gRPC::grpc++ 
+    protobuf::protobuf
+)
 target_include_directories(${PROJECT_NAME} PUBLIC 
     "linalg/"
     "../utils/logger"

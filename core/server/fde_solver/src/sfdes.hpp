@@ -37,7 +37,7 @@ namespace NEquationSolver {
                 for (usize p = 0; p < 2 * n + 2 + k; p++) {
                     probabilities[i][p] = TFiller::FillProbabilities(this, probabilities, i + 1, p);
                 }
-                std::inclusive_scan(probabilities[i].cbegin(), probabilities[i].cend(), prefsumProbs[i].begin());
+                std::inclusive_scan(probabilities[i].begin(), probabilities[i].end(), prefsumProbs[i].begin());
             }
 
             // Учёт начального и граничных условий
@@ -64,7 +64,7 @@ namespace NEquationSolver {
 
                         while (y > 0 && x < n && x > 0) {
                             f64 rnd = generator(engine);
-                            i64 idx = std::lower_bound(prefsumProbs[x - 1].cbegin(), prefsumProbs[x - 1].cend(), rnd) - prefsumProbs[x - 1].cbegin();
+                            i64 idx = std::lower_bound(prefsumProbs[x - 1].begin(), prefsumProbs[x - 1].end(), rnd) - prefsumProbs[x - 1].begin();
 
                             sf += Config.SourceFunction[y][x];
 
@@ -101,7 +101,7 @@ namespace NEquationSolver {
                 }
             }
             
-            DEBUG_LOG << std::format("Simulation time: {}", timer.MilliSeconds()) << Endl;
+            DEBUG_LOG << "Simulation time: " << timer.MilliSeconds().count() << "ms" << Endl;
 
             TResult res = {
                 .MethodName = Name(),

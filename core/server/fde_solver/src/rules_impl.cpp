@@ -68,7 +68,7 @@ namespace NEquationSolver {
             return -solver->CoefGGamma(p - 2 * n + 1);
         } 
 
-        return 1.0 - std::accumulate(probabilities[i - 1].cbegin(), probabilities[i - 1].cend(), 0.0);
+        return 1.0 - std::accumulate(probabilities[i - 1].begin(), probabilities[i - 1].end(), 0.0);
     }
 
     /*
@@ -207,7 +207,7 @@ namespace NEquationSolver {
         }
 
         if (p == 2 * n + k + 1) {
-            return 1.0 - std::accumulate(probabilities[i - 1].cbegin(), probabilities[i - 1].cend(), 0.0);
+            return 1.0 - std::accumulate(probabilities[i - 1].begin(), probabilities[i - 1].end(), 0.0);
         }
 
         return 0.0;

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
 project(FDESolverServer
         LANGUAGES C CXX)
 
-message(STATUS "[***] Start build ${PROJECT_NAME}")
+message(STATUS "[*] Start build ${PROJECT_NAME}")
 
 add_subdirectory(protos)
 
@@ -16,6 +16,9 @@ add_subdirectory(utils)
 add_subdirectory(fde_solver)
 
 set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
+set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/Release/generators/" "${CMAKE_PREFIX_PATH}")
+
+find_package(antlr4-runtime REQUIRED CONFIG)
 find_package(Protobuf REQUIRED CONFIG)
 find_package(gRPC REQUIRED)
 find_package(absl REQUIRED)
@@ -23,12 +26,14 @@ find_package(absl REQUIRED)
 # server
 add_executable(server "src/server.cpp" "src/server_impl.cpp" "src/server_impl.hpp" "src/service_impl.cpp" "src/service_impl.hpp")
 target_link_libraries(server PUBLIC
-  math_expression_calculator
-  math_expression_grammar
+  MathExpressionParser
+  MathExpressionParserGrammar
+  FDESolverProtoFiles
   FDESolverLib
   Timer
-  gRPC::grpc++
-  proto_lib 
+  gRPC::grpc gRPC::grpc++ 
+  protobuf::protobuf
+  antlr4_static
 )
 target_include_directories(server PUBLIC "protos/cpp/")
 target_include_directories(server PUBLIC "protos/")

@@ -11,7 +11,7 @@ TFDESolverServerImpl::TStatus TFDESolverServerImpl::RunTask(TServerContext* cont
     try {
         DoRunTask(request, response);
         gpr_log(GPR_INFO, "End task");
-    } catch (const std::exception& e) {
+    } catch (const NStackTracer::TExceptionWithStack& e) {
         gpr_log(GPR_ERROR, "Error:");
         NStackTracer::TStackTracer::CatchAndPrintStack(e);
         return TStatus(::grpc::StatusCode::ABORTED, e.what());

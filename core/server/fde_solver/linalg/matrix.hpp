@@ -4,6 +4,7 @@
 #include <logger.hpp>
 #include <stacktracer.hpp>
 #include <fstream>
+#include <span>
 
 namespace PFDESolver {
     class TMatrix;

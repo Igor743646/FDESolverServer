@@ -65,19 +65,21 @@ namespace NEquationSolver {
     }
 }
 
-std::ostream& NEquationSolver::operator<<(std::ostream& out, const NEquationSolver::TSolverConfig& config) {
+namespace NEquationSolver {
+    std::ostream& operator<<(std::ostream& out, const NEquationSolver::TSolverConfig& config) {
 
-    out << "Space count N:\t\t"       << config.SpaceCount << Endl;
-    out << "Time count K:\t\t"        << config.TimeCount << Endl;
-    out << "Left bound L:\t\t"        << config.LeftBound << Endl;
-    out << "Right bound R:\t\t"       << config.RightBound << Endl;
-    out << "Max time:\t\t"            << config.MaxTime << Endl;
-    out << "Alpha:\t\t\t"             << config.Alpha << Endl;
-    out << "Gamma:\t\t\t"             << config.Gamma << Endl;
-    out << "Space step:\t\t"          << config.SpaceStep << Endl;
-    out << "Time step:\t\t"           << config.TimeStep << Endl;
-    out << "Beta:\t\t\t"              << config.Beta << Endl;
-    out << "Borders available:\t"     << config.BordersAvailable;
+        out << "Space count N:\t\t"       << config.SpaceCount << Endl;
+        out << "Time count K:\t\t"        << config.TimeCount << Endl;
+        out << "Left bound L:\t\t"        << config.LeftBound << Endl;
+        out << "Right bound R:\t\t"       << config.RightBound << Endl;
+        out << "Max time:\t\t"            << config.MaxTime << Endl;
+        out << "Alpha:\t\t\t"             << config.Alpha << Endl;
+        out << "Gamma:\t\t\t"             << config.Gamma << Endl;
+        out << "Space step:\t\t"          << config.SpaceStep << Endl;
+        out << "Time step:\t\t"           << config.TimeStep << Endl;
+        out << "Beta:\t\t\t"              << config.Beta << Endl;
+        out << "Borders available:\t"     << config.BordersAvailable;
 
-    return out;
+        return out;
+    }
 }

@@ -12,18 +12,14 @@
 #include <ranges>
 #include <random>
 #include <cassert>
+#include <optional>
 
 #include <logger.hpp>
 
 #if defined(__GNUC__)
     #define Y_UNLIKELY(exp) __builtin_expect(!!(exp), 0)
-    using f32 = _Float32;
-    using f64 = _Float64;
 #else
     #define Y_UNLIKELY(exp) (exp)
-    #include <stdfloat>
-    using f32 = float;
-    using f64 = long double;
 #endif
 
 using i8  = int8_t;
@@ -35,10 +31,8 @@ using ui32 = uint32_t;
 using i64  = int64_t;
 using ui64 = uint64_t;
 using usize = size_t;
-
-
-static_assert(sizeof(f32) == 4, "sizeof(f32) != 4");
-static_assert(sizeof(f64) == 8, "sizeof(f64) != 8");
+using f32 = float;
+using f64 = long double;
 
 constexpr f64 EPSILON = 0.0000001;
 
