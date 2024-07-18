@@ -15,9 +15,10 @@ class FDESolverServerRecipe(ConanFile):
         self.requires("boost/1.85.0")
 
     def layout(self):
-        cmake_layout(self)
+        if self.settings.os == "Windows":
+            cmake_layout(self, build_folder=f"build/{self.settings.build_type}")
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake.configure(variables={"CMAKE_BUILD_TYPE" : self.settings.build_type})
         cmake.build()

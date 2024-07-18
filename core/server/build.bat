@@ -2,15 +2,6 @@
 
 setlocal
 
-if "%1" equ "all" (
-	set build_dependencies=true
-	set build_debug=true
-	set build_release=true
-)
-if "%1" equ "allbuild" (
-	set build_debug=true
-	set build_release=true
-)
 if "%1" equ "dependencies" (
 	set build_dependencies=true
 )
@@ -27,18 +18,14 @@ if not exist build\ (
 
 if defined build_dependencies (
 	conan install conanfile.py
-	conan build . -s build_type=Release
-	conan build . -s build_type=Debug
 )
 
 if defined build_debug (
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-	cmake --build ./build/ --config Debug
+	conan build conanfile.py -s build_type=Debug
 )
 
 if defined build_release (
-	cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-	cmake --build ./build/ --config Release
+	conan build conanfile.py -s build_type=Release
 )
 
 endlocal
