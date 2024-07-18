@@ -21,6 +21,10 @@ if "%1" equ "release" (
 	set build_release=true
 )
 
+if not exist build\ (
+	mkdir build
+)
+
 if defined build_dependencies (
 	conan install conanfile.py --build=missing
 	conan build . -s build_type=Release --build missing

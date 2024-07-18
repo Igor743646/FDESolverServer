@@ -2,14 +2,7 @@ cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
 project(FDESolverProtoFiles 
         LANGUAGES C CXX)
 
-message(STATUS "[****] Start generate ${PROJECT_NAME}")
-
-set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
-set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/Release/generators/" "${CMAKE_PREFIX_PATH}")
-
-find_package(Protobuf REQUIRED CONFIG)
-find_package(gRPC REQUIRED)
-find_package(absl REQUIRED)
+START_BUILD()
 
 add_custom_target(PB_Files SOURCES "config.proto" "matrix.proto" "result.proto")
 add_custom_target(GRPC_Files SOURCES "server.proto")
@@ -61,7 +54,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     gRPC::grpc++ 
     protobuf::protobuf
 )
-target_include_directories(${PROJECT_NAME} PUBLIC "cpp/")
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${protobuf_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${absl_INCLUDE_DIRS})
@@ -73,3 +66,5 @@ add_custom_command(TARGET PY_${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../../client/libs/generated/"
     COMMENT "Copy python protos"
 )
+
+DEFINE_LIB_HEADERS(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/cpp")
