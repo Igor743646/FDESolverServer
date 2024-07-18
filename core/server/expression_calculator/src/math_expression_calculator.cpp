@@ -1,7 +1,6 @@
 #include "math_expression_calculator.hpp"
 #include <random>
 #include <stacktracer.hpp>
-#include <utility>
 #include <utils.hpp>
 
 namespace {

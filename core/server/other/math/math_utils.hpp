@@ -14,8 +14,6 @@
 #include <cassert>
 #include <optional>
 
-#include <logger.hpp>
-
 #if defined(__GNUC__)
     #define Y_UNLIKELY(exp) __builtin_expect(!!(exp), 0)
 #else
@@ -47,7 +45,7 @@ namespace std {
         out << "{\n";
 
         for (auto&& [k, v] : map) {
-            out << "\t" << k << ": " << v << Endl;
+            out << "\t" << k << ": " << v << '\n';
         }
 
         out << "}";

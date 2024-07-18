@@ -9,14 +9,14 @@ include("${CMAKE_SOURCE_DIR}/cmake/library_vars.cmake")
 START_BUILD()
 
 add_subdirectory(protos)
+add_subdirectory(other)
 add_subdirectory(expression_calculator)
-add_subdirectory(utils)
 add_subdirectory(fde_solver)
 
 # server
-add_executable(${PROJECT_NAME})
-target_sources(${PROJECT_NAME} PUBLIC "src/server.cpp" "src/server_impl.cpp" "src/server_impl.hpp" "src/service_impl.cpp" "src/service_impl.hpp")
-target_link_libraries(${PROJECT_NAME} PUBLIC
+add_executable(${PROJECT_NAME}_${CMAKE_BUILD_TYPE})
+target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC "src/server.cpp" "src/server_impl.cpp" "src/server_impl.hpp" "src/service_impl.cpp" "src/service_impl.hpp")
+target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
   MathExpressionParser
   MathExpressionParserGrammar
   FDESolverProtoFiles
@@ -26,6 +26,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   antlr4_static
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${MathExpressionParser_HEADERS_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${FDESolverLib_HEADERS_DIR})
+target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})
+target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${MathExpressionParser_HEADERS_DIR})
+target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverLib_HEADERS_DIR})
