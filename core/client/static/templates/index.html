@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{{template "base" .}}
 
-{% block config %}
+{{define "config"}}
 
 <div style="display: flex;flex-direction: row;justify-content: flex-start;align-items: flex-start;">
     <div style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;">
         <form method="POST">
-            <textarea name="config" spellcheck="false" id="config_textarea" rows="27" cols="90">{{config}}</textarea>
+            <textarea name="config" spellcheck="false" id="config_textarea" rows="27" cols="90">{{ template "config example" . }}</textarea>
 
-            {% if error %}
-                <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{error}}</div>
-            {% endif %}
-            {% if work_time %}
-                <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{work_time}}</div>
-            {% endif %}
+            {{if .Error }}
+                <div style="color: rgb(156, 0, 0);font-size: small;max-width: 650px;">Error: {{ .Error }}</div>
+            {{end}}
+            {{if .WorkTime }}
+                <div style="color: rgb(4, 121, 0);font-size: small;max-width: 650px;">Time elapsed: {{ .WorkTime}}</div>
+            {{end}}
             <button class="glow-on-hover" id="run_task">Run task</button>
         </form>
     </div>
@@ -47,7 +47,4 @@
         </ul>
     </div>
 </div>
-
-{% endblock %}
-
-
+{{end}}

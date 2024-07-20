@@ -1,8 +1,8 @@
 package router
 
 import (
-	"client_go/drawer"
-	pb "client_go/protos/generated"
+	"client/drawer"
+	pb "client/protos/generated"
 	"context"
 	"html/template"
 	"log"

@@ -1,7 +1,7 @@
 package drawer
 
 import (
-	pb "client_go/protos/generated"
+	pb "client/protos/generated"
 	"fmt"
 	"math"
 	"net/http"

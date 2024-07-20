@@ -1,7 +1,5 @@
 **/build/*
 .vscode/
-**/__pycache__/
-core/client/venv/*
 core/server/graph.html
 core/server/log.*
 core/server/expression_calculator/grammar/.antlr

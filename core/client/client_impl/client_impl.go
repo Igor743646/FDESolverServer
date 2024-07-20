@@ -1,7 +1,8 @@
 package pfdeclient
 
 import (
-	"client_go/router"
+	"client/router"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -28,5 +29,7 @@ func (cl *TFDEClient) ListenAndServe(addr string, handler http.Handler) error {
 	http.Handle("/home", homeRouter)
 	http.Handle("/templates/", http.StripPrefix("/templates/", fs))
 	http.Handle("/", http.RedirectHandler("/home", http.StatusMovedPermanently))
+
+	log.Printf("Server start on: %s", addr)
 	return http.ListenAndServe(addr, handler)
 }
