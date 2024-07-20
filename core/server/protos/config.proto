@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package PFDESolver;
 
+option go_package = "/pfdesolver_protos";
+
 message TClientConfig {
     optional uint64 SpaceCount = 1;                     // количество ячеек по x
     optional uint64 TimeCount = 2;                      // количество ячеек по t

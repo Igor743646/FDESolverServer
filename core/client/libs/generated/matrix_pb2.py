@@ -13,13 +13,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cmatrix.proto\x12\nPFDESolver\"6\n\x07TMatrix\x12\x0c\n\x04Rows\x18\x01 \x01(\x04\x12\x0f\n\x07\x43olumns\x18\x02 \x01(\x04\x12\x0c\n\x04\x44\x61ta\x18\x03 \x03(\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cmatrix.proto\x12\nPFDESolver\"6\n\x07TMatrix\x12\x0c\n\x04Rows\x18\x01 \x01(\x04\x12\x0f\n\x07\x43olumns\x18\x02 \x01(\x04\x12\x0c\n\x04\x44\x61ta\x18\x03 \x03(\x01\x42\x14Z\x12/pfdesolver_protosb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'matrix_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\022/pfdesolver_protos'
   _TMATRIX._serialized_start=28
   _TMATRIX._serialized_end=82
 # @@protoc_insertion_point(module_scope)

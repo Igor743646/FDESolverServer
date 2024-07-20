@@ -15,13 +15,14 @@ import config_pb2 as config__pb2
 import result_pb2 as result__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\x12\x10PFDESolverServer\x1a\x0c\x63onfig.proto\x1a\x0cresult.proto2P\n\x10TFDESolverServer\x12<\n\x07RunTask\x12\x19.PFDESolver.TClientConfig\x1a\x14.PFDESolver.TResults\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\x12\x10PFDESolverServer\x1a\x0c\x63onfig.proto\x1a\x0cresult.proto2P\n\x10TFDESolverServer\x12<\n\x07RunTask\x12\x19.PFDESolver.TClientConfig\x1a\x14.PFDESolver.TResults\"\x00\x42\x14Z\x12/pfdesolver_protosb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'server_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\022/pfdesolver_protos'
   _TFDESOLVERSERVER._serialized_start=62
   _TFDESOLVERSERVER._serialized_end=142
 # @@protoc_insertion_point(module_scope)

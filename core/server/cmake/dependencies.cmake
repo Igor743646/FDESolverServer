@@ -11,3 +11,5 @@ foreach(package_name IN LISTS CONAN_DEPENDENCIES)
         message(CHECK_FAIL "No package ${package_name}")
     endif()
 endforeach()
+
+message(STATUS "Protoc path: ${Protobuf_PROTOC_EXECUTABLE}")

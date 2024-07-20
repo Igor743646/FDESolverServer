@@ -2,7 +2,12 @@ from conan import ConanFile
 from conan.tools.cmake import cmake_layout, CMake
 
 
-class FDESolverServerRecipe(ConanFile):
+class FDESolverServer(ConanFile):
+    name = "FDESolverServer"
+    description = "Grpc Server for solving fractional derivative equations"
+    homepage = "https://github.com/Igor743646/FDESolverServer"
+    version = "1.0"
+
     settings = "os", "compiler", "build_type", "arch"
     generators = "CMakeDeps", "CMakeToolchain"
     build_policy = "missing"
