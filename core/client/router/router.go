@@ -4,13 +4,16 @@ import (
 	"client/drawer"
 	pb "client/protos/generated"
 	"context"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -91,8 +94,19 @@ func RunTask(writer http.ResponseWriter, request *http.Request) {
 	}
 	defer conn.Close()
 
+	var trailer metadata.MD
 	client := pb.NewTFDESolverServerClient(conn) // pb.NewRouteGuideClient(conn)
-	pbResults, err := client.RunTask(context.Background(), pbConfig)
+	pbResults, err := client.RunTask(context.Background(), pbConfig, grpc.Trailer(&trailer))
+
+	for k, v := range trailer {
+		fmt.Println(k, v)
+	}
+	if t, ok := trailer["work-time"]; ok {
+		result.WorkTime, _ = strconv.ParseFloat(t[0], 64)
+	} else {
+		log.Fatal("work-time expected but doesn't exist in trailer")
+	}
+
 	if err != nil {
 		result.Error = err
 		ReplyErrorPage(writer, result)

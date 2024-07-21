@@ -1,6 +1,16 @@
 {{template "base" .}}
 
 {{define "config"}}
+<div style="width: 30%;display: flex;flex-direction: row; align-items: center;">
+    <p style="font-size: x-large;"><b>Config:</b></p>
+    <form id="upload-container" method="POST">
+        <img id="upload-image" src="images/upload.svg">
+        <div>
+            <input id="file-input" type="file" name="file" multiple>
+            <label for="file-input">Выберите файл</label>
+        </div>
+    </form>
+</div>
 
 <div style="display: flex;flex-direction: row;justify-content: flex-start;align-items: flex-start;">
     <div style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;">

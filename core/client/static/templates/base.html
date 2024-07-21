@@ -5,9 +5,11 @@
     <head>
         <meta charset="utf-8" />
         <title>FDESolver</title>
-        <link id="favicon" rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+        <link id="favicon" rel="icon" type="image/x-icon" href="/images/favicon.ico">
         <link href="/templates/styles.css" rel="stylesheet" />
         <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100&subset=cyrillic,latin">
+        <script src="scripts/jquery.js"></script>
+        <script src="scripts/form.js"></script>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
     
@@ -34,10 +36,7 @@
     
             
             <div id="config">
-                <p>Config:</p>
-    
                 {{ template "config" . }}
-    
             </div>
         </div>
     </body>

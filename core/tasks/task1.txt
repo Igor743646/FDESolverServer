@@ -1,0 +1,21 @@
+{
+    "LeftBound": "3.0",
+    "RightBound": "6.0",   
+    "MaxTime": "0.01",                 
+    "Alpha": "1.5",
+    "Gamma": "0.9",            
+    "SpaceStep": "0.1",
+    "TimeStep": "0.0001",     
+    "Beta": "1.0",  
+    "DiffusionCoefficient": "0.001 * Gamma(2.0 - 1.5) * pow(x - 3, 1.5) * (log(x - 3) + 1)",     
+    "DemolitionCoefficient": "0.001 * (3 - x) * (log(x - 3) + lgamma(2) - lgamma(2.0 - 1.5))",    
+    "ZeroTimeState": "0.0",            
+    "SourceFunction": "1.0 / Gamma(2.0 - 0.9) * (x - 3) * log(x - 3) * pow(t, 1 - 0.9)",   
+    "LeftBoundState": "0.0",           
+    "RightBoundState": "3 * log(3) * t",          
+    "BordersAvailable": true,          
+    "StochasticIterationCount": "80",
+    "RealSolutionName": "$u(x, t) = (x-3) * ln(x-3) * t$",                        
+    "RealSolution" : "(x - 3) * log(x - 3) * t",
+    "SolveMethods": "MGL;MRL;SGL;SRL"
+}

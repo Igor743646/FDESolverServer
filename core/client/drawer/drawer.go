@@ -89,21 +89,27 @@ func (rd *TResultDrawer) DrawSurface(result *pb.TResult) *charts.Surface3D {
 		charts.WithZAxis3DOpts(opts.ZAxis3D{
 			Type: "value",
 			Name: "U(x, t)",
+			Min:  float32(slices.Min(result.Field.Data)),
+			Max:  float32(slices.Max(result.Field.Data)),
 		}),
 		charts.WithXAxis3DOpts(opts.XAxis3D{
 			Type: "value",
 			Name: "x",
+			Min:  rd.Config.LeftBound,
+			Max:  rd.Config.RightBound,
 		}),
 		charts.WithYAxis3DOpts(opts.YAxis3D{
 			Type: "value",
 			Name: "t",
+			Min:  0,
+			Max:  rd.Config.MaxTime,
 		}),
 		charts.WithVisualMapOpts(opts.VisualMap{
 			Calculable: opts.Bool(true),
 			Min:        float32(slices.Min(result.Field.Data)),
 			Max:        float32(slices.Max(result.Field.Data)),
 			InRange: &opts.VisualMapInRange{
-				Color: []string{"#50a3ba", "#eac736", "#d94e5d"},
+				Color: []string{"#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8"},
 			},
 		}),
 	)
@@ -124,17 +130,21 @@ func (rd *TResultDrawer) DrawRealSolSurface() *charts.Surface3D {
 		charts.WithXAxis3DOpts(opts.XAxis3D{
 			Type: "value",
 			Name: "x",
+			Min:  rd.Config.LeftBound,
+			Max:  rd.Config.RightBound,
 		}),
 		charts.WithYAxis3DOpts(opts.YAxis3D{
 			Type: "value",
 			Name: "t",
+			Min:  0,
+			Max:  rd.Config.MaxTime,
 		}),
 		charts.WithVisualMapOpts(opts.VisualMap{
 			Calculable: opts.Bool(true),
 			Min:        float32(slices.Min(rd.Results.RealSolution.Data)),
 			Max:        float32(slices.Max(rd.Results.RealSolution.Data)),
 			InRange: &opts.VisualMapInRange{
-				Color: []string{"#50a3ba", "#eac736", "#d94e5d"},
+				Color: []string{"#313695", "#4575b4", "#74add1", "#abd9e9", "#e0f3f8"},
 			},
 		}),
 	)
@@ -156,17 +166,21 @@ func (rd *TResultDrawer) DrawErrorSurface(result *pb.TResult) *charts.Surface3D 
 		charts.WithXAxis3DOpts(opts.XAxis3D{
 			Type: "value",
 			Name: "x",
+			Min:  rd.Config.LeftBound,
+			Max:  rd.Config.RightBound,
 		}),
 		charts.WithYAxis3DOpts(opts.YAxis3D{
 			Type: "value",
 			Name: "t",
+			Min:  0,
+			Max:  rd.Config.MaxTime,
 		}),
 		charts.WithVisualMapOpts(opts.VisualMap{
 			Calculable: opts.Bool(true),
 			Min:        float32(min),
-			Max:        float32(max),
+			Max:        float32(max) / 2,
 			InRange: &opts.VisualMapInRange{
-				Color: []string{"#68fa99", "#eac736", "#c94e5d", "#d94e5d"},
+				Color: []string{"#68fa99", "#708f00", "#ff2400"},
 			},
 		}),
 	)
@@ -179,7 +193,10 @@ func (rd *TResultDrawer) DrawErrorBoxplot(result *pb.TResult) *charts.BoxPlot {
 
 	bp := charts.NewBoxPlot()
 	bp.SetGlobalOptions(
-		rd.GetInitializationOpts(),
+		charts.WithInitializationOpts(opts.Initialization{
+			Width:  "750px",
+			Height: "500px",
+		}),
 		rd.GetTitleOpts("Error box plots"),
 		charts.WithXAxisOpts(opts.XAxis{
 			Type: "category",

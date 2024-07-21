@@ -1,0 +1,21 @@
+{
+    "LeftBound": "0.0",
+    "RightBound": "1.0",   
+    "MaxTime": "1.0",                 
+    "Alpha": "1.5",
+    "Gamma": "0.9",            
+    "SpaceStep": "0.052",
+    "TimeStep": "0.01",     
+    "Beta": "1.0",  
+    "DiffusionCoefficient": "0.0001 * Gamma(3.0 - 1.5) / Gamma(3.0) * pow(x, 1.5)",     
+    "DemolitionCoefficient": "0.0",    
+    "ZeroTimeState": "0.0",            
+    "SourceFunction": "Gamma(3.0) / Gamma(3.0 - 0.9) * (pow(t, 2.0 - 0.9) * pow(x, 2.0)) - 0.0001 * pow(x, 2.0) * pow(t, 2.0)",   
+    "LeftBoundState": "0.0",           
+    "RightBoundState": "pow(t, 2.0)",          
+    "BordersAvailable": true,          
+    "StochasticIterationCount": "80",
+    "RealSolutionName": "$u(x, t) = x^2 \\\\cdot t^2$",                        
+    "RealSolution" : "pow(x, 2.0) * pow(t, 2.0)",
+    "SolveMethods": "MGL;MRL;SGL;SRL"
+}
