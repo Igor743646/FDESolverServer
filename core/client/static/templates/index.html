@@ -3,17 +3,18 @@
 {{define "config"}}
 <div style="width: 30%;display: flex;flex-direction: row; align-items: center;">
     <p style="font-size: x-large;"><b>Config:</b></p>
-    <form id="upload-container" method="POST">
-        <img id="upload-image" src="images/upload.svg">
-        <div>
-            <input id="file-input" type="file" name="file" multiple>
-            <label for="file-input">Выберите файл</label>
-        </div>
-    </form>
+    
 </div>
 
 <div style="display: flex;flex-direction: row;justify-content: flex-start;align-items: flex-start;">
     <div style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;">
+        <form id="upload-container" method="POST">
+            <img id="upload-image" src="images/upload.svg">
+            <div>
+                <input id="file-input" type="file" name="file" multiple>
+                <label for="file-input">Выберите файл</label>
+            </div>
+        </form>
         <form method="POST">
             <textarea name="config" spellcheck="false" id="config_textarea" rows="27" cols="90">{{ template "config example" . }}</textarea>
 
@@ -27,7 +28,7 @@
         </form>
     </div>
 
-    <div style="padding: 0 10px 0 10px;">
+    <div id="config-legend">
         <ul>
             <li><p><b>LeftBound</b>                   - The variable <b>L</b> is the left boundary of the calculated grid</p></li>
             <li><p><b>RightBound</b>                  - The variable <b>R</b> is the right boundary of the calculated grid</p></li>
@@ -48,7 +49,7 @@
             <li><p><b>RealSolutionName</b>            - If the problem has a solution, then you can enter the formula of this function for visualization here in latex format</p></li>
             <li><p><b>RealSolution</b>                - The formula of the real solution itself</p></li>
             <li>
-                <p><b>Methods</b>                     - Choose solve methods: MGL, MRL, SGL, SRL. Methods are specified without spaces separated by a colon.</p>
+                <p><b>SolveMethods</b>                     - Choose solve methods: MGL, MRL, SGL, SRL. Methods are specified without spaces separated by a colon.</p>
                 <p>&nbsp;&nbsp;&nbsp;MGL - Matrix Grünwald-Letnikov method</p>
                 <p>&nbsp;&nbsp;&nbsp;MRL - Matrix Riemann-Liouville method</p>
                 <p>&nbsp;&nbsp;&nbsp;SGL - Stochastic Grünwald-Letnikov method</p>

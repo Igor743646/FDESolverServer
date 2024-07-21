@@ -15,13 +15,13 @@
     
     <body>
         <div class="content">
-            <header>
-                FDESolver
+            <header class="body-block">
+                <p>FDESolver</p>
             </header>
 
-            <div id="info">
+            <div id="info" class="body-block">
                 <p>This solver made special for solving anomalus diffusion equations by numerical methods. The problem is:</p>
-                <p style="font-size: 75%;">
+                <p>
                     $$
                     \frac{\partial^\gamma}{\partial t^\gamma}u(x, t) = 
                     D(x)\left( \frac{(1+\beta)}{2}\frac{\partial _+^\alpha}{\partial x^\alpha} + \frac{(1-\beta)}{2}\frac{\partial _-^\alpha}{\partial x^\alpha} \right)u(x, t) + V(x)\frac{\partial}{\partial x}u(x, t) + f(x, t)
@@ -35,7 +35,7 @@
             </div>
     
             
-            <div id="config">
+            <div id="config" class="body-block">
                 {{ template "config" . }}
             </div>
         </div>

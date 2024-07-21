@@ -1,9 +1,6 @@
 {{template "config" .}}
 {{define "config example"}}
-{{if .Config }} 
-{{.Config}} 
-{{else}}
-{
+{{if not .Config }}{
     "LeftBound": "0.0",
     "RightBound": "1.0",   
     "MaxTime": "1.0",                 
@@ -23,6 +20,7 @@
     "RealSolutionName": "$u(x, t) = x^2 \\\\cdot t^2$",                        
     "RealSolution" : "pow(x, 2.0) * pow(t, 2.0)",
     "SolveMethods": "MGL;MRL;SGL;SRL"
-}
+}{{else}}
+{{.Config}} 
 {{end}}
 {{end}}

@@ -30,8 +30,10 @@ func (rd *TResultDrawer) Render(writer http.ResponseWriter) {
 
 func (rd *TResultDrawer) RenderResult(writer http.ResponseWriter, result *pb.TResult) {
 	writer.Write([]byte(fmt.Sprintf(
-		`<div style="margin:40px;font-size:x-large;text-align:center">%s</div>`, result.GetMethodName(),
+		`<div class="body-block" style="font-size:x-large;text-align:center">%s</div>`, result.GetMethodName(),
 	)))
+
+	writer.Write([]byte(`<div class="result-block">`))
 
 	page := components.NewPage()
 	page.SetLayout(components.PageFlexLayout)
@@ -48,6 +50,8 @@ func (rd *TResultDrawer) RenderResult(writer http.ResponseWriter, result *pb.TRe
 		)
 	}
 	page.Render(writer)
+
+	writer.Write([]byte(`</div>`))
 }
 
 func (rd *TResultDrawer) DrawHeatMap(result *pb.TResult) *charts.HeatMap {
