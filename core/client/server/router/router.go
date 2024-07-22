@@ -1,7 +1,6 @@
 package router
 
 import (
-	"client/drawer"
 	"context"
 	"fmt"
 	"html/template"
@@ -9,6 +8,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	drawer "github.com/Igor743646/FDESolverServer/core/client/drawer"
 
 	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
 

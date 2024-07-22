@@ -1,9 +1,9 @@
 package pfdeclient
 
 import (
-	"client/router"
 	"log"
 	"net/http"
+	"server/router"
 
 	"github.com/gorilla/mux"
 )
