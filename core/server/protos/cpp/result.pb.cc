@@ -100,7 +100,7 @@ const char descriptor_table_protodef_result_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "olver.TResult\022.\n\014RealSolution\030\003 \001(\0132\023.PF"
   "DESolver.TMatrixH\000\210\001\001\022\035\n\020RealSolutionNam"
   "e\030\004 \001(\tH\001\210\001\001B\017\n\r_RealSolutionB\023\n\021_RealSo"
-  "lutionNameB\024Z\022/pfdesolver_protosb\006proto3"
+  "lutionNameB\tZ\007/protosb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_result_2eproto_deps[2] = {
   &::descriptor_table_config_2eproto,
@@ -108,7 +108,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_result_2eproto_deps
 };
 static ::_pbi::once_flag descriptor_table_result_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_result_2eproto = {
-    false, false, 360, descriptor_table_protodef_result_2eproto,
+    false, false, 349, descriptor_table_protodef_result_2eproto,
     "result.proto",
     &descriptor_table_result_2eproto_once, descriptor_table_result_2eproto_deps, 2, 2,
     schemas, file_default_instances, TableStruct_result_2eproto::offsets,

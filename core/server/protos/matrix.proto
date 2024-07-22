@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package PFDESolver;
 
-option go_package = "/pfdesolver_protos";
+option go_package = "/protos";
 
 message TMatrix {
     uint64 Rows = 1;

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package PFDESolverServer;
 
-option go_package = "/pfdesolver_protos";
+option go_package = "/protos";
 
 import "config.proto";
 import "result.proto";

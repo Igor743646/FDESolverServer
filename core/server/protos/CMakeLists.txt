@@ -74,6 +74,6 @@ add_custom_target(GO_${PROJECT_NAME} ALL SOURCES ${GO_PROTO_SRCS_PB} ${GO_PROTO_
 
 # Copy go files
 add_custom_command(TARGET GO_${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/go/" "${PROJECT_SOURCE_DIR}/../../client/protos/generated/"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/go/" "${PROJECT_SOURCE_DIR}/../../client/protos/"
     COMMENT "Copy go protos"
 )

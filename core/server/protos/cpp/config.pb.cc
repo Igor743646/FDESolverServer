@@ -206,12 +206,12 @@ const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "ep\030\010 \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001"
   "\022\021\n\tAlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n"
   "\nAlphaRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020"
-  "BordersAvailable\030\017 \001(\010B\024Z\022/pfdesolver_pr"
-  "otosb\006proto3"
+  "BordersAvailable\030\017 \001(\010B\tZ\007/protosb\006proto"
+  "3"
   ;
 static ::_pbi::once_flag descriptor_table_config_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
-    false, false, 1052, descriptor_table_protodef_config_2eproto,
+    false, false, 1041, descriptor_table_protodef_config_2eproto,
     "config.proto",
     &descriptor_table_config_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_config_2eproto::offsets,

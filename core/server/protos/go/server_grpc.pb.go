@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: server.proto
 
-package pfdesolver_protos
+package protos
 
 import (
 	context "context"

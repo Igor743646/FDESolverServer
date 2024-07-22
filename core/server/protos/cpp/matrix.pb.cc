@@ -63,11 +63,11 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_matrix_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014matrix.proto\022\nPFDESolver\"6\n\007TMatrix\022\014\n"
   "\004Rows\030\001 \001(\004\022\017\n\007Columns\030\002 \001(\004\022\014\n\004Data\030\003 \003"
-  "(\001B\024Z\022/pfdesolver_protosb\006proto3"
+  "(\001B\tZ\007/protosb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_matrix_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_matrix_2eproto = {
-    false, false, 112, descriptor_table_protodef_matrix_2eproto,
+    false, false, 101, descriptor_table_protodef_matrix_2eproto,
     "matrix.proto",
     &descriptor_table_matrix_2eproto_once, nullptr, 0, 1,
     schemas, file_default_instances, TableStruct_matrix_2eproto::offsets,
