@@ -2,7 +2,6 @@ package router
 
 import (
 	"client/drawer"
-	pb "client/protos/generated"
 	"context"
 	"fmt"
 	"html/template"
@@ -10,6 +9,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+
+	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

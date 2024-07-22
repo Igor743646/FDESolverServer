@@ -1,4 +1,4 @@
-module pfdesolver_protos
+module github.com/Igor743646/FDESolverServer/core/client/protos
 
 go 1.22.3
 

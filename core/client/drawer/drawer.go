@@ -1,11 +1,12 @@
 package drawer
 
 import (
-	pb "client/protos/generated"
 	"fmt"
 	"math"
 	"net/http"
 	"slices"
+
+	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/components"
