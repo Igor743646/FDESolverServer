@@ -1,5 +1,5 @@
 {
-    "LeftBound": "3.0",
+    "LeftBound": "3.0000001",
     "RightBound": "6.0",   
     "MaxTime": "0.01",                 
     "Alpha": "1.5",

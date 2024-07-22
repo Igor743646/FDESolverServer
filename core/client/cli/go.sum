@@ -1,8 +1,8 @@
 github.com/BurntSushi/toml v1.3.2/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
-github.com/Igor743646/FDESolverServer/core/client/drawer v0.0.0-20240722124600-5273dd5ff237 h1:cKY/RT3FLUE380gIuM2hQrkoaeeamIeLmz/cW3rKeqM=
-github.com/Igor743646/FDESolverServer/core/client/drawer v0.0.0-20240722124600-5273dd5ff237/go.mod h1:PZCMQOYbKFrRlR5hyO7Bh7Vkv/upLmN1CXoCT4mMTQA=
-github.com/Igor743646/FDESolverServer/core/client/protos v0.0.0-20240722122037-758e702aba3b h1:pwkqNJe00l1ZOxnZ6TrRxj06C3yC5boS7llZbk39oa0=
-github.com/Igor743646/FDESolverServer/core/client/protos v0.0.0-20240722122037-758e702aba3b/go.mod h1:iP0BMPkeR2PSp3vXXHaL5K25bxKgOQ6AFftp+NIMHyw=
+github.com/Igor743646/FDESolverServer/core/client/drawer v0.0.0-20240722133812-a0a3a28f7e77 h1:4Q+RgexYM6JWq+2qb6E4+BuXVROEcu9LpJCYSgbk2tA=
+github.com/Igor743646/FDESolverServer/core/client/drawer v0.0.0-20240722133812-a0a3a28f7e77/go.mod h1:PZCMQOYbKFrRlR5hyO7Bh7Vkv/upLmN1CXoCT4mMTQA=
+github.com/Igor743646/FDESolverServer/core/client/protos v0.0.0-20240722124600-5273dd5ff237 h1:NjQdb/tKNkM9BotLjtUFyrmRbN8AnoYkG1pf3+/Qo3s=
+github.com/Igor743646/FDESolverServer/core/client/protos v0.0.0-20240722124600-5273dd5ff237/go.mod h1:iP0BMPkeR2PSp3vXXHaL5K25bxKgOQ6AFftp+NIMHyw=
 github.com/cpuguy83/go-md2man/v2 v2.0.4 h1:wfIWP927BUkWJb2NmU/kNDYIBTh/ziUX91+lVfRxZq4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

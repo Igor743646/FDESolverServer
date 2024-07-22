@@ -12,14 +12,13 @@ package main
 // 	log.Println(resultDrawer)
 // }
 import (
-	"fmt"
 	"log"
-	"net"
 	"os"
 
 	"github.com/Igor743646/FDESolverServer/core/client/drawer"
 	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
 	"github.com/urfave/cli"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -36,6 +35,11 @@ func main() {
 			Name:  "input-file",
 			Usage: "Path to file with serialized TResults",
 			Value: "result.txt",
+		},
+		cli.StringFlag{
+			Name:  "output-path",
+			Usage: "Path for drawing result",
+			Value: "result",
 		},
 		cli.BoolFlag{
 			Name:  "input-json",
@@ -61,23 +65,25 @@ func main() {
 				}
 
 				var results pb.TResults
-				err := proto.Unmarshal(data, &results)
+				if isJson {
+					err = protojson.Unmarshal(data, &results)
+				} else {
+					err = proto.Unmarshal(data, &results)
+				}
+
+				if err != nil {
+					return err
+				}
+
+				ouputFileName := c.String("output-path") + ".html"
+				ouputFile, err := os.OpenFile(ouputFileName, os.O_RDWR|os.O_CREATE, 0644)
 				if err != nil {
 					return err
 				}
 
 				resultDrawer := drawer.NewTResultDrawer(&results)
+				resultDrawer.Render(ouputFile)
 
-				// a simple lookup function
-				ns, err := net.LookupNS(c.String("host"))
-				if err != nil {
-					return err
-				}
-				// we log the results to our console
-				// using a trusty fmt.Println statement
-				for i := 0; i < len(ns); i++ {
-					fmt.Println(ns[i].Host)
-				}
 				return nil
 			},
 		},

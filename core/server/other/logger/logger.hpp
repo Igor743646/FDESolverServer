@@ -29,7 +29,6 @@ namespace NLogger {
             if (!started) { // Just for truncating
                 std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::trunc);
                 started = true;
-                file.close();
             }
         }
     };
@@ -55,10 +54,9 @@ namespace NLogger {
         ~TLogHelper() {
             if (LogLevel <= GetUserLogLevel()) {
                 std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::app);
-
+                
                 if (file.is_open()) {
                     file << Out.str();
-                    file.close();
                 } else {
                     std::cerr << Out.str();
                 }
