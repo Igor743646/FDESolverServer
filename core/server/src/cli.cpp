@@ -1,7 +1,81 @@
 #include <argument_parser.hpp>
 #include <google/protobuf/util/json_util.h>
-#include "service_impl.hpp"
+#include <service_impl.hpp>
 
+class TCLISolver : NFDESolverService::TFDESolverService {
+public:
+
+    explicit TCLISolver(const NArgumentParser::TArgumentParserResult& arguments) 
+        : NFDESolverService::TFDESolverService(), 
+          Arguments(arguments) {}
+
+    void RunTask() {
+        auto config = GetConfig();
+
+        PFDESolver::TResults results;
+        NFDESolverService::TFDESolverService service;
+
+        service.DoRunTask(config.get(), &results);
+        SaveResults(results);
+    }
+
+private:
+
+    void Check(bool expression, const std::string& message) {
+        if (!expression) {
+            std::cerr << message << std::endl;
+            std::exit(1);
+        }
+    }
+
+    std::unique_ptr<PFDESolver::TClientConfig> GetConfig() {
+        const std::string& fileName = Arguments.Get<const std::string&>("--input-file");
+
+        auto config = std::make_unique<PFDESolver::TClientConfig>();
+
+        std::ifstream inputFile(fileName, std::ios::in | std::ios::binary);
+
+        Check(inputFile.is_open(), "Can not open file: " + fileName);
+
+        std::ostringstream sstr;
+        sstr << inputFile.rdbuf();
+        std::string jsonConfig = sstr.str();
+        
+        auto status = google::protobuf::util::JsonStringToMessage(std::string_view(jsonConfig), config.get());
+
+        if (!status.ok()) {
+            std::cerr << status.message() << std::endl;
+            std::exit(1);
+        }
+
+        return config;
+    }
+
+    void SaveResults(const PFDESolver::TResults& results) {
+        const std::string& fileName = Arguments.Get<const std::string&>("--output-file");
+        const bool& isJson = Arguments.Get<const bool&>("--output-json");
+
+        std::ofstream outputFile(fileName, std::ios::out | std::ios::binary);
+        Check(outputFile.is_open(), "Can not open file: " + fileName);
+
+        if (isJson) {
+            std::string jsonSerializedMessage;
+            auto status = google::protobuf::util::MessageToJsonString(results, &jsonSerializedMessage);
+
+            Check(status.ok(), "Can not serialize data as json in file: " + fileName);
+
+            outputFile << jsonSerializedMessage;
+
+            std::cout << "Serialized json success." << std::endl;
+        } else {
+            Check(results.SerializePartialToOstream(&outputFile), "Can not serialize data as binary in file: " + fileName);
+            
+            std::cout << "Serialized binary success." << std::endl;
+        }
+    }
+
+    NArgumentParser::TArgumentParserResult Arguments;
+};
 
 NArgumentParser::TArgumentParserResult ParseArgs(int argc, char** argv) {
     NArgumentParser::TArgumentParser parser;
@@ -14,79 +88,9 @@ NArgumentParser::TArgumentParserResult ParseArgs(int argc, char** argv) {
     return parser.Parse(argc, argv);
 }
 
-std::unique_ptr<PFDESolver::TClientConfig> GetConfig(const NArgumentParser::TArgumentParserResult& args) {
-    const std::string& fileName = args.Get<const std::string&>("--input-file");
-
-    auto config = std::make_unique<PFDESolver::TClientConfig>();
-
-    std::ifstream inputFile(fileName, std::ios::in | std::ios::binary);
-
-    if (!inputFile.is_open()) {
-        std::cerr << "Can not open file: " << fileName << std::endl;
-        std::exit(1);
-    }
-
-    std::ostringstream sstr;
-    sstr << inputFile.rdbuf();
-    std::string jsonConfig = sstr.str();
-    
-    auto status = google::protobuf::util::JsonStringToMessage(std::string_view(jsonConfig), config.get());
-
-    if (!status.ok()) {
-        std::cerr << status.message() << std::endl;
-        std::exit(1);
-    }
-
-    return config;
-}
-
-void SaveResults(const NArgumentParser::TArgumentParserResult& args, const PFDESolver::TResults& results) {
-    const std::string& fileName = args.Get<const std::string&>("--output-file");
-    const bool& isJson = args.Get<const bool&>("--output-json");
-
-    if (isJson) {
-        std::ofstream outputFile(fileName, std::ios::out | std::ios::binary);
-        
-        if (!outputFile.is_open()) {
-            std::cerr << "Can not open file: " << fileName << std::endl;
-            std::exit(1);
-        }
-
-        std::string jsonSerializedMessage;
-        google::protobuf::util::MessageToJsonString(results, &jsonSerializedMessage);
-
-        outputFile << jsonSerializedMessage;
-
-        std::cout << "Serialized json success." << std::endl;
-    } else {
-        std::ofstream outputFile(fileName, std::ios::out | std::ios::binary);
-        
-        if (!outputFile.is_open()) {
-            std::cerr << "Can not open file: " << fileName << std::endl;
-            std::exit(1);
-        }
-
-        if (!results.SerializePartialToOstream(&outputFile)) {
-            std::cerr << "Can not serialize data in file: " << fileName << std::endl;
-            std::exit(1);
-        }
-
-        std::cout << "Serialized binary success." << std::endl;
-    }
-}
-
-void SolveTask(const NArgumentParser::TArgumentParserResult& args) {
-    auto config = GetConfig(args);
-
-    PFDESolver::TResults results;
-    NFDESolverService::TFDESolverService service;
-
-    service.DoRunTask(config.get(), &results);
-    SaveResults(args, results);
-}
-
 int main(int argc, char** argv) {
     auto args = ParseArgs(argc, argv);
-    SolveTask(args);
+    TCLISolver solver(args);
+    solver.RunTask();
     return 0;
 }

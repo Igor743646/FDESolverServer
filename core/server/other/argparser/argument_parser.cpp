@@ -15,8 +15,8 @@ namespace NArgumentParser {
     {
         Arguments[argName] = TArgumentInfo{
             .Type = type,
-            .Description = description,
             .Require = require,
+            .Description = description,
             .Default = std::move(defaultValue),
         };
     }

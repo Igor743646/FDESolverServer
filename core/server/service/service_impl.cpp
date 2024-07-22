@@ -1,6 +1,7 @@
 #include "service_impl.hpp"
 
 #include <timer.hpp>
+#include <logger.hpp>
 
 namespace NFDESolverService {
 

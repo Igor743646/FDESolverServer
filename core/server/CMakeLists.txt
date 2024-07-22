@@ -12,15 +12,17 @@ add_subdirectory(protos)
 add_subdirectory(other)
 add_subdirectory(expression_calculator)
 add_subdirectory(fde_solver)
+add_subdirectory(service)
 
 # server
 add_executable(${PROJECT_NAME}_${CMAKE_BUILD_TYPE})
-target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC "src/server.cpp" "src/server_impl.cpp" "src/server_impl.hpp" "src/service_impl.cpp" "src/service_impl.hpp")
+target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC "src/server.cpp" "src/server_impl.cpp")
 target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
   MathExpressionParser
   MathExpressionParserGrammar
   FDESolverProtoFiles
   FDESolverLib
+  FDESolverService
   gRPC::grpc gRPC::grpc++ 
   protobuf::protobuf
   antlr4_static
@@ -29,15 +31,17 @@ target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${MathExpressionParser_HEADERS_DIR})
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverLib_HEADERS_DIR})
+target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverService_HEADERS_DIR})
 
 # cli
 add_executable(FDESolverCLI_${CMAKE_BUILD_TYPE})
-target_sources(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC "src/cli.cpp" "src/service_impl.cpp" "src/service_impl.hpp")
+target_sources(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC "src/cli.cpp")
 target_link_libraries(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC
   MathExpressionParser
   MathExpressionParserGrammar
   FDESolverProtoFiles
   FDESolverLib
+  FDESolverService
   ArgumentParser
   gRPC::grpc gRPC::grpc++ 
   protobuf::protobuf
@@ -48,3 +52,4 @@ target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverPr
 target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${MathExpressionParser_HEADERS_DIR})
 target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverLib_HEADERS_DIR})
 target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${ArgumentParser_HEADERS_DIR})
+target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverService_HEADERS_DIR})

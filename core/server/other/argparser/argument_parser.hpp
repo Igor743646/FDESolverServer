@@ -15,8 +15,8 @@ namespace NArgumentParser {
     class TArgumentParserResult;
     struct TArgumentInfo {
         TArgumentType   Type;
-        std::string     Description;
         bool            Require;
+        std::string     Description;
         std::any        Default;
 
         const std::string& Help() const {
