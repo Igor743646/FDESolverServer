@@ -2,8 +2,8 @@ package drawer
 
 import (
 	"fmt"
+	"io"
 	"math"
-	"net/http"
 	"slices"
 
 	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
@@ -23,13 +23,13 @@ func NewTResultDrawer(pbResults *pb.TResults) TResultDrawer {
 	return TResultDrawer{Results: pbResults, Config: pbResults.GetTask()}
 }
 
-func (rd *TResultDrawer) Render(writer http.ResponseWriter) {
+func (rd *TResultDrawer) Render(writer io.Writer) {
 	for _, result := range rd.Results.Results {
 		rd.RenderResult(writer, result)
 	}
 }
 
-func (rd *TResultDrawer) RenderResult(writer http.ResponseWriter, result *pb.TResult) {
+func (rd *TResultDrawer) RenderResult(writer io.Writer, result *pb.TResult) {
 	writer.Write([]byte(fmt.Sprintf(
 		`<div class="body-block" style="font-size:x-large;text-align:center">%s</div>`, result.GetMethodName(),
 	)))

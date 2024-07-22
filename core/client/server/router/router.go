@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	drawer "github.com/Igor743646/FDESolverServer/core/client/drawer"
-
 	pb "github.com/Igor743646/FDESolverServer/core/client/protos"
 
 	"google.golang.org/grpc"
