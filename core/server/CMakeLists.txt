@@ -29,3 +29,22 @@ target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${MathExpressionParser_HEADERS_DIR})
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverLib_HEADERS_DIR})
+
+# cli
+add_executable(FDESolverCLI_${CMAKE_BUILD_TYPE})
+target_sources(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC "src/cli.cpp" "src/service_impl.cpp" "src/service_impl.hpp")
+target_link_libraries(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC
+  MathExpressionParser
+  MathExpressionParserGrammar
+  FDESolverProtoFiles
+  FDESolverLib
+  ArgumentParser
+  gRPC::grpc gRPC::grpc++ 
+  protobuf::protobuf
+  antlr4_static
+)
+
+target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})
+target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${MathExpressionParser_HEADERS_DIR})
+target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverLib_HEADERS_DIR})
+target_include_directories(FDESolverCLI_${CMAKE_BUILD_TYPE} PUBLIC ${ArgumentParser_HEADERS_DIR})

@@ -20,19 +20,6 @@ protobuf_generate(
     OUT_VAR PROTO_SRCS_GRPC
     PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/cpp")
 
-# PYTHON
-protobuf_generate(
-    TARGET PB_Files
-    LANGUAGE python
-    OUT_VAR PY_PROTO_SRCS_PB
-    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py")
-
-protobuf_generate(
-    TARGET GRPC_Files
-    LANGUAGE python
-    OUT_VAR PY_PROTO_SRCS_GRPC
-    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py")
-
 # GO
 protobuf_generate(
     TARGET PB_Files
@@ -63,14 +50,6 @@ protobuf_generate(
 
 protobuf_generate(
     TARGET GRPC_Files
-    LANGUAGE grpc
-    OUT_VAR PY_PROTO_SRCS_GRPC_GRPC
-    PLUGIN protoc-gen-grpc=$<TARGET_FILE:gRPC::grpc_python_plugin>
-    PROTOC_OUT_DIR "${PROJECT_SOURCE_DIR}/py"
-    GENERATE_EXTENSIONS _pb2_grpc.py)
-
-protobuf_generate(
-    TARGET GRPC_Files
     LANGUAGE go-grpc
     OUT_VAR GO_PROTO_SRCS_GRPC_GRPC
     PLUGIN "protoc-gen-go-grpc=$ENV{GOPATH}/bin/protoc-gen-go-grpc.exe"
@@ -91,19 +70,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${gRPC_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${absl_INCLUDE_DIRS})
 DEFINE_LIB_HEADERS(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/cpp")
 
-
-
-add_custom_target(PY_${PROJECT_NAME} ALL SOURCES ${PY_PROTO_SRCS_PB} ${PY_PROTO_SRCS_GRPC} ${PY_PROTO_SRCS_GRPC_GRPC})
 add_custom_target(GO_${PROJECT_NAME} ALL SOURCES ${GO_PROTO_SRCS_PB} ${GO_PROTO_SRCS_GRPC} ${GO_PROTO_SRCS_GRPC_GRPC})
-
-# Copy python files
-add_custom_command(TARGET PY_${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/py/" "${PROJECT_SOURCE_DIR}/../../client/libs/generated/"
-    COMMENT "Copy python protos"
-)
 
 # Copy go files
 add_custom_command(TARGET GO_${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/go/" "${PROJECT_SOURCE_DIR}/../../client_go/protos/generated/"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/go/" "${PROJECT_SOURCE_DIR}/../../client/protos/generated/"
     COMMENT "Copy go protos"
 )

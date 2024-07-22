@@ -63,7 +63,7 @@ namespace ANTLRMathExpParser {
     class MathExpressionCalculator {
     public:
 
-        MathExpressionCalculator(std::string, const std::vector<std::string>&);
+        MathExpressionCalculator(const std::string&, const std::vector<std::string>&);
 
         void SetVar(std::string, double);
         double Calc();

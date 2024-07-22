@@ -282,8 +282,8 @@ namespace ANTLRMathExpParser {
 }
 
 namespace ANTLRMathExpParser {
-    MathExpressionCalculator::MathExpressionCalculator(std::string expression, const std::vector<std::string>& variables) {
-        Input = std::make_unique<antlr4::ANTLRInputStream>(expression);
+    MathExpressionCalculator::MathExpressionCalculator(const std::string& expression, const std::vector<std::string>& variables) {
+        Input = std::make_unique<antlr4::ANTLRInputStream>(std::move(expression));
         Lexer = std::make_unique<ANTLRMathExpParser::TLexer>(Input.get());
         Tokens = std::make_unique<antlr4::CommonTokenStream>(Lexer.get());
         Tokens->fill();

@@ -1,3 +1,7 @@
+import os
+import argparse
+
+from argparse import ArgumentParser
 from conan import ConanFile
 from conan.tools.cmake import cmake_layout, CMake
 
@@ -27,3 +31,25 @@ class FDESolverServer(ConanFile):
         cmake = CMake(self)
         cmake.configure(variables={"CMAKE_BUILD_TYPE" : self.settings.build_type})
         cmake.build()
+
+
+def ParseArguments() -> argparse.Namespace:
+    parser = ArgumentParser()
+    parser.add_argument("-db", "--debug", action="store_true", 
+                        help="build with Debug build type")
+    parser.add_argument("-rel", "--release", action="store_true", 
+                        help="build with Release build type")
+
+    return parser.parse_args()
+
+
+def main():
+    args = ParseArguments()
+    if args.debug:
+        os.system("conan build . -s build_type=Debug")
+    if args.release:
+        os.system("conan build . -s build_type=Release")
+
+
+if __name__ == "__main__":
+    main()
