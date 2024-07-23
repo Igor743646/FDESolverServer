@@ -61,8 +61,7 @@ namespace NArgumentParser {
             Results[key].second = info;
         }
 
-        template<>
-        void Set<std::any, std::any&>(const TArgumentInfo& info, const std::string& key, std::any& defaultValue) {
+        void SetDefault(const TArgumentInfo& info, const std::string& key, std::any& defaultValue) {
             Results[key].first.swap(defaultValue);
             Results[key].second = info;
         }
@@ -94,5 +93,3 @@ namespace NArgumentParser {
         std::unordered_map<std::string, std::pair<std::any, TArgumentInfo>> Results;
     };
 }
-
-

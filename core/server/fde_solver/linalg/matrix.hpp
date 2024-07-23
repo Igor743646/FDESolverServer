@@ -30,7 +30,9 @@ namespace NLinalg {
 
         const f64* Data() const noexcept;
         size_t BufferLength() const noexcept;
-        std::pair<usize, usize> Shape() const noexcept;
+        std::pair<usize, usize> Shape() const noexcept(
+            noexcept(std::pair<usize, usize>(Rows, Columns))
+        );
         void Reset() noexcept;
         void SwapRows(usize, usize);
         void SwapColumns(usize, usize);
@@ -39,7 +41,7 @@ namespace NLinalg {
         void TransponseQuad();
         std::optional<TPluResult> LUFactorizing();
 
-        /// @brief Метод решения линейного матричного уравнения через PLU разложение \\
+        /// @brief Метод решения линейного матричного уравнения через PLU разложение
         /// @brief Ax = b => PLUx = b => LUx = P^(-1)b = P^(T)b
         /// @param b вектор значений с правой стороны уравнения
         /// @exception Метод вызывает исключение, если матрица не квадратная
