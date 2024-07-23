@@ -21,9 +21,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # conan generated package configs
     set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(CMAKE_CXX_FLAGS_DEBUG "-Wall")
-    set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
+    set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wpedantic -Werror -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "-Wall -Wpedantic -Werror -O2")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}")
 
     # conan generated package configs
     set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/generators/" "${CMAKE_PREFIX_PATH}")

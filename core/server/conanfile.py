@@ -26,6 +26,8 @@ class FDESolverServer(ConanFile):
     def layout(self):
         if self.settings.os == "Windows":
             cmake_layout(self, build_folder=f"build/{self.settings.build_type}")
+        if self.settings.os == "Linux":
+            cmake_layout(self)
 
     def build(self):
         cmake = CMake(self)

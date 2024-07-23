@@ -44,7 +44,7 @@ namespace NEquationSolver {
             auto plu = matrix.LUFactorizing();
 
             if (!plu.has_value()) {
-                throw std::exception("PLU Decomposition error");
+                NStackTracer::TStackTracer::ThrowWithMessage("PLU Decomposition error");
             }
             
             // Math: Au^k=d^k

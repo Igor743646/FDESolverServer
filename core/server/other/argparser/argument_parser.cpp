@@ -1,5 +1,6 @@
 #include "argument_parser.hpp"
 #include <string>
+#include <cstring>
 
 namespace NArgumentParser {
 
@@ -77,7 +78,7 @@ namespace NArgumentParser {
 
         for (auto& [k, v] : Arguments) {
             if (v.HasDefault() && !result.Has(k)) {
-                result.Set<std::any>(v, k, v.Default);
+                result.SetDefault(v, k, v.Default);
                 continue;
             }
             if (v.IsRequire() && !result.Has(k)) {   
