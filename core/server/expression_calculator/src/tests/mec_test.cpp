@@ -5,7 +5,7 @@
 #include <math_expression_calculator.hpp>
 
 constexpr std::array<std::pair<const char*, double>, 19> DATA1 = {
-    std::pair{"", 0},
+    std::pair{"0", 0},
     std::pair{"3 + 3", 6},
     std::pair{"3 - 3", 0},
     std::pair{"3 * 3", 9},

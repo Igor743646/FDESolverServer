@@ -15,7 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(CMAKE_CXX_FLAGS_DEBUG "/WX /W3 /EHa /FA")
-    set(CMAKE_CXX_FLAGS_RELEASE "/WX /W3 /O2 /arch:AVX512")
+    set(CMAKE_CXX_FLAGS_RELEASE "/WX /W3 /O2 /FA /arch:AVX2")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../../bin")
 
     # conan generated package configs

@@ -42,6 +42,10 @@ namespace NEquationSolver {
             FillMatrix(matrix);
 
             auto plu = matrix.LUFactorizing();
+
+            if (!plu.has_value()) {
+                throw std::exception("PLU Decomposition error");
+            }
             
             // Math: Au^k=d^k
             std::vector<f64> d(n + 1, 0.0);
@@ -50,7 +54,7 @@ namespace NEquationSolver {
                 FillDestination(d, result, t);
                 
                 // solve system
-                const auto r = TMatrix::Solve(plu, d).value();
+                const auto r = TMatrix::Solve(plu.value(), d).value();
                 std::memcpy(result[t].data(), r.data(), r.size() * sizeof(f64));
             }
 

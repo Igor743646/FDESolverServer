@@ -19,6 +19,7 @@ namespace NLinalg {
         TMatrix();
         TMatrix(usize, usize, f64 = 0.0);
         TMatrix(usize, usize, const std::vector<f64>&);
+        TMatrix(usize, usize, const std::vector<std::vector<f64>>&);
         TMatrix(const TMatrix&);
         TMatrix(TMatrix&&);
         explicit TMatrix(const std::vector<f64>&);
@@ -27,14 +28,16 @@ namespace NLinalg {
         TMatrix& operator=(TMatrix&&);
         ~TMatrix();
 
-        size_t BufferLength() const;
-        std::pair<usize, usize> Shape() const;
+        const f64* Data() const noexcept;
+        size_t BufferLength() const noexcept;
+        std::pair<usize, usize> Shape() const noexcept;
+        void Reset() noexcept;
         void SwapRows(usize, usize);
         void SwapColumns(usize, usize);
 
         static TMatrix E(usize);
         void TransponseQuad();
-        TPluResult LUFactorizing();
+        std::optional<TPluResult> LUFactorizing();
 
         /// @brief Метод решения линейного матричного уравнения через PLU разложение \\
         /// @brief Ax = b => PLUx = b => LUx = P^(-1)b = P^(T)b
@@ -48,6 +51,7 @@ namespace NLinalg {
         std::span<f64> operator[](usize);
         friend TMatrix operator*(const TMatrix&, const TMatrix&);
         friend std::vector<f64> operator*(const std::vector<f64>&, const TMatrix&);
+        bool operator==(const TMatrix&) const;
 
         friend std::ostream& operator<<(std::ostream& out, const TMatrix& m);
         PFDESolver::TMatrix ToProto() const;

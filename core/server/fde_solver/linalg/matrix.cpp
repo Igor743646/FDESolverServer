@@ -5,7 +5,7 @@
     #define data_prefetch(pointer) __builtin_prefetch((pointer), 0, 1)  
 #else 
     #include <intrin.h>
-    #define data_prefetch(pointer) _mm_prefetch((pointer), _MM_HINT_T1)    
+    #define data_prefetch(pointer) _mm_prefetch((pointer), _MM_HINT_T0)    
 #endif
 #include <matrix.pb.h>
 
@@ -24,8 +24,21 @@ namespace NLinalg {
     TMatrix::TMatrix(usize rows, usize columns, const std::vector<f64>& v)
     : Rows(rows), Columns(columns) {
         const usize length = BufferLength();
+        STACK_ASSERT(length == v.size(), "length != v.size()");
         Matrix = new f64[length];
         std::memcpy(Matrix, v.data(), length * sizeof(f64));
+    }
+
+    TMatrix::TMatrix(usize rows, usize columns, const std::vector<std::vector<f64>>& v)
+    : Rows(rows), Columns(columns) {
+        const usize length = BufferLength();
+        STACK_ASSERT(Rows == v.size(), "Rows != v.size()");
+        f64* dataIter = Matrix = new f64[length];
+        for (auto rowIter = v.cbegin(); rowIter != v.cend(); rowIter++) {
+            STACK_ASSERT(Columns == rowIter->size(), "Columns != rowIter->size()");
+            std::memcpy(dataIter, rowIter->data(), Columns * sizeof(f64));
+            dataIter += Columns;
+        }
     }
     
     TMatrix::TMatrix(const TMatrix& matrix) 
@@ -38,7 +51,7 @@ namespace NLinalg {
     TMatrix::TMatrix(TMatrix&& matrix) 
     : Rows(matrix.Rows), Columns(matrix.Columns) {
         Matrix = matrix.Matrix;
-        matrix.Matrix = nullptr;
+        matrix.Reset();
     }
 
     TMatrix::TMatrix(usize rows) 
@@ -69,7 +82,7 @@ namespace NLinalg {
         Rows = matrix.Rows;
         Columns = matrix.Columns;
         Matrix = matrix.Matrix;
-        matrix.Matrix = nullptr;
+        matrix.Reset();
 
         return *this;
     }
@@ -78,9 +91,19 @@ namespace NLinalg {
         if (Matrix != nullptr) {
             delete[] Matrix;
         }
+        Reset();
     }
 
-    inline usize TMatrix::BufferLength() const {
+    const f64* TMatrix::Data() const noexcept {
+        return Matrix;
+    }
+
+    void TMatrix::Reset() noexcept {
+        Rows = Columns = 0;
+        Matrix = nullptr;
+    }
+
+    inline usize TMatrix::BufferLength() const noexcept {
         return Rows * Columns;
     }
 
@@ -122,7 +145,24 @@ namespace NLinalg {
         return result;
     }
 
-    std::pair<usize, usize> TMatrix::Shape() const {
+    bool TMatrix::operator==(const TMatrix& matrix) const {
+        bool result = true;
+
+        result &= (Rows == matrix.Rows);
+        result &= (Columns == matrix.Columns);
+
+        if (result) {
+            for (usize i = 0; i < BufferLength(); i++) {
+                result &= (std::abs(Data()[i] - matrix.Data()[i]) < EPSILON);
+            }
+        }
+
+        return result;
+    }
+
+    std::pair<usize, usize> TMatrix::Shape() const noexcept(
+        noexcept(std::pair<usize, usize>(Rows, Columns))
+    ) {
         return {Rows, Columns};
     }
 
@@ -132,8 +172,10 @@ namespace NLinalg {
             return;
         }
 
+        const usize iRow = i * Columns;
+        const usize jRow = j * Columns;
         for (usize idx = 0; idx < Columns; idx++) {
-            std::swap(Matrix[i * Columns + idx], Matrix[j * Columns + idx]);
+            std::swap(Matrix[iRow + idx], Matrix[jRow + idx]);
         }
     }
 
@@ -148,43 +190,44 @@ namespace NLinalg {
         }
     }
 
-    TMatrix::TPluResult TMatrix::LUFactorizing() {
+    std::optional<TMatrix::TPluResult> TMatrix::LUFactorizing() {
         STACK_ASSERT(Columns == Rows, "Columns != Rows");
+        const usize matSize = Rows;
 
-        std::vector<usize> p(Rows);
+        std::vector<usize> p(matSize);
         TMatrix lu(*this);
 
-        for (usize i = 0; i < Rows; i++) {
+        for (usize i = 0; i < matSize; i++) {
             p[i] = i;
         }
 
-        for (usize colId = 0; colId < Columns; colId++) {
+        for (usize colId = 0; colId < matSize; colId++) {
 
             // 1. Находим строку с максимальным по модулю элементом.
             {
-                usize rowMax = colId;
-                for (usize rowId = colId + 1; rowId < Rows; rowId++) {
-                    if (std::abs(lu[rowId][colId]) > std::abs(lu[rowMax][colId])) {
-                        rowMax = rowId;
+                usize rowMaxId = colId;
+                for (usize rowId = colId + 1; rowId < matSize; rowId++) {
+                    if (std::abs(lu[rowId][colId]) > std::abs(lu[rowMaxId][colId])) {
+                        rowMaxId = rowId;
                     }
                 }
 
-                if (lu[rowMax][colId] == 0.0) {
-                    continue;
+                if (lu[rowMaxId][colId] == 0.0) {
+                    return std::nullopt;
                 }
 
                 // 2. Меняем строки в U и обновляем L.
-                if (rowMax != colId) {
-                    std::swap(p[colId], p[rowMax]);
-                    lu.SwapRows(colId, rowMax);
+                if (rowMaxId != colId) {
+                    std::swap(p[colId], p[rowMaxId]);
+                    lu.SwapRows(colId, rowMaxId);
                 }
             }
 
             // 3. Алгоритм Гаусса
-            for (usize rowId = colId + 1; rowId < Rows; rowId++) {
+            for (usize rowId = colId + 1; rowId < matSize; rowId++) {
                 const f64 koef = lu[rowId][colId] /= lu[colId][colId];
 
-                for (usize t = colId + 1; t < Columns; t++) {
+                for (usize t = colId + 1; t < matSize; t++) {
                     lu[rowId][t] -= koef * lu[colId][t];
                 }
             }
@@ -194,26 +237,32 @@ namespace NLinalg {
     }
 
     std::optional<std::vector<f64>> TMatrix::Solve(const std::vector<f64>& b) {
-        // 1. Делаем LU - разложение
         auto plu = LUFactorizing();
-        return TMatrix::Solve(plu, b);
+        
+        if (!plu.has_value()) {
+            return std::nullopt;
+        }
+
+        return TMatrix::Solve(plu.value(), b);
     }
 
     std::optional<std::vector<f64>> TMatrix::Solve(const TPluResult& plu, const std::vector<f64>& b) {
-        auto& [P, LU] = plu;
+        const auto& [P, LU] = plu;
 
         STACK_ASSERT(P.size() == b.size(), "P.size() != b.size()");
-        STACK_ASSERT(LU.Rows == LU.Columns && LU.Columns == b.size(), "Bad size plu with b vector");
+        // STACK_ASSERT(LU.Rows == LU.Columns && LU.Columns == b.size(), "Bad size plu with b vector");
 
         // 1. Вычисляем P^(T)b = bP = y (1 x n)
-        std::vector<f64> y(P.size());
+        std::vector<f64> y(P.size(), 0.0);
 
         for (usize i = 0; i < P.size(); i++) {
             y[i] = b[P[i]];
-        }
 
-        // 2. Вычисляем L * z = y;
-        for (usize i = 0; i < P.size(); i++) {
+            if (std::abs(LU[i][i]) < EPSILON) {
+                return std::nullopt;
+            }
+
+            // 2. Вычисляем L * z = y;
             for (usize j = 0; j < i; j++) {
                 y[i] -= LU[i][j] * y[j];
             }
@@ -225,10 +274,6 @@ namespace NLinalg {
                 y[i] -= LU[i][j] * y[j];
             }
 
-            if (std::abs(LU[i][i]) < EPSILON) {
-                return std::nullopt;
-            }
-            
             y[i] /= LU[i][i];
         }
 
@@ -275,9 +320,8 @@ namespace NLinalg {
         PFDESolver::TMatrix matrix;
         matrix.set_rows(Rows);
         matrix.set_columns(Columns);
-        for (usize i = 0; i < Rows * Columns; i++) {
-            matrix.add_data(Matrix[i]);
-        }
+        auto dataPtr = matrix.mutable_data();
+        dataPtr->Assign(Matrix, Matrix + BufferLength());
         return matrix;
     }
 }
