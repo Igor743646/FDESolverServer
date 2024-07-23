@@ -35,7 +35,7 @@ class FDESolverServer(ConanFile):
 
 def ParseArguments() -> argparse.Namespace:
     parser = ArgumentParser()
-    parser.add_argument("-db", "--debug", action="store_true", 
+    parser.add_argument("-deb", "--debug", action="store_true", 
                         help="build with Debug build type")
     parser.add_argument("-rel", "--release", action="store_true", 
                         help="build with Release build type")

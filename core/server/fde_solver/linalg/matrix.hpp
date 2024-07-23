@@ -27,11 +27,13 @@ namespace NLinalg {
         TMatrix& operator=(TMatrix&&);
         ~TMatrix();
 
+        size_t BufferLength() const;
         std::pair<usize, usize> Shape() const;
         void SwapRows(usize, usize);
         void SwapColumns(usize, usize);
 
         static TMatrix E(usize);
+        void TransponseQuad();
         TPluResult LUFactorizing();
 
         /// @brief Метод решения линейного матричного уравнения через PLU разложение \\

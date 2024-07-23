@@ -39,7 +39,7 @@ namespace NLogger {
 
         static_assert(LogLevel == 1 || LogLevel == 2 || LogLevel == 3);
 
-        TLogHelper(const char* name, const char* file, int line, const char* color) : TLogHelperBase() {
+        TLogHelper(const char* name, const char* file, int line) : TLogHelperBase() {
             if (LogLevel <= GetUserLogLevel()) {
                 Out << "[ " << std::setw(5) << name << " ] " << file << "(" << line << ")";
                 Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
@@ -79,8 +79,8 @@ namespace NLogger {
 
 
 #define BASE_LOG(level, file, line, ...) NLogger::TLogHelper<level>{file, line, __VA_ARGS__}
-#define INFO_LOG  BASE_LOG(2, "INFO", (__FILENAME__), (__LINE__), "\033[1;93m")
-#define DEBUG_LOG BASE_LOG(3, "DEBUG", (__FILENAME__), (__LINE__), "\033[1;94m")
-#define ERROR_LOG BASE_LOG(1, "ERROR", (__FILENAME__), (__LINE__), "\033[1;91m")
-#define WARNING_LOG BASE_LOG(1, "WARN", (__FILENAME__), (__LINE__), "\033[38;5;207m")
+#define INFO_LOG  BASE_LOG(2, "INFO", (__FILENAME__), (__LINE__))
+#define DEBUG_LOG BASE_LOG(3, "DEBUG", (__FILENAME__), (__LINE__))
+#define ERROR_LOG BASE_LOG(1, "ERROR", (__FILENAME__), (__LINE__))
+#define WARNING_LOG BASE_LOG(1, "WARN", (__FILENAME__), (__LINE__))
 #define Endl '\n'

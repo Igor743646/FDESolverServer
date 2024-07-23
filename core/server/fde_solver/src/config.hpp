@@ -5,7 +5,7 @@
 #include <matrix.hpp>
 
 namespace PFDESolver {
-    struct TSolverConfig;
+    class TSolverConfig;
 }
 
 namespace NEquationSolver {

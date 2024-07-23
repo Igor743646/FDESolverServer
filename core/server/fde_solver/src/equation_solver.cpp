@@ -136,7 +136,7 @@ namespace NEquationSolver {
             WARNING_LOG << "Or tau <= " << std::pow(right * PowSCAlpha / diffusionCMax, 1.0/Config.Gamma) << Endl;
         }
 
-        left = 2.0 * Config.SpaceStep * (CoefA(Space(diffusionCMaxId - Config.DiffusionCoefficient.begin())) * GAlpha[2] + CoefB(Space(diffusionCMaxId - Config.DiffusionCoefficient.begin())));
+        left = 2.0 * Config.SpaceStep * (CoefA(diffusionCMaxId - Config.DiffusionCoefficient.begin()) * GAlpha[2] + CoefB(diffusionCMaxId - Config.DiffusionCoefficient.begin()));
         right = demolitionCMax * PowTCGamma;
         if (left > right) {
             WARNING_LOG << "May be problem with condition" << Endl
@@ -144,7 +144,7 @@ namespace NEquationSolver {
                         << "\t\tpow(tau, gamma)*V: " << right << Endl;
         }
 
-        left = 2.0 * Config.SpaceStep * (CoefB(Space(diffusionCMaxId - Config.DiffusionCoefficient.begin())) * GAlpha[2] + CoefA(Space(diffusionCMaxId - Config.DiffusionCoefficient.begin())));
+        left = 2.0 * Config.SpaceStep * (CoefB(diffusionCMaxId - Config.DiffusionCoefficient.begin()) * GAlpha[2] + CoefA(diffusionCMaxId - Config.DiffusionCoefficient.begin()));
         right = demolitionCMax * PowTCGamma;
         if (left < right) {
             WARNING_LOG << "May be problem with condition" << Endl

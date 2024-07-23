@@ -21,10 +21,10 @@ namespace NEquationSolver {
             return "Stochastic method with " + TFiller::Name();
         }
 
-        virtual TResult DoSolve(bool saveMeta) override {
+        virtual TResult DoSolve(bool /*saveMeta*/) override {
             INFO_LOG << "Start solving Stochastic fractional-derivative equation solver..." << Endl;
-            const usize n = Config.SpaceCount;
-            const usize k = Config.TimeCount;
+            const i64 n = static_cast<i64>(Config.SpaceCount);
+            const i64 k = static_cast<i64>(Config.TimeCount);
             const usize count = Config.StochasticIterationCount;
 
             DEBUG_LOG << "n: " << n <<  " k: " <<  k <<  " count: " << count  << Endl;
@@ -33,19 +33,19 @@ namespace NEquationSolver {
             NLinalg::TMatrix probabilities(n - 1, 2 * n + 2 + k, 0.0);
             NLinalg::TMatrix prefsumProbs(n - 1, 2 * n + 2 + k, 0.0);
 
-            for (usize i = 0; i < n - 1; i++) {
-                for (usize p = 0; p < 2 * n + 2 + k; p++) {
+            for (i64 i = 0; i < n - 1; i++) {
+                for (i64 p = 0; p < 2 * n + 2 + k; p++) {
                     probabilities[i][p] = TFiller::FillProbabilities(this, probabilities, i + 1, p);
                 }
                 std::inclusive_scan(probabilities[i].begin(), probabilities[i].end(), prefsumProbs[i].begin());
             }
 
             // Учёт начального и граничных условий
-            for (usize i = 0; i <= n; i++) {
+            for (i64 i = 0; i <= n; i++) {
                 result[0][i] = Config.ZeroTimeState[i];
             }
 
-            for (usize j = 1; j <= k; j++) {
+            for (i64 j = 1; j <= k; j++) {
                 result[j][0] = Config.LeftBoundState[j];
                 result[j][n] = Config.RightBoundState[j];
             }
@@ -58,7 +58,7 @@ namespace NEquationSolver {
 
             for (i64 j = 1; j <= k; j++) {
                 for (i64 i = 1; i < n; i++) {
-                    for (i64 _n = 0; _n < count; _n++) {
+                    for (usize _ = 0; _ < count; _++) {
                         i64 x = i, y = j;
                         f64 sf = 0.0;
 

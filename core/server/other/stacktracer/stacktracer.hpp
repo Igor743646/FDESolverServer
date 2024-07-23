@@ -6,7 +6,7 @@
 
 namespace NStackTracer {
 
-    class TExceptionWithStack : std::exception {
+    class TExceptionWithStack : public std::exception {
     public:
 
         TExceptionWithStack(const char* message) : std::exception() {
@@ -31,12 +31,12 @@ namespace NStackTracer {
             std::cout << boost::stacktrace::stacktrace() << std::endl;
         }
 
-        static void ThrowWithMessage(const char* message) {
+        [[noreturn]] static void ThrowWithMessage(const char* message) {
             throw boost::enable_error_info(TExceptionWithStack(message))
                 << traced(boost::stacktrace::stacktrace());
         }
 
-        static void ThrowWithMessage(const std::string& message) {
+        [[noreturn]] static void ThrowWithMessage(const std::string& message) {
             throw boost::enable_error_info(TExceptionWithStack(message.c_str()))
                 << traced(boost::stacktrace::stacktrace());
         }

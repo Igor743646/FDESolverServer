@@ -23,7 +23,7 @@ namespace NEquationSolver {
             return "Matrix method with " + TFiller::Name();
         }
 
-        virtual TResult DoSolve(bool saveMeta) override {
+        virtual TResult DoSolve(bool /*saveMeta*/) override {
             INFO_LOG << "Start solving Matrix fractional-derivative equation solver..." << Endl;
             const usize n = Config.SpaceCount;
             const usize k = Config.TimeCount;

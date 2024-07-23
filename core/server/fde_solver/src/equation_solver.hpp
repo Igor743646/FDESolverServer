@@ -16,7 +16,6 @@
 #include "config.hpp"
 
 namespace PFDESolver {
-    class TSolverConfig;
     class TResult;
 }
 

@@ -36,4 +36,23 @@ TEST_CASE("MatrixConstructor", "[initialize]") {
             REQUIRE(matrix[i / 2][i % 2] == i + 1);
         }
     }
+
+    auto pluTest = [](size_t size) -> NLinalg::TMatrix::TPluResult {
+        NLinalg::TMatrix matrix(size, size);
+        for (size_t i = 0; i < size; i++) {
+            for (size_t j = 0; j < size; j++) {
+                matrix[i][j] = (double)(i * size + j);
+            }    
+        }
+
+        return matrix.LUFactorizing();
+    };
+
+    BENCHMARK ("PLU 300x300") {
+       return pluTest(300);
+    };
+
+    BENCHMARK ("PLU 600x600") {
+        return pluTest(600);
+    };
 }

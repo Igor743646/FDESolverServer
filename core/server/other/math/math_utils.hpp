@@ -30,7 +30,7 @@ using i64  = int64_t;
 using ui64 = uint64_t;
 using usize = size_t;
 using f32 = float;
-using f64 = long double;
+using f64 = double;
 
 constexpr f64 EPSILON = 0.0000001;
 

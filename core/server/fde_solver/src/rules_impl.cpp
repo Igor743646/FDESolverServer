@@ -29,8 +29,6 @@ namespace NEquationSolver {
 
     // Math: d_i^k = \sum_{j=1}^{k}{g_{\gamma, j}(u_i^{k-j} - u_i^0)} - (u_i^0 + \tau^\gamma f(x_i, t_j))
     f64 TMFDESRule::FillDestination(IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize k) {
-        const usize n = solver->GetConfig().SpaceCount;
-
         f64 di = 0.0;
 
         di -= result[0][i];
@@ -46,8 +44,8 @@ namespace NEquationSolver {
     f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
-        const double alpha = solver->GetConfig().Alpha;
-        const double gamma = solver->GetConfig().Gamma;
+        const f64 alpha = solver->GetConfig().Alpha;
+        const f64 gamma = solver->GetConfig().Gamma;
 
         if (p < n - 1) {
             return solver->CoefB(i) * solver->CoefGAlpha(n - p + 1); 
@@ -92,7 +90,7 @@ namespace NEquationSolver {
     }
 
     f64 TRLFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
-        const f64 n = solver->GetConfig().SpaceCount;
+        const usize n = solver->GetConfig().SpaceCount;
         f64 result = 0.0;
 
         if (i + 1 >= j) { // Left
@@ -147,8 +145,6 @@ namespace NEquationSolver {
 
     // Math: d_i^k = -\theta_{k}u_i^0 + \sum_{j=1}^{k-1}{(\theta_{k-j+1}-\theta_{k-j})u_i^{j}} - \tau^\gamma f(x_i, t_j)
     f64 TRLFDESRule::FillDestination(IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize k) {
-        const usize n = solver->GetConfig().SpaceCount;
-
         f64 di = 0.0;
 
         di -= CoefGDestination(solver, k) * result[0][i];
@@ -164,21 +160,19 @@ namespace NEquationSolver {
     f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
-        const double alpha = solver->GetConfig().Alpha;
-        const double gamma = solver->GetConfig().Gamma;
 
         if (p == n) {
             return ((CoefGMatrix(solver, 1) - CoefGMatrix(solver, 0)) * (solver->CoefA(i) + solver->CoefB(i)) + (CoefGDestination(solver, 0) - CoefGDestination(solver, 2))) / CoefGDestination(solver, 0);
         }
         if (p == n - 1) {
-            double result = (CoefGMatrix(solver, 0) * solver->CoefA(i) + (CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefB(i) + solver->CoefC(i)) / CoefGDestination(solver, 0);
+            f64 result = (CoefGMatrix(solver, 0) * solver->CoefA(i) + (CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefB(i) + solver->CoefC(i)) / CoefGDestination(solver, 0);
             if (i == n - 1) {
                 result -= (CoefGMatrix(solver, 2) * solver->CoefB(i)) / CoefGDestination(solver, 0);
             }
             return result;
         }
         if (p == n + 1) {
-            double result = ((CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefA(i) + CoefGMatrix(solver, 0) * solver->CoefB(i) - solver->CoefC(i)) / CoefGDestination(solver, 0);
+            f64 result = ((CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefA(i) + CoefGMatrix(solver, 0) * solver->CoefB(i) - solver->CoefC(i)) / CoefGDestination(solver, 0);
             if (i == 1) {
                 result -= (CoefGMatrix(solver, 2) * solver->CoefA(i)) / CoefGDestination(solver, 0);
             }

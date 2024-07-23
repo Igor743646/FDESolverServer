@@ -14,15 +14,15 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(CMAKE_CXX_FLAGS_DEBUG_INIT "/Wall /EHa")
-    set(CMAKE_CXX_FLAGS_RELEASE_INIT "/Wall /O2 /arch:AVX512")
+    set(CMAKE_CXX_FLAGS_DEBUG "/WX /W3 /EHa /FA")
+    set(CMAKE_CXX_FLAGS_RELEASE "/WX /W3 /O2 /arch:AVX512")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../../bin")
 
     # conan generated package configs
     set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/generators/" "${CMAKE_PREFIX_PATH}")
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
-    set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall -O2")
+    set(CMAKE_CXX_FLAGS_DEBUG "-Wall")
+    set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O2")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 
     # conan generated package configs
@@ -33,6 +33,8 @@ endif()
 
 message(STATUS "C Flags: ${CMAKE_C_FLAGS}")
 message(STATUS "CXX Flags: ${CMAKE_CXX_FLAGS}")
+message(STATUS "CXX Debug Flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "CXX Release Flags: ${CMAKE_CXX_FLAGS_RELEASE}")
 message(STATUS "-----------------------------------------------------")
 include("${CMAKE_SOURCE_DIR}/cmake/dependencies.cmake")
 message(STATUS "-----------------------------------------------------")
