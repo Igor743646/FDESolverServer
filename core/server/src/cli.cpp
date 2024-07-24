@@ -89,6 +89,8 @@ NArgumentParser::TArgumentParserResult ParseArgs(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
+    NLogger::ChangeLogLevel(3);
+    
     auto args = ParseArgs(argc, argv);
     TCLISolver solver(args);
     solver.RunTask();

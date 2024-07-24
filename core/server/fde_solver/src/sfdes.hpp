@@ -23,6 +23,8 @@ namespace NEquationSolver {
 
         virtual TResult DoSolve(bool /*saveMeta*/) override {
             INFO_LOG << "Start solving Stochastic fractional-derivative equation solver..." << Endl;
+            
+
             const i64 n = static_cast<i64>(Config.SpaceCount);
             const i64 k = static_cast<i64>(Config.TimeCount);
             const usize count = Config.StochasticIterationCount;
@@ -53,18 +55,20 @@ namespace NEquationSolver {
             // Симуляция
             NTimer::TTimer timer;
             std::random_device device;
-            std::knuth_b engine(device());  // knuth better than mt19937
+            std::minstd_rand0 engine(device());  // knuth_b better than mt19937, minstd_rand0...
             std::uniform_real_distribution<f64> generator(0.0, 1.0);
+            
+            const f64 fcount = static_cast<f64>(count);
 
             for (i64 j = 1; j <= k; j++) {
                 for (i64 i = 1; i < n; i++) {
-                    for (usize _ = 0; _ < count; _++) {
+                    for (i64 _ = 0; _ < (i64)count; _++) {
                         i64 x = i, y = j;
                         f64 sf = 0.0;
 
                         while (y > 0 && x < n && x > 0) {
-                            f64 rnd = generator(engine);
-                            i64 idx = std::lower_bound(prefsumProbs[x - 1].begin(), prefsumProbs[x - 1].end(), rnd) - prefsumProbs[x - 1].begin();
+                            const f64 rnd = generator(engine);
+                            const i64 idx = std::lower_bound(prefsumProbs[x - 1].begin(), prefsumProbs[x - 1].end(), rnd) - prefsumProbs[x - 1].begin();
 
                             sf += Config.SourceFunction[y][x];
 
@@ -83,10 +87,12 @@ namespace NEquationSolver {
                         if (y <= 0 && (x >= 0) && (x <= n)) {
                             result[j][i] += Config.ZeroTimeState[x];
                         } else if (Config.BordersAvailable) {
-                            if (x <= 0 && y > 0) {
-                                result[j][i] += Config.LeftBoundState[y];
-                            } else if (x >= n && y > 0) {
-                                result[j][i] += Config.RightBoundState[y];
+                            if (y > 0) {
+                                if (x <= 0) {
+                                    result[j][i] += Config.LeftBoundState[y];
+                                } else if (x >= n) {
+                                    result[j][i] += Config.RightBoundState[y];
+                                }
                             }
                         }
                     }
@@ -97,7 +103,7 @@ namespace NEquationSolver {
             // Scaling
             for (i64 j = 1; j <= k; j++) {
                 for (i64 i = 1; i < n; i++) {
-                    result[j][i] /= static_cast<f64>(count);
+                     result[j][i] /= fcount;
                 }
             }
             

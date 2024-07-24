@@ -32,7 +32,7 @@ using usize = size_t;
 using f32 = float;
 using f64 = double;
 
-constexpr f64 EPSILON = 0.00000001;
+constexpr f64 EPSILON = static_cast<f64>(0.00000001);
 
 namespace NFunctions {
     f64 Gamma(f64);
