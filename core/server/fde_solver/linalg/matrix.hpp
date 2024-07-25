@@ -61,6 +61,6 @@ namespace NLinalg {
     private:
 
         usize Rows, Columns;
-        f64* Matrix;
+        alignas(64) f64* Matrix;
     };
 }
