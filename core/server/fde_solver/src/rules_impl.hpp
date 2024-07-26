@@ -16,7 +16,7 @@ namespace NEquationSolver {
     };
 
     template<class T>
-    concept TProbabilitiesFillRuleConcept = requires (IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
+    concept TProbabilitiesFillRuleConcept = requires (IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize p) {
         requires !std::is_destructible_v<T>;
         requires !std::is_constructible_v<T>;
         { T::FillProbabilities(solver, probabilities, i, p) } -> std::convertible_to<f64>;
@@ -27,7 +27,7 @@ namespace NEquationSolver {
         static std::string Name() { return "Grunwald-Letnikov approximation"; }; 
         static f64 FillMatrix(IEquationSolver const *const, usize, usize);
         static f64 FillDestination(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
-        static f64 FillProbabilities(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
+        static f64 FillProbabilities(IEquationSolver const *const, const std::span<f64>&, usize, usize);
         TMFDESRule() = delete;
         ~TMFDESRule() = delete;
     };
@@ -36,7 +36,7 @@ namespace NEquationSolver {
         static std::string Name() { return "Riemann-Liouville approximation"; };
         static f64 FillMatrix(IEquationSolver const *const, usize, usize);
         static f64 FillDestination(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
-        static f64 FillProbabilities(IEquationSolver const *const, const NLinalg::TMatrix&, usize, usize);
+        static f64 FillProbabilities(IEquationSolver const *const, const std::span<f64>&, usize, usize);
         static f64 CoefGMatrix(IEquationSolver const *const, usize);
         static f64 CoefGDestination(IEquationSolver const *const, usize);
         TRLFDESRule() = delete;

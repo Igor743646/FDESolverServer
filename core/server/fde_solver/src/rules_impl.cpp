@@ -41,7 +41,7 @@ namespace NEquationSolver {
         return di;
     }
 
-    f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
+    f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize p) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
         const f64 alpha = solver->GetConfig().Alpha;
@@ -66,7 +66,7 @@ namespace NEquationSolver {
             return -solver->CoefGGamma(p - 2 * n + 1);
         } 
 
-        return 1.0 - std::accumulate(probabilities[i - 1].begin(), probabilities[i - 1].end(), 0.0);
+        return 1.0 - std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
     }
 
     /*
@@ -157,7 +157,7 @@ namespace NEquationSolver {
         return di;
     }
 
-    f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const NLinalg::TMatrix& probabilities, usize i, usize p) {
+    f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize p) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
 
@@ -201,7 +201,7 @@ namespace NEquationSolver {
         }
 
         if (p == 2 * n + k + 1) {
-            return 1.0 - std::accumulate(probabilities[i - 1].begin(), probabilities[i - 1].end(), 0.0);
+            return 1.0 - std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
         }
 
         return 0.0;

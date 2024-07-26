@@ -21,10 +21,31 @@ namespace NEquationSolver {
             return "Stochastic method with " + TFiller::Name();
         }
 
+    private:
+        
+        std::vector<std::discrete_distribution<i64>> CreateDistributions() const {
+            const i64 n = static_cast<i64>(Config.SpaceCount);
+            const i64 k = static_cast<i64>(Config.TimeCount);
+            const i64 probsLen = n + 1 + n + k + 1;
+
+            std::vector<std::discrete_distribution<i64>> result;
+            std::vector<f64> probabilities(probsLen, 0.0);
+
+            for (i64 i = 0; i < n - 1; i++) {
+                for (i64 p = 0; p < probsLen; p++) {
+                    probabilities[p] = TFiller::FillProbabilities(this, probabilities, i + 1, p);
+                }
+                result.emplace_back(probabilities.begin(), probabilities.end());
+            }
+
+            return result;
+        }
+
+    public:
+
         virtual TResult DoSolve(bool /*saveMeta*/) override {
             INFO_LOG << "Start solving Stochastic fractional-derivative equation solver..." << Endl;
             
-
             const i64 n = static_cast<i64>(Config.SpaceCount);
             const i64 k = static_cast<i64>(Config.TimeCount);
             const usize count = Config.StochasticIterationCount;
@@ -32,15 +53,7 @@ namespace NEquationSolver {
             DEBUG_LOG << "n: " << n <<  " k: " <<  k <<  " count: " << count  << Endl;
 
             NLinalg::TMatrix result(k + 1, n + 1, 0.0);
-            NLinalg::TMatrix probabilities(n - 1, 2 * n + 2 + k, 0.0);
-            NLinalg::TMatrix prefsumProbs(n - 1, 2 * n + 2 + k, 0.0);
-
-            for (i64 i = 0; i < n - 1; i++) {
-                for (i64 p = 0; p < 2 * n + 2 + k; p++) {
-                    probabilities[i][p] = TFiller::FillProbabilities(this, probabilities, i + 1, p);
-                }
-                std::inclusive_scan(probabilities[i].begin(), probabilities[i].end(), prefsumProbs[i].begin());
-            }
+            std::vector<std::discrete_distribution<i64>> distributions = CreateDistributions();
 
             // Учёт начального и граничных условий
             for (i64 i = 0; i <= n; i++) {
@@ -55,59 +68,61 @@ namespace NEquationSolver {
             // Симуляция
             NTimer::TTimer timer;
             std::random_device device;
-            std::minstd_rand0 engine(device());  // knuth_b better than mt19937, minstd_rand0...
-            std::uniform_real_distribution<f64> generator(0.0, 1.0);
-            
-            const f64 fcount = static_cast<f64>(count);
+            std::knuth_b engine(device());
+
+            const f64 koefNorm = 1.0 / static_cast<f64>(count);
+
+            NLinalg::TMatrix timeForCeil(k + 1, n + 1, 0.0);
 
             for (i64 j = 1; j <= k; j++) {
                 for (i64 i = 1; i < n; i++) {
+                    NTimer::TTimer ceilTimer;
+                    f64 resultji = 0.0;
+                    
                     for (i64 _ = 0; _ < (i64)count; _++) {
                         i64 x = i, y = j;
                         f64 sf = 0.0;
 
                         while (y > 0 && x < n && x > 0) {
-                            const f64 rnd = generator(engine);
-                            const i64 idx = std::lower_bound(prefsumProbs[x - 1].begin(), prefsumProbs[x - 1].end(), rnd) - prefsumProbs[x - 1].begin();
-
+                            const i64 idx = distributions[x - 1](engine);
                             sf += Config.SourceFunction[y][x];
 
-                            if (idx <= 2 * n) { // перемещение по пространству
-                                x += n - idx;
+                            if (idx <= 2 * n + k) {
                                 y--;
-                            } else if (idx <= 2 * n + k) { // перемещение по времени
-                                y -= idx - 2 * n + 1;
+                                if (idx - n - n <= 0) {
+                                    x -= idx - n;
+                                } else {
+                                    y -= idx - n - n;
+                                }
                             } else {
                                 break;
                             }
                         }
 
-                        result[j][i] += sf * PowTCGamma;
+                        resultji += sf * PowTCGamma;
 
                         if (y <= 0 && (x >= 0) && (x <= n)) {
-                            result[j][i] += Config.ZeroTimeState[x];
+                            resultji += Config.ZeroTimeState[x];
                         } else if (Config.BordersAvailable) {
                             if (y > 0) {
                                 if (x <= 0) {
-                                    result[j][i] += Config.LeftBoundState[y];
+                                    resultji += Config.LeftBoundState[y];
                                 } else if (x >= n) {
-                                    result[j][i] += Config.RightBoundState[y];
+                                    resultji += Config.RightBoundState[y];
                                 }
                             }
                         }
                     }
                     
+                    result[j][i] = resultji * koefNorm;
+                    timeForCeil[j][i] = ceilTimer.MilliSeconds().count();
+                    timeForCeil[0][i] += timeForCeil[j][i];
+                    timeForCeil[0][0] += timeForCeil[j][i];
                 }
             }
 
-            // Scaling
-            for (i64 j = 1; j <= k; j++) {
-                for (i64 i = 1; i < n; i++) {
-                     result[j][i] /= fcount;
-                }
-            }
-            
             DEBUG_LOG << "Simulation time: " << timer.MilliSeconds().count() << "ms" << Endl;
+            DEBUG_LOG << "Simulation time by ceil: " << Endl << timeForCeil << Endl;
 
             TResult res = {
                 .MethodName = Name(),

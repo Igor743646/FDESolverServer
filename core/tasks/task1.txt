@@ -14,7 +14,7 @@
     "LeftBoundState": "0.0",           
     "RightBoundState": "3 * log(3) * t",          
     "BordersAvailable": true,          
-    "StochasticIterationCount": "80",
+    "StochasticIterationCount": "800",
     "RealSolutionName": "$u(x, t) = (x-3) * ln(x-3) * t$",                        
     "RealSolution" : "(x - 3) * log(x - 3) * t",
     "SolveMethods": "MGL;MRL;SGL;SRL"

@@ -68,6 +68,18 @@ namespace std {
     }
 
     template<class T>
+    std::ostream& operator<<(std::ostream& out, const std::span<T>& map) {
+        out << "[ ";
+
+        for (auto& v : map) {
+            out << v << " ";
+        }
+
+        out << "]";
+        return out;
+    }
+
+    template<class T>
     std::ostream& operator<<(std::ostream& out, const std::optional<T>& op) {
         if (op.has_value()) {
             out << op.value();
