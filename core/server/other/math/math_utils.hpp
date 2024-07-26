@@ -14,9 +14,12 @@
 #include <cassert>
 #include <optional>
 
-#if defined(__GNUC__)
+#if defined(__GNUC__) || defined(__linux__)
     #define Y_UNLIKELY(exp) __builtin_expect(!!(exp), 0)
+    #define data_prefetch(pointer) __builtin_prefetch((pointer), 0, 1)  
 #else
+    #include <intrin.h>
+    #define data_prefetch(pointer) _mm_prefetch((pointer), _MM_HINT_T0) 
     #define Y_UNLIKELY(exp) (exp)
 #endif
 

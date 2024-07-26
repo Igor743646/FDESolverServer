@@ -58,7 +58,7 @@ namespace NFDESolverService {
             }
         }
 
-        PFDESolver::TMatrix pbRealSolution(std::move(realSolution.ToProto()));
+        PFDESolver::TMatrix pbRealSolution(realSolution.ToProto());
         response.set_realsolutionname(config.RealSolutionName.value());
         response.mutable_realsolution()->Swap(&pbRealSolution);
     }

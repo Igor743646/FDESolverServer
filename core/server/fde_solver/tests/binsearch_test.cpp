@@ -109,8 +109,8 @@ struct BinarySearch6 : BinarySearchBase {
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
             len -= half;
-            _mm_prefetch((const char*)(&base[len / 2 - 1]), _MM_HINT_T0);
-            _mm_prefetch((const char*)(&base[half + len / 2 - 1]), _MM_HINT_T0);
+            data_prefetch((const char*)(&base[len / 2 - 1]));
+            data_prefetch((const char*)(&base[half + len / 2 - 1]));
             if (base[half - 1] < rnd) {
                 base += half;
             }
@@ -130,8 +130,8 @@ struct BinarySearch7 : BinarySearchBase {
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
             len -= half;
-            _mm_prefetch((const char*)(&base[len / 2 - 1]), _MM_HINT_T0);
-            _mm_prefetch((const char*)(&base[half + len / 2 - 1]), _MM_HINT_T0);
+            data_prefetch((const char*)(&base[len / 2 - 1]));
+            data_prefetch((const char*)(&base[half + len / 2 - 1]));
             base += (base[half - 1] < rnd) * half;
         }
 
@@ -232,7 +232,7 @@ struct BinarySearch10 : BinarySearchBase {
         usize len = end - begin - 1;
 
         while (k <= len) {
-            _mm_prefetch((const char*)(begin + k * 16), _MM_HINT_T0);
+            data_prefetch((const char*)(begin + k * 16));
             k = (k << 1) + (begin[k] < rnd);
         }
         k >>= std::countr_zero(~k) + 1;
@@ -287,7 +287,7 @@ void RunTest(const TTestData& testData) {
             i = generator(engine);
         }
         meter.measure([&] (int i) {
-            return testData.BinarySearch.Search(testData.Data.begin()._Ptr, testData.Data.end()._Ptr, rnds[i], testData.Help); 
+            return testData.BinarySearch.Search(&(*testData.Data.begin()), &(*testData.Data.end()), rnds[i], testData.Help); 
         });
     };
 }
@@ -299,54 +299,44 @@ TEST_CASE("Binary Search Impl Tests", "[binsearch]") {
             std::vector<f64> v = {0.2};
             std::vector<usize> help = method->Prepare(v);
 
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.0, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.2, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.3, help) == 1);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.3, help) == 1);
         }
 
         SECTION (std::format("{0} Test 2", name)) {
             std::vector<f64> v = {0.2, 0.5};
             std::vector<usize> help = method->Prepare(v);
 
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.0, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.2, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.3, help) == 1);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.5, help) == 1);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.6, help) == 2);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.3, help) == 1);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.5, help) == 1);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 2);
         }
 
         SECTION (std::format("{0} Test 3", name)) {
             std::vector<f64> v = {0.2, 0.5, 0.7, 0.9, 1.0};
             std::vector<usize> help = method->Prepare(v);
 
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.0, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.2, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.6, help) == 2);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.7, help) == 2);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 1.0, help) == 4);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 2);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.7, help) == 2);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.0, help) == 4);
         }
 
         SECTION (std::format("{0} Test 4", name)) {
             std::vector<f64> v = {0.2, 0.2, 0.5, 0.7, 0.9, 1.0, 1.0, 1.0};
             std::vector<usize> help = method->Prepare(v);
 
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.0, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.2, help) == 0);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.6, help) == 3);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 0.7, help) == 3);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 1.0, help) == 5);
-            REQUIRE(method->Search(v.begin()._Ptr, v.end()._Ptr, 1.1, help) == 8);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 3);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.7, help) == 3);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.0, help) == 5);
+            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.1, help) == 8);
         }
-
-        auto printInfo = [](std::vector<f64>& v, f64 rnd) -> bool {
-            for (f64 i : v) {
-                std::cout << i << " ";
-            }
-            std::cout << std::endl;
-            std::cout << rnd << std::endl;
-
-            return false;
-        };
 
         SECTION (std::format("{0} Random 1000", name)) {
             std::random_device device;
@@ -362,7 +352,7 @@ TEST_CASE("Binary Search Impl Tests", "[binsearch]") {
 
             for (usize i = 0; i < 1; i++) {
                 f64 rnd = generator(engine);
-                auto t1 = method->Search(v.begin()._Ptr, v.end()._Ptr, rnd, help);
+                auto t1 = method->Search(&(*v.begin()), &(*v.end()), rnd, help);
                 auto t2 = std::lower_bound(vOld.begin(), vOld.end(), rnd) - vOld.begin();
                 if (t1 != t2) {
                     std::cout << "vOld: ";

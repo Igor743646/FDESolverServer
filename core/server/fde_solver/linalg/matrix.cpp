@@ -1,12 +1,6 @@
 #include "matrix.hpp"
 #include <cassert>
 #include <optional>
-#ifdef __linux__
-    #define data_prefetch(pointer) __builtin_prefetch((pointer), 0, 1)  
-#else 
-    #include <intrin.h>
-    #define data_prefetch(pointer) _mm_prefetch((pointer), _MM_HINT_T0)    
-#endif
 #include <matrix.pb.h>
 
 namespace NLinalg {
