@@ -1,6 +1,8 @@
 **/build/*
 **/bin/*
 .vscode/
+core/server/perf.*
+core/server/*result*
 core/server/graph.html
 core/server/log.*
 core/server/expression_calculator/grammar/.antlr
