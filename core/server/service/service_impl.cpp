@@ -84,19 +84,17 @@ namespace NFDESolverService {
         response.mutable_realsolution()->Swap(&pbRealSolution);
     }
 
-    auto TFDESolverService::GetFunction1(std::string expression, std::string varName1) {
-        auto calculator = make_shared<ANTLRMathExpParser::MathExpressionCalculator>(expression, std::vector{varName1});
-        return [calc=calculator, varName1](f64 varValue) -> f64 {
-            calc->SetVar(varName1, varValue);
-            return calc->Calc();
-        };
-    }
+    template<std::convertible_to<std::string>... Args>
+    auto TFDESolverService::GetFunction(std::string exp, const Args... args) {
+        auto calculator = std::make_shared<ANTLRMathExpParser::MathExpressionCalculator>(exp, std::vector<std::string>{std::string(args)...});
 
-    auto TFDESolverService::GetFunction2(std::string expression, std::string varName1, std::string varName2) {
-        auto calculator = make_shared<ANTLRMathExpParser::MathExpressionCalculator>(expression, std::vector{varName1, varName2});
-        return [calc=calculator, varName1, varName2](f64 varValue1, f64 varValue2) -> f64 {
-            calc->SetVar(varName1, varValue1);
-            calc->SetVar(varName2, varValue2);
+        return [calc = calculator, args...](auto... d) -> f64 {
+            static_assert(sizeof...(args) == sizeof...(d));
+            std::array<std::string, sizeof...(args)> varNames = {args...};
+            std::array<f64, sizeof...(d)> varValues = {d...};
+            for (usize i = 0; i < sizeof...(d); i++) {
+                calc->SetVar(varNames[i], varValues[i]);
+            }
             return calc->Calc();
         };
     }
@@ -122,13 +120,13 @@ namespace NFDESolverService {
                 .StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000, 
                 .RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
             },
-            /* .DiffusionCoefficient =*/ GetFunction1(config.diffusioncoefficient(), "x"),
-            /* .DemolitionCoefficient =*/ GetFunction1(config.demolitioncoefficient(), "x"),
-            /* .ZeroTimeState =*/ GetFunction1(config.zerotimestate(), "x"),
-            /* .SourceFunction =*/ GetFunction2(config.sourcefunction(), "x", "t"),
-            /* .LeftBoundState =*/ GetFunction1(config.leftboundstate(), "t"),
-            /* .RightBoundState =*/ GetFunction1(config.rightboundstate(), "t"),
-            /* .RealSolution =*/ config.has_realsolution() ? std::optional(GetFunction2(config.realsolution(), "x", "t")) : std::nullopt,
+            /* .DiffusionCoefficient =*/ GetFunction(config.diffusioncoefficient(), "x"),
+            /* .DemolitionCoefficient =*/ GetFunction(config.demolitioncoefficient(), "x"),
+            /* .ZeroTimeState =*/ GetFunction(config.zerotimestate(), "x"),
+            /* .SourceFunction =*/ GetFunction(config.sourcefunction(), "x", "t"),
+            /* .LeftBoundState =*/ GetFunction(config.leftboundstate(), "t"),
+            /* .RightBoundState =*/ GetFunction(config.rightboundstate(), "t"),
+            /* .RealSolution =*/ config.has_realsolution() ? std::optional(GetFunction(config.realsolution(), "x", "t")) : std::nullopt,
         };
     }
 

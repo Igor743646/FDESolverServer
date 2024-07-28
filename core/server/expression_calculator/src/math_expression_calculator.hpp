@@ -18,8 +18,8 @@ namespace ANTLRMathExpParser {
         explicit ExpressionVisitor(std::unordered_map<std::string, double>&& vals) : Values(std::move(vals)) {}
         ExpressionVisitor() : Values() {}
 
-        virtual void SetValue(std::string, double);
-        virtual std::optional<double> GetValue(std::string);
+        virtual void SetValue(const std::string&, double);
+        virtual std::optional<double> GetValue(const std::string&);
 
         virtual std::any visitRoot(TParser::RootContext *context) override;
         virtual std::any visitMainExpressionCondExpr(TParser::MainExpressionCondExprContext *context) override;
@@ -65,7 +65,7 @@ namespace ANTLRMathExpParser {
 
         MathExpressionCalculator(const std::string&, const std::vector<std::string>&);
 
-        void SetVar(std::string, double);
+        void SetVar(const std::string&, double);
         double Calc();
 
     private:

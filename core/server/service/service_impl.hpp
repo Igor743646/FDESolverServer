@@ -73,8 +73,8 @@ namespace NFDESolverService {
         void AddConfig(const TSolverConfig& config, TResults& response);
         void AddRealSolution(const TSolverConfig&, TResults&);
 
-        auto GetFunction1(std::string, std::string);
-        auto GetFunction2(std::string, std::string, std::string);
+        template<std::convertible_to<std::string>... Args>
+        auto GetFunction(std::string, const Args...);
         TParsedSolverConfig ParseClientConfig(const TClientConfig&);
         TSolvers ParseSolveMethods(const TClientConfig&, const TSolverConfig&);
 

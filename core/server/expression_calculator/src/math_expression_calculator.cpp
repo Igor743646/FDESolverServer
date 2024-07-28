@@ -9,16 +9,17 @@ namespace {
 
 namespace ANTLRMathExpParser {
 
-    void ExpressionVisitor::SetValue(std::string name, double val) {
+    void ExpressionVisitor::SetValue(const std::string& name, double val) {
         Values[name] = val;
     }
 
-    std::optional<double> ExpressionVisitor::GetValue(std::string name) {
-        if (!Values.contains(name)) {
+    std::optional<double> ExpressionVisitor::GetValue(const std::string& name) {
+        auto iter = Values.find(name);
+        if (iter == Values.end()) {
             return std::nullopt;
         }
         
-        return Values[name];
+        return iter->second;
     }
 
     std::any ExpressionVisitor::visitRoot(TParser::RootContext *context) {
@@ -295,7 +296,7 @@ namespace ANTLRMathExpParser {
         }
     }
 
-    void MathExpressionCalculator::SetVar(std::string var, double value) {
+    void MathExpressionCalculator::SetVar(const std::string& var, double value) {
         Visitor.SetValue(var, value);
     }
 
