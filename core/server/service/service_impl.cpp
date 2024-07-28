@@ -2,39 +2,60 @@
 
 #include <timer.hpp>
 #include <logger.hpp>
+#include <future>
+#include <boost/thread/latch.hpp>
 
 namespace NFDESolverService {
 
     void TFDESolverService::DoRunTask(const TClientConfig* request, TResults* response) {
+        STACK_ASSERT(request != nullptr, "Request is nullptr");
+        STACK_ASSERT(response != nullptr, "Response is nullptr");
+
         TParsedSolverConfig parsedSolverConfig = ParseClientConfig(*request);
         TSolverConfig solverConfig(parsedSolverConfig);
         TSolvers solvers = ParseSolveMethods(*request, solverConfig);
 
-        for (auto& solver : solvers) {
-            if (solver) {
-                NTimer::TTimer timer;
-                SolveTask(*solver, *response, true);
+        boost::latch latch(solvers.size());
 
-                INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
+        // №1 Set Config to results
+        AddConfig(solverConfig, *response);
+
+        // №2 Set Results to results
+        for (auto& solver : solvers) {
+            PFDESolver::TResult* pbResultDest = response->add_results();
+            if (solver && (pbResultDest != nullptr)) {
+                boost::asio::post(ThreadPool, [this, pbResultDest, solver, &latch]() {
+                    NTimer::TTimer timer;
+                    SolveTask(*solver, *pbResultDest, true);
+                    INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
+                    latch.count_down();
+                });
+            } else {
+                STACK_ASSERT(pbResultDest != nullptr, "pbResultDest is nullptr");
             }
         }
+        
 
+        // №3, 4 Set Realsolution and its name
         AddRealSolution(solverConfig, *response);
+        
+        latch.wait();
+        DEBUG_LOG << "Finish DoRunTask" << Endl;
+    }
+
+    void TFDESolverService::AddConfig(const TSolverConfig& config, TResults& response) {
+        PFDESolver::TSolverConfig pbConfig = config.ToProto();
+        response.mutable_task()->Swap(&pbConfig);
     }
     
     void TFDESolverService::SolveTask(IEquationSolver& solver, 
-                                      TResults& response, bool saveMeta) 
+                                      PFDESolver::TResult& response, bool saveMeta) 
     {
         DEBUG_LOG << "Start solve method: " << solver.Name() << Endl;
         IEquationSolver::TResult result = solver.Solve(saveMeta);
 
-        PFDESolver::TResult* pbResultDest = response.add_results();
         PFDESolver::TResult pbResultSource = result.ToProto();
-        pbResultDest->Swap(&pbResultSource);
-
-        const auto& config = solver.GetConfig();
-        PFDESolver::TSolverConfig pbConfig = config.ToProto();
-        response.mutable_task()->Swap(&pbConfig);
+        response.Swap(&pbResultSource);
     }
 
     void TFDESolverService::AddRealSolution(const TSolverConfig& config, TResults& response) {
