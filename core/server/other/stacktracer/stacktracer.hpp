@@ -13,7 +13,7 @@ namespace NStackTracer {
             Message = message;
         }
 
-        const char* what() const noexcept override {
+        const char* what() const noexcept override { //NOLINT
             return Message;
         }
 

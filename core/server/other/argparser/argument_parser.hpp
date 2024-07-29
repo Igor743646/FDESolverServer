@@ -3,10 +3,11 @@
 #include <iostream>
 #include <unordered_map>
 #include <any>
+#include <math_utils.hpp>
 
 namespace NArgumentParser {
 
-    enum class TArgumentType : int8_t {
+    enum class TArgumentType : i8 {
         FLAG,
         INT_VALUE,
         STRING_VALUE,
@@ -19,7 +20,7 @@ namespace NArgumentParser {
     struct TArgumentTypeAlias<TArgumentType::FLAG> : std::type_identity<bool> {};
 
     template<>
-    struct TArgumentTypeAlias<TArgumentType::INT_VALUE> : std::type_identity<int64_t> {};
+    struct TArgumentTypeAlias<TArgumentType::INT_VALUE> : std::type_identity<i64> {};
 
     template<>
     struct TArgumentTypeAlias<TArgumentType::STRING_VALUE> : std::type_identity<std::string> {};

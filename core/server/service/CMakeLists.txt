@@ -8,12 +8,7 @@ add_library(${PROJECT_NAME} STATIC
 )
 target_link_libraries(${PROJECT_NAME} PUBLIC 
     MathExpressionParser
-    MathExpressionParserGrammar
-    FDESolverProtoFiles
     FDESolverLib
-    gRPC::grpc gRPC::grpc++ 
-    protobuf::protobuf
-    antlr4_static
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})

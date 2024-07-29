@@ -11,10 +11,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     MathUtils 
     StackTracer 
     AsynchronicLogger 
-    FDESolverProtoFiles 
-    gRPC::grpc 
-    gRPC::grpc++ 
-    protobuf::protobuf
+    FDESolverProtoFiles
 )
 target_include_directories(${PROJECT_NAME} PUBLIC 
     ${MathUtils_HEADERS_DIR}
@@ -37,15 +34,10 @@ foreach(test_name IN LISTS TESTS)
     )
 
     target_link_libraries(${PROJECT_NAME}_${test_name}_test PUBLIC 
-        LinalgLib 
-        MathUtils 
-        StackTracer 
-        AsynchronicLogger 
-        Catch2::Catch2WithMain 
-        FDESolverProtoFiles 
-        gRPC::grpc gRPC::grpc++ 
-        protobuf::protobuf
+        LinalgLib
+        Catch2::Catch2WithMain
     )
+
     target_include_directories(${PROJECT_NAME}_${test_name}_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR} 
         ${MathUtils_HEADERS_DIR}

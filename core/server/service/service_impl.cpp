@@ -85,7 +85,7 @@ namespace NFDESolverService {
     }
 
     template<std::convertible_to<std::string>... Args>
-    auto TFDESolverService::GetFunction(std::string exp, const Args... args) {
+    auto TFDESolverService::GetFunction(std::string exp, const Args... args) { //NOLINT
         auto calculator = std::make_shared<ANTLRMathExpParser::MathExpressionCalculator>(exp, std::vector<std::string>{std::string(args)...});
 
         return [calc = calculator, args...](auto... d) -> f64 {

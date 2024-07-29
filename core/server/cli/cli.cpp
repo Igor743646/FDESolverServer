@@ -5,6 +5,7 @@
 using NArgumentParser::TArgumentParserResult;
 using NArgumentParser::TArgumentParser;
 using NArgumentParser::TArgumentType;
+using NArgumentParser::TArgumentTypeAliasType;
 
 class TCLISolver : NFDESolverService::TFDESolverService {
 public:
@@ -86,18 +87,21 @@ TArgumentParserResult ParseArgs(int argc, char** argv) {
     parser.AddArgument("--input-file", TArgumentType::STRING_VALUE, 
                        "input file with json view of protobuf TClientConfig", true);
     parser.AddArgument("--output-file", TArgumentType::STRING_VALUE, 
-                       "output file with view of protobuf TResults", false, std::string("result.txt"));
+                       "output file with view of protobuf TResults", false, 
+                       TArgumentTypeAliasType<TArgumentType::STRING_VALUE>("result.txt"));
     parser.AddArgument("--output-json", TArgumentType::FLAG, 
-                       "json output file format", false, false);
+                       "json output file format", false, 
+                       TArgumentTypeAliasType<TArgumentType::FLAG>(false));
     parser.AddArgument("--log-level", TArgumentType::INT_VALUE, 
-                       "log level: 1 (CRITICAL), 2 (ERROR), 3 (WARN), 4 (INFO), 5 (DEBUG)", false, 5ll);
+                       "log level: 1 (CRITICAL), 2 (ERROR), 3 (WARN), 4 (INFO), 5 (DEBUG)", 
+                       false, TArgumentTypeAliasType<TArgumentType::INT_VALUE>(5));
     return parser.Parse(argc, argv);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char* argv[]) { //NOLINT
     auto args = ParseArgs(argc, argv);
 
-    int64_t logLevel = args.Get<int64_t>("--log-level");
+    i64 logLevel = args.Get<i64>("--log-level");
     STACK_ASSERT(1 <= logLevel && logLevel <= 5, "Log level must be from 1 to 5");
     NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelperBase::TLevel(logLevel));
     

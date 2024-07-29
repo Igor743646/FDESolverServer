@@ -19,14 +19,7 @@ add_subdirectory(cli)
 add_executable(${PROJECT_NAME}_${CMAKE_BUILD_TYPE})
 target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC "src/server.cpp" "src/server_impl.cpp")
 target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
-  MathExpressionParser
-  MathExpressionParserGrammar
-  FDESolverProtoFiles
-  FDESolverLib
   FDESolverService
-  gRPC::grpc gRPC::grpc++ 
-  protobuf::protobuf
-  antlr4_static
 )
 
 target_include_directories(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC ${FDESolverProtoFiles_HEADERS_DIR})

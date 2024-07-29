@@ -31,9 +31,7 @@ add_executable(${PROJECT_NAME}_test "src/tests/mec_test.cpp")
 
 target_link_libraries(${PROJECT_NAME}_test PUBLIC
     Catch2::Catch2WithMain
-    MathExpressionParser
-    MathExpressionParserGrammar
-    antlr4_static
+    ${PROJECT_NAME}
 )
 target_include_directories(${PROJECT_NAME}_test PUBLIC 
     ${ANTLR_SampleGrammarLexer_OUTPUT_DIR}
