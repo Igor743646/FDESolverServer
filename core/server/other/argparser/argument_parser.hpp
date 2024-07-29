@@ -12,6 +12,21 @@ namespace NArgumentParser {
         STRING_VALUE,
     };
 
+    template<TArgumentType T>
+    struct TArgumentTypeAlias : std::type_identity<void> {};
+
+    template<>
+    struct TArgumentTypeAlias<TArgumentType::FLAG> : std::type_identity<bool> {};
+
+    template<>
+    struct TArgumentTypeAlias<TArgumentType::INT_VALUE> : std::type_identity<int64_t> {};
+
+    template<>
+    struct TArgumentTypeAlias<TArgumentType::STRING_VALUE> : std::type_identity<std::string> {};
+
+    template<TArgumentType T>
+    using TArgumentTypeAliasType = typename TArgumentTypeAlias<T>::type;
+
     class TArgumentParserResult;
     struct TArgumentInfo {
         TArgumentType   Type;
@@ -56,8 +71,8 @@ namespace NArgumentParser {
         TArgumentParserResult() = default;
 
         template<class T, class... Args>
-        void Set(const TArgumentInfo& info, const std::string& key, Args&&... args) {
-            Results[key].first.emplace<T>(std::forward<Args>(args)...);
+        void Set(const TArgumentInfo& info, const std::string& key, Args... args) {
+            Results[key].first.emplace<T>(T(std::forward<Args>(args))...);
             Results[key].second = info;
         }
 
@@ -67,11 +82,7 @@ namespace NArgumentParser {
         }
 
         bool Has(const std::string& key) const {
-            if (Results.contains(key)) {
-                return true;
-            }
-
-            return false;
+            return Results.contains(key);
         }
 
         const std::string& Help(const std::string& key) const {
@@ -79,7 +90,7 @@ namespace NArgumentParser {
         }
 
         template<class T>
-        T& Get(const std::string& key) {
+        T Get(const std::string& key) {
             return std::any_cast<T>(Results.at(key).first);
         }
 

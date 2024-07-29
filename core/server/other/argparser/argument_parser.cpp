@@ -1,6 +1,7 @@
 #include "argument_parser.hpp"
 #include <string>
 #include <cstring>
+#include <iomanip>
 
 namespace NArgumentParser {
 
@@ -27,7 +28,7 @@ namespace NArgumentParser {
         std::cout << std::endl;
         std::cout << "options:" << std::endl;
         for (auto& [k, v] : Arguments) {
-            std::cout << "\t" << k << "\t\t\t" << v.Help() << std::endl;
+            std::cout << "\t" << std::setw(15) << k << "\t\t\t" << v.Help() << std::endl;
         }
         std::exit(0);
     }
@@ -47,7 +48,7 @@ namespace NArgumentParser {
 
             switch (argInfo.Type) {
                 case TArgumentType::FLAG: {
-                    result.Set<bool>(argInfo, argv[i], true);
+                    result.Set<TArgumentTypeAliasType<TArgumentType::FLAG>>(argInfo, argv[i], true);
                     break;
                 }
                 case TArgumentType::INT_VALUE: {
@@ -57,7 +58,7 @@ namespace NArgumentParser {
                         std::cerr << "After " << argv[i - 1] << " must be int value" << std::endl;
                         std::exit(1);
                     }
-                    result.Set<int64_t>(argInfo, argv[i - 1], std::stoi(argv[i]));
+                    result.Set<TArgumentTypeAliasType<TArgumentType::INT_VALUE>>(argInfo, argv[i - 1], std::stoi(argv[i]));
                     break;
                 }
                 case TArgumentType::STRING_VALUE: {
@@ -67,7 +68,7 @@ namespace NArgumentParser {
                         std::cerr << "After " << argv[i - 1] << " must be string value" << std::endl;
                         std::exit(1);
                     }
-                    result.Set<std::string>(argInfo, argv[i - 1], argv[i]);
+                    result.Set<TArgumentTypeAliasType<TArgumentType::STRING_VALUE>>(argInfo, argv[i - 1], argv[i]);
                     break;
                 }
                 default: {

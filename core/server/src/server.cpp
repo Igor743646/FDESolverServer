@@ -5,7 +5,7 @@
 void Init() {
 #ifndef NDEBUG
     gpr_set_log_verbosity(gpr_log_severity::GPR_LOG_SEVERITY_DEBUG);
-    NLogger::ChangeLogLevel(3);
+    NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelper::TLevel::lvDEBUG);
 #else 
     gpr_set_log_verbosity(gpr_log_severity::GPR_LOG_SEVERITY_INFO);
 #endif

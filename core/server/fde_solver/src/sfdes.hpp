@@ -14,8 +14,8 @@ namespace NEquationSolver {
 
     public: 
 
-        TStochasticFDES(const TSolverConfig& config) : IEquationSolver(config) {}
-        TStochasticFDES(TSolverConfig&& config) :  IEquationSolver(std::move(config)) {}
+        explicit TStochasticFDES(const TSolverConfig& config) : IEquationSolver(config) {}
+        explicit TStochasticFDES(TSolverConfig&& config) :  IEquationSolver(std::move(config)) {}
 
         virtual std::string Name() const override {
             return "Stochastic method with " + TFiller::Name();
@@ -33,7 +33,7 @@ namespace NEquationSolver {
 
             for (i64 i = 0; i < n - 1; i++) {
                 for (i64 p = 0; p < probsLen; p++) {
-                    probabilities[p] = TFiller::FillProbabilities(this, probabilities, i + 1, p);
+                    probabilities[p] = std::abs(TFiller::FillProbabilities(this, probabilities, i + 1, p));
                 }
                 result.emplace_back(probabilities.begin(), probabilities.end());
             }

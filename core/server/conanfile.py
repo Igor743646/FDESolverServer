@@ -48,9 +48,9 @@ def ParseArguments() -> argparse.Namespace:
 def main():
     args = ParseArguments()
     if args.debug:
-        os.system("conan build . -s build_type=Debug")
+        assert os.system("conan build . -s build_type=Debug") == 0
     if args.release:
-        os.system("conan build . -s build_type=Release")
+        assert os.system("conan build . -s build_type=Release") == 0
 
 
 if __name__ == "__main__":

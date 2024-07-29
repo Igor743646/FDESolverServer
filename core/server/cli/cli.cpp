@@ -2,10 +2,14 @@
 #include <google/protobuf/util/json_util.h>
 #include <service_impl.hpp>
 
+using NArgumentParser::TArgumentParserResult;
+using NArgumentParser::TArgumentParser;
+using NArgumentParser::TArgumentType;
+
 class TCLISolver : NFDESolverService::TFDESolverService {
 public:
 
-    explicit TCLISolver(const NArgumentParser::TArgumentParserResult& arguments) 
+    explicit TCLISolver(const TArgumentParserResult& arguments) 
         : NFDESolverService::TFDESolverService(), 
           Arguments(arguments) {}
 
@@ -74,24 +78,29 @@ private:
         }
     }
 
-    NArgumentParser::TArgumentParserResult Arguments;
+    TArgumentParserResult Arguments;
 };
 
-NArgumentParser::TArgumentParserResult ParseArgs(int argc, char** argv) {
-    NArgumentParser::TArgumentParser parser;
-    parser.AddArgument("--input-file", NArgumentParser::TArgumentType::STRING_VALUE, 
+TArgumentParserResult ParseArgs(int argc, char** argv) {
+    TArgumentParser parser;
+    parser.AddArgument("--input-file", TArgumentType::STRING_VALUE, 
                        "input file with json view of protobuf TClientConfig", true);
-    parser.AddArgument("--output-file", NArgumentParser::TArgumentType::STRING_VALUE, 
+    parser.AddArgument("--output-file", TArgumentType::STRING_VALUE, 
                        "output file with view of protobuf TResults", false, std::string("result.txt"));
-    parser.AddArgument("--output-json", NArgumentParser::TArgumentType::FLAG, 
+    parser.AddArgument("--output-json", TArgumentType::FLAG, 
                        "json output file format", false, false);
+    parser.AddArgument("--log-level", TArgumentType::INT_VALUE, 
+                       "log level: 1 (CRITICAL), 2 (ERROR), 3 (WARN), 4 (INFO), 5 (DEBUG)", false, 5ll);
     return parser.Parse(argc, argv);
 }
 
 int main(int argc, char** argv) {
-    NLogger::ChangeLogLevel(3);
-    
     auto args = ParseArgs(argc, argv);
+
+    int64_t logLevel = args.Get<int64_t>("--log-level");
+    STACK_ASSERT(1 <= logLevel && logLevel <= 5, "Log level must be from 1 to 5");
+    NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelperBase::TLevel(logLevel));
+    
     TCLISolver solver(args);
     solver.RunTask();
     return 0;

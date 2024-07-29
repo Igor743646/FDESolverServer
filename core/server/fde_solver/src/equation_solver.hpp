@@ -45,8 +45,8 @@ namespace NEquationSolver {
             bool SaveToFile(std::string name) const;
         };
 
-        IEquationSolver(const TSolverConfig&);
-        IEquationSolver(TSolverConfig&&);
+        explicit IEquationSolver(const TSolverConfig&);
+        explicit IEquationSolver(TSolverConfig&&);
         IEquationSolver(const IEquationSolver&);
         IEquationSolver(IEquationSolver&&);
         virtual ~IEquationSolver();

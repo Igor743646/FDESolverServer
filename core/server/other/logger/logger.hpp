@@ -6,6 +6,7 @@
 #include <thread>
 #include <iomanip>
 #include <cstring>
+#include <mutex>
 
 #ifdef __linux__ 
     #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -14,36 +15,45 @@
 #endif
 
 namespace {
-    const auto LogFileName = "log.log";
+    const auto gLogFileName = "log.log";
 }
 
 namespace NLogger {
 
-    unsigned char ChangeLogLevel(unsigned char logLevel);
-    int GetUserLogLevel();
-
     class TLogHelperBase {
     public:
+
+        enum class TLevel : char {
+            lvDEBUG = 5, lvINFO = 4, lvWARN = 3, lvERROR = 2, lvCRITICAL = 1,
+        };
+
+        static void SetLogLevel(TLevel level) {
+            stLogLevel = level;
+        }
+
+        static TLevel GetLogLevel() {
+            return stLogLevel;
+        }
+
         TLogHelperBase() {
             static bool started = false;
             if (!started) { // Just for truncating
-                std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::trunc);
+                std::ofstream file(gLogFileName, std::ios_base::out | std::ios_base::trunc);
                 started = true;
             }
         }
+
+    protected:
+        static TLevel stLogLevel;
+        static std::mutex stMutex;
     };
 
-    template<unsigned char LogLevel = 0>
-    class TLogHelper : public TLogHelperBase {
+    class TLogHelper final : public TLogHelperBase {
     public:
 
-        static_assert(LogLevel == 1 || LogLevel == 2 || LogLevel == 3);
-
         TLogHelper(const char* name, const char* file, int line) : TLogHelperBase() {
-            if (LogLevel <= GetUserLogLevel()) {
-                Out << "[ " << std::setw(5) << name << " ] " << file << "(" << line << ")";
-                Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
-            }
+            Out << "[ " << std::setw(5) << name << " ] " << file << "(" << line << ")";
+            Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
         }
 
         TLogHelper(const TLogHelper&) = delete;
@@ -52,23 +62,20 @@ namespace NLogger {
         TLogHelper& operator=(TLogHelper&&) = delete;
         
         ~TLogHelper() {
-            if (LogLevel <= GetUserLogLevel()) {
-                std::ofstream file(LogFileName, std::ios_base::out | std::ios_base::app);
-                
-                if (file.is_open()) {
-                    file << Out.str();
-                } else {
-                    std::cerr << Out.str();
-                }
+            std::unique_lock lock{stMutex};
+            std::ofstream file(gLogFileName, std::ios_base::out | std::ios_base::app);
+            
+            if (file.is_open()) {
+                file << Out.str();
+            } else {
+                std::cerr << Out.str();
             }
         }
 
         template<class T>
-        friend TLogHelper&& operator<<(TLogHelper&& out, const T& mes) {
-            if (LogLevel <= GetUserLogLevel()) {
-                out.Out << mes;
-            }
-            return std::move(out);
+        TLogHelper&& operator<<(const T& mes) && {
+            Out << mes;
+            return std::move(*this);
         }
 
     private:
@@ -77,10 +84,10 @@ namespace NLogger {
     };
 }
 
-
-#define BASE_LOG(level, file, line, ...) NLogger::TLogHelper<level>{file, line, __VA_ARGS__}
-#define INFO_LOG  BASE_LOG(2, "INFO", (__FILENAME__), (__LINE__))
-#define DEBUG_LOG BASE_LOG(3, "DEBUG", (__FILENAME__), (__LINE__))
-#define ERROR_LOG BASE_LOG(1, "ERROR", (__FILENAME__), (__LINE__))
-#define WARNING_LOG BASE_LOG(1, "WARN", (__FILENAME__), (__LINE__))
+#define BASE_LOG(level, file, line, ...) if (level <= ::NLogger::TLogHelper::GetLogLevel()) ::NLogger::TLogHelper{file, line, __VA_ARGS__}
+#define INFO_LOG  BASE_LOG(::NLogger::TLogHelper::TLevel::lvINFO, "INFO", (__FILENAME__), (__LINE__))
+#define DEBUG_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvDEBUG, "DEBUG", (__FILENAME__), (__LINE__))
+#define ERROR_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvERROR, "ERROR", (__FILENAME__), (__LINE__))
+#define WARNING_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvWARN, "WARN", (__FILENAME__), (__LINE__))
+#define CRITICAL_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvCRITICAL, "CRIT", (__FILENAME__), (__LINE__))
 #define Endl '\n'

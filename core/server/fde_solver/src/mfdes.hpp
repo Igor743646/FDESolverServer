@@ -16,8 +16,8 @@ namespace NEquationSolver {
 
     public:
 
-        TMatrixFDES(const TSolverConfig& config) : IEquationSolver(config) { }
-        TMatrixFDES(TSolverConfig&& config) : IEquationSolver(std::move(config)) { }
+        explicit TMatrixFDES(const TSolverConfig& config) : IEquationSolver(config) { }
+        explicit TMatrixFDES(TSolverConfig&& config) : IEquationSolver(std::move(config)) { }
 
         virtual std::string Name() const override {
             return "Matrix method with " + TFiller::Name();

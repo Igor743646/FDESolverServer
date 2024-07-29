@@ -35,7 +35,7 @@ namespace NFDESolverService {
     struct TMethodBuilder final : public IMethodBuilder {
         const usize SeqNumber;
 
-        constexpr TMethodBuilder(usize seqNumber) : IMethodBuilder(), SeqNumber(seqNumber) {}
+        constexpr explicit TMethodBuilder(usize seqNumber) : IMethodBuilder(), SeqNumber(seqNumber) {}
 
         usize Number() const override {
             return SeqNumber;

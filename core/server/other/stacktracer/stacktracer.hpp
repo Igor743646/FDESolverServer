@@ -9,7 +9,7 @@ namespace NStackTracer {
     class TExceptionWithStack : public std::exception {
     public:
 
-        TExceptionWithStack(const char* message) : std::exception() {
+        explicit TExceptionWithStack(const char* message) : std::exception() {
             Message = message;
         }
 
@@ -23,7 +23,7 @@ namespace NStackTracer {
     };
 
     class TStackTracer {
-        using traced = boost::error_info<struct tag_stacktrace, boost::stacktrace::stacktrace>;
+        using Traced = boost::error_info<struct tag_stacktrace, boost::stacktrace::stacktrace>;
 
     public:
 
@@ -33,18 +33,18 @@ namespace NStackTracer {
 
         [[noreturn]] static void ThrowWithMessage(const char* message) {
             throw boost::enable_error_info(TExceptionWithStack(message))
-                << traced(boost::stacktrace::stacktrace());
+                << Traced(boost::stacktrace::stacktrace());
         }
 
         [[noreturn]] static void ThrowWithMessage(const std::string& message) {
             throw boost::enable_error_info(TExceptionWithStack(message.c_str()))
-                << traced(boost::stacktrace::stacktrace());
+                << Traced(boost::stacktrace::stacktrace());
         }
 
         static void CatchAndPrintStack(const TExceptionWithStack& e) {
             std::cout << e.what() << std::endl;
-            const boost::stacktrace::stacktrace* st = boost::get_error_info<traced>(e);
-            if (st) {
+            const boost::stacktrace::stacktrace* st = boost::get_error_info<Traced>(e);
+            if (st != nullptr) {
                 std::cerr << *st;
             }
         }

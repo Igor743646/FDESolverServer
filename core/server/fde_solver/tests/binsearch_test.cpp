@@ -91,7 +91,7 @@ struct BinarySearch5 : BinarySearchBase {
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
-            base += (base[half - 1] < rnd) * half;
+            base += static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half;
             len -= half;
         }
 
@@ -132,7 +132,7 @@ struct BinarySearch7 : BinarySearchBase {
             len -= half;
             data_prefetch((const char*)(&base[len / 2 - 1]));
             data_prefetch((const char*)(&base[half + len / 2 - 1]));
-            base += (base[half - 1] < rnd) * half;
+            base += static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half;
         }
 
         return *base >= rnd ? base - begin : base - begin + 1;
@@ -200,7 +200,7 @@ struct BinarySearch9 : BinarySearchBase {
         usize len = end - begin - 1;
 
         while (k <= len) {
-            k = (k << 1) + (begin[k] < rnd);
+            k = (k << 1) + static_cast<usize>(begin[k] < rnd);
         }
         k >>= std::countr_zero(~k) + 1;
         return help[k];
@@ -233,7 +233,7 @@ struct BinarySearch10 : BinarySearchBase {
 
         while (k <= len) {
             data_prefetch((const char*)(begin + k * 16));
-            k = (k << 1) + (begin[k] < rnd);
+            k = (k << 1) + static_cast<usize>(begin[k] < rnd);
         }
         k >>= std::countr_zero(~k) + 1;
         return help[k];
@@ -252,7 +252,7 @@ BinarySearch9 bs9;
 BinarySearch10 bs10;
 
 namespace {
-    const std::map<const char*, BinarySearchBase*> gNAME_TO_METHOD = {
+    const std::map<const char*, BinarySearchBase*> gNameToMethod = {
         {"std::lower_bound", &bs1},
         {"BinSearch standart", &bs2},
         {"BinSearch stl like 1", &bs3},
@@ -294,7 +294,7 @@ void RunTest(const TTestData& testData) {
 
 
 TEST_CASE("Binary Search Impl Tests", "[binsearch]") {
-    for (const auto [name, method] : gNAME_TO_METHOD) {
+    for (const auto [name, method] : gNameToMethod) {
         SECTION (std::format("{0} Test 1", name)) {
             std::vector<f64> v = {0.2};
             std::vector<usize> help = method->Prepare(v);
@@ -396,7 +396,7 @@ TEST_CASE("Binary Search Impl Benchmark", "[binsearch, benchmark]") {
         const std::vector<f64> v = createData(size);
 
         SECTION (std::format("Size: {}", size)) {
-            for (const auto [name, method] : gNAME_TO_METHOD) {
+            for (const auto [name, method] : gNameToMethod) {
                 auto vNew = v;
                 auto help = method->Prepare(vNew);
                 RunTest(TTestData{

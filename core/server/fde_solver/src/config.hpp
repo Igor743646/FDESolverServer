@@ -53,7 +53,7 @@ namespace NEquationSolver {
         TSolverConfig(TSolverConfig&&) = default;
         TSolverConfig& operator=(const TSolverConfig&) = default;
         TSolverConfig& operator=(TSolverConfig&&) = default;
-        TSolverConfig(const TParsedSolverConfig&);
+        explicit TSolverConfig(const TParsedSolverConfig&);
 
         ::PFDESolver::TSolverConfig ToProto() const;
         friend std::ostream& operator<<(std::ostream&, const TSolverConfig&);
