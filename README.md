@@ -8,9 +8,6 @@
 FDESolverServer - is an open-source service for calculating fractional differential equations.
 It is based on the GRPC messaging protocol and is presented in two variations: a client-server application and a console utility.
 
-Stages of work:
-1. 
-
 ## How to build it?
 
 The project uses the Cmake build system with the Conan package manager for C++ backend.
