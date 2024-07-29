@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
 project(FDESolverLib LANGUAGES CXX)
 
+START_BUILD()
+
 add_subdirectory(linalg)
 
 add_library(${PROJECT_NAME} STATIC
