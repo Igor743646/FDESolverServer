@@ -3,6 +3,7 @@
 #include <catch2/benchmark/catch_benchmark.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <math_expression_calculator.hpp>
+#include <math_utils.hpp>
 
 constexpr std::array<std::pair<const char*, double>, 19> DATA1 = {
     std::pair{"0", 0},
@@ -28,16 +29,16 @@ constexpr std::array<std::pair<const char*, double>, 19> DATA1 = {
 
 TEST_CASE("Math Expression Calculator", "[initialize]") {
     SECTION ("Without parameters") {
-        for (auto& [test_expr, result] : DATA1) {
+        for (const auto& [test_expr, result] : DATA1) {
             INFO("expr: " << test_expr);
-            ANTLRMathExpParser::MathExpressionCalculator mec(test_expr, {});
+            ANTLRMathExpParser::TMathExpressionCalculator mec(test_expr, {});
             double val = mec.Calc();
-            REQUIRE_THAT(val, Catch::Matchers::WithinAbs(result, 0.0000001));
+            REQUIRE_THAT(val, Catch::Matchers::WithinAbs(result, gEPSILON));
         }
     }
 
     SECTION ("Random") {
-        ANTLRMathExpParser::MathExpressionCalculator mec("randomf()", {});
+        ANTLRMathExpParser::TMathExpressionCalculator mec("randomf()", {});
         double val1 = mec.Calc();
         double val2 = mec.Calc();
         REQUIRE(val1 != val2);

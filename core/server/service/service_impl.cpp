@@ -13,7 +13,7 @@ namespace NFDESolverService {
 
         TParsedSolverConfig parsedSolverConfig = ParseClientConfig(*request);
         TSolverConfig solverConfig(parsedSolverConfig);
-        TSolvers solvers = ParseSolveMethods(*request, solverConfig);
+        const TSolvers solvers = ParseSolveMethods(*request, solverConfig);
 
         boost::latch latch(solvers.size());
 
@@ -21,18 +21,18 @@ namespace NFDESolverService {
         AddConfig(solverConfig, *response);
 
         // №2 Set Results to results
-        for (auto& solver : solvers) {
+        for (const auto& solver : solvers) {
             PFDESolver::TResult* pbResultDest = response->add_results();
-            if (solver && (pbResultDest != nullptr)) {
-                boost::asio::post(ThreadPool, [this, pbResultDest, solver, &latch]() {
-                    NTimer::TTimer timer;
-                    SolveTask(*solver, *pbResultDest, true);
-                    INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
-                    latch.count_down();
-                });
-            } else {
-                STACK_ASSERT(pbResultDest != nullptr, "pbResultDest is nullptr");
-            }
+
+            STACK_ASSERT(solver       != nullptr, "solver is nullptr");
+            STACK_ASSERT(pbResultDest != nullptr, "pbResultDest is nullptr");
+
+            boost::asio::post(ThreadPool, [this, pbResultDest, solver=solver.get(), &latch]() {
+                NTimer::TTimer timer;
+                SolveTask(*solver, *pbResultDest, true);
+                INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
+                latch.count_down();
+            });
         }
         
 
@@ -65,35 +65,21 @@ namespace NFDESolverService {
         }
 
         INFO_LOG << "Adding real solution: " << config.RealSolutionName.value() << Endl;
-        const usize n = config.SpaceCount;
-        const usize k = config.TimeCount;
-
-        auto realSolution = NLinalg::TMatrix(k + 1, n + 1);
-        for (usize j = 0; j <= k; j++) {
-            for (usize i = 0; i <= n; i++) {
-                if (i == n) {
-                    realSolution[j][i] = config.RightBoundState[j];
-                } else {
-                    realSolution[j][i] = (*config.RealSolution)[j][i];
-                }
-            }
-        }
-
-        PFDESolver::TMatrix pbRealSolution(realSolution.ToProto());
+        PFDESolver::TMatrix pbRealSolution((*config.RealSolution).ToProto());
         response.set_realsolutionname(config.RealSolutionName.value());
         response.mutable_realsolution()->Swap(&pbRealSolution);
     }
 
     template<std::convertible_to<std::string>... Args>
     auto TFDESolverService::GetFunction(std::string exp, const Args... args) { //NOLINT
-        auto calculator = std::make_shared<ANTLRMathExpParser::MathExpressionCalculator>(exp, std::vector<std::string>{std::string(args)...});
+        auto calculator = std::make_shared<ANTLRMathExpParser::TMathExpressionCalculator>(exp, std::vector<std::string>{std::string(args)...});
 
-        return [calc = calculator, args...](auto... d) -> f64 {
-            static_assert(sizeof...(args) == sizeof...(d));
+        return [calc = calculator, args...](auto... vars) -> f64 {
+            static_assert(sizeof...(args) == sizeof...(vars));
             std::array<std::string, sizeof...(args)> varNames = {args...};
-            std::array<f64, sizeof...(d)> varValues = {d...};
-            for (usize i = 0; i < sizeof...(d); i++) {
-                calc->SetVar(varNames[i], varValues[i]);
+            std::array<f64, sizeof...(vars)> varValues = {vars...};
+            for (usize i = 0; i < sizeof...(vars); i++) {
+                calc->SetVar(varNames.at(i), varValues.at(i));
             }
             return calc->Calc();
         };
@@ -101,25 +87,7 @@ namespace NFDESolverService {
 
     TParsedSolverConfig TFDESolverService::ParseClientConfig(const TClientConfig& config) {
         return {
-            TSolverConfigBase {
-                .SpaceCount = static_cast<usize>((config.rightbound() - config.leftbound()) / config.spacestep()), 
-                .TimeCount = static_cast<usize>(config.maxtime() / config.timestep()), 
-                .LeftBound = config.leftbound(), 
-                .RightBound = config.rightbound(),
-                .MaxTime = config.maxtime(),
-                .Alpha = config.alpha(), 
-                .Gamma = config.gamma(),
-                .SpaceStep = config.spacestep(), 
-                .TimeStep = config.timestep(),
-                .Beta = config.beta(),
-                .AlphaLeft = config.alphaleft(), 
-                .BetaLeft = config.betaleft(),
-                .AlphaRight = config.alpharight(), 
-                .BetaRight = config.betaright(),
-                .BordersAvailable = config.bordersavailable(),
-                .StochasticIterationCount = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : 1000, 
-                .RealSolutionName = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
-            },
+            TSolverConfigBase::FromProto(config),
             /* .DiffusionCoefficient =*/ GetFunction(config.diffusioncoefficient(), "x"),
             /* .DemolitionCoefficient =*/ GetFunction(config.demolitioncoefficient(), "x"),
             /* .ZeroTimeState =*/ GetFunction(config.zerotimestate(), "x"),
@@ -132,6 +100,8 @@ namespace NFDESolverService {
 
     TFDESolverService::TSolvers TFDESolverService::ParseSolveMethods(const TClientConfig& config, const TSolverConfig& solverConfig) {
         TFDESolverService::TSolvers solvers;
+        solvers.reserve(NEquationSolver::MethodsCount);
+
         const std::string& methods = config.solvemethods();
         DEBUG_LOG << "Methods: " << methods << Endl;
 
@@ -142,23 +112,21 @@ namespace NFDESolverService {
             });
         
         for (const auto& svMethod : view) {
-            std::string strMethod = std::string(svMethod);
+            std::string strMethod(svMethod);
             
             auto method = Methods.find(strMethod);
-            if (method != Methods.end()) {
-                DEBUG_LOG << "Get solver: " << strMethod << Endl;
-
-                if (method->second->Number() < solvers.size()) {
-                    solvers[method->second->Number()] = method->second->GetMethod(solverConfig);
-                } else {
-                    ERROR_LOG << "Method: " << strMethod << " unimplemented" << Endl;
-                    NStackTracer::TStackTracer::ThrowWithMessage("Method " + strMethod + " unimplemented");
-                }
-            } else {
-                INFO_LOG << "No solver: " << strMethod << Endl;
+            if (method == Methods.end()) {
+                WARNING_LOG << "No solver: " << strMethod << Endl;
+                continue;
             }
+
+            DEBUG_LOG << "Get solver: " << strMethod << Endl;
+            auto& builder = method->second;
+
+            STACK_ASSERT(builder->Number() < NEquationSolver::MethodsCount, std::format("Method: {} unimplemented", strMethod));
+            solvers.push_back(builder->GetMethod(solverConfig));
         }
 
         return solvers;
     }
-}
+}  // namespace NFDESolverService

@@ -42,19 +42,20 @@ TEST_CASE("PLU Decomposition", "[plu]") {
     }
 
     SECTION ("PLU 5x5") {
-        NLinalg::TMatrix matrix(5, 5, {
-            {4, 4, 5, 9, 0},
-            {2, 6, 4, 7, 2},
-            {2, 9, 2, 5, 9},
-            {8, 2, 9, 7, 2},
-            {4, 4, 3, 3, 1},
+        const usize matrixSize = 5;
+        NLinalg::TMatrix matrix(matrixSize, matrixSize, {
+            {4., 4., 5., 9., 0.},
+            {2., 6., 4., 7., 2.},
+            {2., 9., 2., 5., 9.},
+            {8., 2., 9., 7., 2.},
+            {4., 4., 3., 3., 1.},
         });
-        NLinalg::TMatrix answer(5, 5, {
-            {     8,        2,         9,         7,         2},
-            {1. / 4,  17. / 2,   -1. / 4,   13. / 4,   17. / 2},
-            {1. / 4, 11. / 17,  65. / 34, 107. / 34,        -4},
-            {1. / 2,  6. / 17,   4. / 13,  44. / 13, -36. / 13},
-            {1. / 2,  6. / 17, -48. / 65,    1. / 5,  -27. / 5},
+        NLinalg::TMatrix answer(matrixSize, matrixSize, {
+            {     8.,        2.,         9.,         7.,         2.},
+            {1. / 4.,  17. / 2.,   -1. / 4.,   13. / 4.,   17. / 2.},
+            {1. / 4., 11. / 17.,  65. / 34., 107. / 34.,        -4.},
+            {1. / 2.,  6. / 17.,   4. / 13.,  44. / 13., -36. / 13.},
+            {1. / 2.,  6. / 17., -48. / 65.,    1. / 5.,  -27. / 5.},
         });
 
         auto [P, LU] = matrix.LUFactorizing().value();
@@ -70,19 +71,21 @@ TEST_CASE("PLU Benchmark", "[plu, benchmark]") {
         NLinalg::TMatrix matrix(size, size);
         for (size_t i = 0; i < size; i++) {
             for (size_t j = 0; j < size; j++) {
-                matrix[i][j] = (f64)(i * size + j);
+                matrix[i][j] = static_cast<f64>(i * size + j);
             }    
         }
         return matrix;
     };
 
     BENCHMARK_ADVANCED("PLU 300x300 without constructor")(Catch::Benchmark::Chronometer meter) {
-        NLinalg::TMatrix matrix = getMatrix(300);
+        const usize matrixSize = 300;
+        NLinalg::TMatrix matrix = getMatrix(matrixSize);
         meter.measure([&matrix] { return matrix.LUFactorizing(); });
     };
 
     BENCHMARK_ADVANCED("PLU 600x600 without constructor")(Catch::Benchmark::Chronometer meter) {
-        NLinalg::TMatrix matrix = getMatrix(600);
+        const usize matrixSize = 600;
+        NLinalg::TMatrix matrix = getMatrix(matrixSize);
         meter.measure([&matrix] { return matrix.LUFactorizing(); });
     };
 }

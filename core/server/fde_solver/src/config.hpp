@@ -6,6 +6,7 @@
 
 namespace PFDESolver {
     class TSolverConfig;
+    class TClientConfig;
 }
 
 namespace NEquationSolver {
@@ -13,21 +14,25 @@ namespace NEquationSolver {
     /// @brief This structure contains fields that are standard data types.
     /// @brief There are no function.
     struct TSolverConfigBase {
-        usize SpaceCount, TimeCount;    // количество ячеек по x и t координатах соответственно
+        static constexpr usize DefaultIterationCount = 10;
 
-        f64 LeftBound, RightBound;   // границы отрезка сетки по x координате
-        f64 MaxTime;                 // граница отрезка времени по t координате
-        f64 Alpha, Gamma;            // степени производных по x и t координатах соответственно
-        f64 SpaceStep, TimeStep;     // шаги по сетки по x и t координатах соответственно
-        f64 Beta;                    // коэффициент доли лево/правосторонней производных [-1; +1]
+        usize SpaceCount, TimeCount;                                // количество ячеек по x и t координатах соответственно
 
-        f64 AlphaLeft, BetaLeft;     // коэффициенты граничных условий третьего рода для x == L
-        f64 AlphaRight, BetaRight;   // коэффициенты граничных условий третьего рода для x == R
+        f64 LeftBound, RightBound;                                  // границы отрезка сетки по x координате
+        f64 MaxTime;                                                // граница отрезка времени по t координате
+        f64 Alpha, Gamma;                                           // степени производных по x и t координатах соответственно
+        f64 SpaceStep, TimeStep;                                    // шаги по сетки по x и t координатах соответственно
+        f64 Beta;                                                   // коэффициент доли лево/правосторонней производных [-1; +1]
 
-        bool BordersAvailable;                  // стоит ли учитывать граничные условия
-        usize StochasticIterationCount = 10;    // количество итераций для стохастического алгоритма
+        f64 AlphaLeft, BetaLeft;                                    // коэффициенты граничных условий третьего рода для x == L
+        f64 AlphaRight, BetaRight;                                  // коэффициенты граничных условий третьего рода для x == R
+
+        bool BordersAvailable;                                      // стоит ли учитывать граничные условия
+        usize StochasticIterationCount = DefaultIterationCount;   // количество итераций для стохастического алгоритма
 
         std::optional<std::string> RealSolutionName;                // latex формула функции c эталонным решением обрамленная $$
+        
+        static TSolverConfigBase FromProto(const ::PFDESolver::TClientConfig&);
     };
 
     struct TParsedSolverConfig : public TSolverConfigBase {
@@ -38,6 +43,8 @@ namespace NEquationSolver {
         std::function<f64(f64)> LeftBoundState;                     // граничное условие u(L, t) = phiL(t)
         std::function<f64(f64)> RightBoundState;                    // граничное условие u(R, t) = phiR(t)
         std::optional<std::function<f64(f64, f64)>> RealSolution;   // функция с эталонным решением
+
+        [[nodiscard]] TSolverConfigBase Base() const;
     };
 
     struct TSolverConfig : TSolverConfigBase {
@@ -53,9 +60,10 @@ namespace NEquationSolver {
         TSolverConfig(TSolverConfig&&) = default;
         TSolverConfig& operator=(const TSolverConfig&) = default;
         TSolverConfig& operator=(TSolverConfig&&) = default;
+        ~TSolverConfig() = default;
         explicit TSolverConfig(const TParsedSolverConfig&);
 
-        ::PFDESolver::TSolverConfig ToProto() const;
+        [[nodiscard]] ::PFDESolver::TSolverConfig ToProto() const;
         friend std::ostream& operator<<(std::ostream&, const TSolverConfig&);
     };
-}
+}  // namespace NEquationSolver

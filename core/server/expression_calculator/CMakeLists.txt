@@ -13,6 +13,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     MathExpressionParserGrammar
     StackTracer
     Utils
+    MathUtils
     antlr4_static
 )
 target_include_directories(${PROJECT_NAME} PUBLIC 
@@ -21,6 +22,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${ANTLR_SampleGrammarVisitor_OUTPUT_DIR}
     ${StackTracer_HEADERS_DIR}
     ${Utils_HEADERS_DIR}
+    ${MathUtils_HEADERS_DIR}
 )
 
 DEFINE_LIB_HEADERS(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/src")

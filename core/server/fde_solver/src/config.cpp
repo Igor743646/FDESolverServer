@@ -3,15 +3,40 @@
 #include <config.pb.h>
 
 namespace NEquationSolver {
-    TSolverConfig::TSolverConfig(const TParsedSolverConfig& parsedConfig) : TSolverConfigBase(parsedConfig) {
-        DiffusionCoefficient.resize(parsedConfig.SpaceCount+1);
-        DemolitionCoefficient.resize(parsedConfig.SpaceCount+1);
-        ZeroTimeState.resize(parsedConfig.SpaceCount+1);
-        SourceFunction = NLinalg::TMatrix(parsedConfig.TimeCount+1, parsedConfig.SpaceCount+1);
-        LeftBoundState.resize(parsedConfig.TimeCount+1);
-        RightBoundState.resize(parsedConfig.TimeCount+1);
 
-        for (usize i = 0; i <= parsedConfig.SpaceCount; i++) {
+    TSolverConfigBase TParsedSolverConfig::Base() const {
+        return TSolverConfigBase {
+            .SpaceCount                 = SpaceCount, 
+            .TimeCount                  = TimeCount, 
+            .LeftBound                  = LeftBound,  
+            .RightBound                 = RightBound, 
+            .MaxTime                    = MaxTime, 
+            .Alpha                      = Alpha,  
+            .Gamma                      = Gamma, 
+            .SpaceStep                  = SpaceStep,  
+            .TimeStep                   = TimeStep, 
+            .Beta                       = Beta, 
+            .AlphaLeft                  = AlphaLeft,  
+            .BetaLeft                   = BetaLeft, 
+            .AlphaRight                 = AlphaRight,  
+            .BetaRight                  = BetaRight, 
+            .BordersAvailable           = BordersAvailable, 
+            .StochasticIterationCount   = StochasticIterationCount,
+            .RealSolutionName           = RealSolutionName,
+        };
+    }
+
+    TSolverConfig::TSolverConfig(const TParsedSolverConfig& parsedConfig) : TSolverConfigBase(parsedConfig.Base()) {
+        const usize n = parsedConfig.SpaceCount + 1;
+        const usize k = parsedConfig.TimeCount + 1;
+        DiffusionCoefficient.resize(n);
+        DemolitionCoefficient.resize(n);
+        ZeroTimeState.resize(n);
+        SourceFunction = NLinalg::TMatrix(k, n);
+        LeftBoundState.resize(k);
+        RightBoundState.resize(k);
+
+        for (usize i = 0; i < n; i++) {
             f64 x = parsedConfig.LeftBound + static_cast<f64>(i) * parsedConfig.SpaceStep;
             
             DiffusionCoefficient[i] = parsedConfig.DiffusionCoefficient(x);
@@ -19,25 +44,27 @@ namespace NEquationSolver {
             ZeroTimeState[i] = parsedConfig.ZeroTimeState(x);
         }
 
-        for (usize j = 0; j <= parsedConfig.TimeCount; j++) {
+        for (usize j = 0; j < k; j++) {
             f64 t = parsedConfig.TimeStep * static_cast<f64>(j);
             LeftBoundState[j] = parsedConfig.LeftBoundState(t);
             RightBoundState[j] = parsedConfig.RightBoundState(t);
             
-            for (usize i = 0; i <= parsedConfig.SpaceCount; i++) {
+            for (usize i = 0; i < n; i++) {
                 f64 x = parsedConfig.LeftBound + static_cast<f64>(i) * parsedConfig.SpaceStep;
                 SourceFunction[j][i] = parsedConfig.SourceFunction(x, t);
             }
         }
 
         if (parsedConfig.RealSolution.has_value()) {
-            RealSolution = NLinalg::TMatrix(parsedConfig.TimeCount+1, parsedConfig.SpaceCount+1);
-            for (usize j = 0; j <= parsedConfig.TimeCount; j++) {
+            RealSolution = NLinalg::TMatrix(k, n);
+            for (usize j = 0; j < k; j++) {
                 f64 t = parsedConfig.TimeStep * static_cast<f64>(j);
-                for (usize i = 0; i <= parsedConfig.SpaceCount; i++) {
+                (*RealSolution)[j][0] = LeftBoundState[j];
+                for (usize i = 0; i < n; i++) {
                     f64 x = parsedConfig.LeftBound + static_cast<f64>(i) * parsedConfig.SpaceStep;
                     (*RealSolution)[j][i] = parsedConfig.RealSolution.value()(x, t);
                 }
+                (*RealSolution)[j][parsedConfig.SpaceCount] = RightBoundState[j];
             }
         }
     }
@@ -63,7 +90,29 @@ namespace NEquationSolver {
 
         return config;
     }
-}
+
+    TSolverConfigBase TSolverConfigBase::FromProto(const ::PFDESolver::TClientConfig& config) {
+        return TSolverConfigBase {
+            .SpaceCount                 = static_cast<usize>((config.rightbound() - config.leftbound()) / config.spacestep()), 
+            .TimeCount                  = static_cast<usize>(config.maxtime() / config.timestep()), 
+            .LeftBound                  = config.leftbound(), 
+            .RightBound                 = config.rightbound(),
+            .MaxTime                    = config.maxtime(),
+            .Alpha                      = config.alpha(), 
+            .Gamma                      = config.gamma(),
+            .SpaceStep                  = config.spacestep(), 
+            .TimeStep                   = config.timestep(),
+            .Beta                       = config.beta(),
+            .AlphaLeft                  = config.alphaleft(), 
+            .BetaLeft                   = config.betaleft(),
+            .AlphaRight                 = config.alpharight(), 
+            .BetaRight                  = config.betaright(),
+            .BordersAvailable           = config.bordersavailable(),
+            .StochasticIterationCount   = config.has_stochasticiterationcount() ? config.stochasticiterationcount() : TSolverConfigBase::DefaultIterationCount, 
+            .RealSolutionName           = config.has_realsolutionname() ? std::optional(config.realsolutionname()) : std::nullopt,
+        };
+    }
+}  // namespace NEquationSolver
 
 namespace NEquationSolver {
     std::ostream& operator<<(std::ostream& out, const NEquationSolver::TSolverConfig& config) {
@@ -82,4 +131,4 @@ namespace NEquationSolver {
 
         return out;
     }
-}
+}  // namespace NEquationSolver

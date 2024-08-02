@@ -4,20 +4,20 @@
 
 
 TFDESolverServerImpl::TStatus TFDESolverServerImpl::RunTask(TServerContext* context, const TClientConfig* request, TResults* response) {
-    gpr_log(GPR_INFO, "Start task");
+    INFO_LOG << "Start task" << Endl;
     
     NTimer::TTimer timer;
 
     try {
         DoRunTask(request, response);
-        gpr_log(GPR_INFO, "End task");
+        INFO_LOG << "End task" << Endl;
     } catch (const NStackTracer::TExceptionWithStack& e) {
-        gpr_log(GPR_ERROR, "Error:");
+        ERROR_LOG << "Error:" << Endl;
         NStackTracer::TStackTracer::CatchAndPrintStack(e);
-        return TStatus(::grpc::StatusCode::ABORTED, e.what());
+        return {::grpc::StatusCode::ABORTED, e.what()};
     } catch (...) {
-        gpr_log(GPR_ERROR, "Error: unknown error");
-        return TStatus(::grpc::StatusCode::UNKNOWN, "Unexpected exception");
+        ERROR_LOG << "Error: unknown error" << Endl;
+        return {::grpc::StatusCode::UNKNOWN, "Unexpected exception"};
     }
 
     auto workTime = timer.MilliSeconds().count();

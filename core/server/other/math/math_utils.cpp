@@ -16,4 +16,4 @@ namespace NFunctions {
         }
         return res;
     }
-}
+}  // namespace NFunctions

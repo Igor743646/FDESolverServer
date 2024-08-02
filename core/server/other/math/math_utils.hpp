@@ -35,7 +35,9 @@ using usize = size_t;
 using f32 = float;
 using f64 = double;
 
-constexpr f64 EPSILON = static_cast<f64>(0.00000001);
+const f64 gEPSILON = static_cast<f64>(0.00000001);
+const std::streamsize gPRECISION = 9;
+const usize gCACHELINE_SIZE = 64;
 
 namespace NFunctions {
     f64 Gamma(f64);
@@ -59,8 +61,8 @@ namespace std {
     std::ostream& operator<<(std::ostream& out, const std::vector<T>& map) {
         out << "[ ";
 
-        for (auto& v : map) {
-            out << v << " ";
+        for (auto& i : map) {
+            out << i << " ";
         }
 
         out << "]";
@@ -71,8 +73,8 @@ namespace std {
     std::ostream& operator<<(std::ostream& out, const std::span<T>& map) {
         out << "[ ";
 
-        for (auto& v : map) {
-            out << v << " ";
+        for (auto& i : map) {
+            out << i << " ";
         }
 
         out << "]";
@@ -80,9 +82,9 @@ namespace std {
     }
 
     template<class T>
-    std::ostream& operator<<(std::ostream& out, const std::optional<T>& op) {
-        if (op.has_value()) {
-            out << op.value();
+    std::ostream& operator<<(std::ostream& out, const std::optional<T>& opl) {
+        if (opl.has_value()) {
+            out << opl.value();
         } else {
             out << "std::nullopt";
         }
@@ -103,4 +105,4 @@ namespace std {
 
         return out;
     }
-}
+}  // namespace std

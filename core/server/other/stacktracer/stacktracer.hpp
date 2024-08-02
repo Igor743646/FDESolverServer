@@ -9,9 +9,7 @@ namespace NStackTracer {
     class TExceptionWithStack : public std::exception {
     public:
 
-        explicit TExceptionWithStack(const char* message) : std::exception() {
-            Message = message;
-        }
+        explicit TExceptionWithStack(const char* message) : Message(message) {}
 
         const char* what() const noexcept override { //NOLINT
             return Message;
@@ -28,7 +26,7 @@ namespace NStackTracer {
     public:
 
         static void CurrentStack() {
-            std::cout << boost::stacktrace::stacktrace() << std::endl;
+            std::cout << boost::stacktrace::stacktrace() << '\n';
         }
 
         [[noreturn]] static void ThrowWithMessage(const char* message) {
@@ -41,16 +39,16 @@ namespace NStackTracer {
                 << Traced(boost::stacktrace::stacktrace());
         }
 
-        static void CatchAndPrintStack(const TExceptionWithStack& e) {
-            std::cout << e.what() << std::endl;
-            const boost::stacktrace::stacktrace* st = boost::get_error_info<Traced>(e);
-            if (st != nullptr) {
-                std::cerr << *st;
+        static void CatchAndPrintStack(const TExceptionWithStack& exception) {
+            std::cout << exception.what() << '\n';
+            const boost::stacktrace::stacktrace* trace = boost::get_error_info<Traced>(exception);
+            if (trace != nullptr) {
+                std::cerr << *trace;
             }
         }
 
     };
-}
+}  // namespace NStackTracer
 
 #ifdef NDEBUG
 

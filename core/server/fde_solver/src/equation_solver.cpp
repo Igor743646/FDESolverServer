@@ -13,7 +13,7 @@ namespace NEquationSolver {
         return res;
     }
 
-    bool IEquationSolver::TResult::SaveToFile(std::string name) const {
+    bool IEquationSolver::TResult::SaveToFile(const std::string& name) const {
         INFO_LOG << "Save result in file: " << name << Endl;
         std::ofstream binaryFile(name, std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
 
@@ -28,26 +28,32 @@ namespace NEquationSolver {
         return true;
     }
 
-    IEquationSolver::IEquationSolver(const TSolverConfig& config) : Config(config) {
+    IEquationSolver::IEquationSolver(const TSolverConfig& config) 
+    : Config(config), 
+      PowTCGamma(std::pow(Config.TimeStep, Config.Gamma)),
+      PowSCAlpha(std::pow(Config.SpaceStep, Config.Alpha))
+    {
         Init();
         PrefetchData();
         Validate();
     }
 
-    IEquationSolver::IEquationSolver(TSolverConfig&& config) : Config(std::move(config)) {
+    IEquationSolver::IEquationSolver(TSolverConfig&& config) 
+    : Config(std::move(config)), 
+      PowTCGamma(std::pow(Config.TimeStep, Config.Gamma)),
+      PowSCAlpha(std::pow(Config.SpaceStep, Config.Alpha)) 
+    {
         Init();
         PrefetchData();
         Validate();
     }
 
     IEquationSolver::IEquationSolver(const IEquationSolver& solver) : IEquationSolver(solver.Config) {}
-    IEquationSolver::IEquationSolver(IEquationSolver&& solver) : IEquationSolver(std::move(solver.Config)) {}
+    IEquationSolver::IEquationSolver(IEquationSolver&& solver) noexcept : IEquationSolver(std::move(solver.Config)) {}
 
     void IEquationSolver::Init() {
         Config.SpaceCount = static_cast<usize>((Config.RightBound - Config.LeftBound) / Config.SpaceStep);
         Config.TimeCount = static_cast<usize>(Config.MaxTime / Config.TimeStep);
-        PowTCGamma = std::pow(Config.TimeStep, Config.Gamma);
-        PowSCAlpha = std::pow(Config.SpaceStep, Config.Alpha);
     }
 
     void IEquationSolver::PrefetchData() {
@@ -63,21 +69,7 @@ namespace NEquationSolver {
         }
     }
 
-    IEquationSolver::~IEquationSolver() {
-        
-    }
-
-    f64 IEquationSolver::CoefG(f64 a, usize i) const {
-        assert((a == Config.Alpha) || (a == Config.Gamma));
-
-        if (a == Config.Alpha) {
-            assert(i < GAlpha.size());
-            return GAlpha[i];
-        }
-
-        assert(i < GGamma.size());
-        return GGamma[i];
-    }
+    IEquationSolver::~IEquationSolver() = default;
 
     f64 IEquationSolver::CoefGAlpha(usize i) const {
         assert(i < GAlpha.size());
@@ -161,4 +153,4 @@ namespace NEquationSolver {
             std::rethrow_exception(std::current_exception());
         }
     }
-}
+}  // namespace NEquationSolver

@@ -14,11 +14,11 @@
     #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #endif
 
-namespace {
-    const auto gLogFileName = "log.log";
-}
-
 namespace NLogger {
+
+    namespace Globals {
+        constexpr std::string_view GLogFileName = "log.log";
+    }
 
     class TLogHelperBase {
     public:
@@ -38,7 +38,7 @@ namespace NLogger {
         TLogHelperBase() {
             static bool started = false;
             if (!started) { // Just for truncating
-                std::ofstream file(gLogFileName, std::ios_base::out | std::ios_base::trunc);
+                std::ofstream file(Globals::GLogFileName.data(), std::ios_base::out | std::ios_base::trunc);
                 started = true;
             }
         }
@@ -51,19 +51,21 @@ namespace NLogger {
     class TLogHelper final : public TLogHelperBase {
     public:
 
-        TLogHelper(const char* name, const char* file, int line) : TLogHelperBase() {
-            Out << "[ " << std::setw(5) << name << " ] " << file << "(" << line << ")";
-            Out << " Thread id: " << std::this_thread::get_id() << " Message: ";
+        TLogHelper(const char* name, const char* file, int line) {
+            const std::chrono::zoned_time zonedTime{std::chrono::current_zone(), std::chrono::system_clock::now()};
+            const std::thread::id threadId = std::this_thread::get_id();
+
+            Out << std::format("[ {: >5} ] {} {}({}) Thread id: {} Message: ", name, zonedTime, file, line, threadId);
         }
 
         TLogHelper(const TLogHelper&) = delete;
-        TLogHelper(TLogHelper&&) = default;
+        TLogHelper(TLogHelper&&) noexcept = default;
         TLogHelper& operator=(const TLogHelper&) = delete;
         TLogHelper& operator=(TLogHelper&&) = delete;
         
         ~TLogHelper() {
             std::unique_lock lock{stMutex};
-            std::ofstream file(gLogFileName, std::ios_base::out | std::ios_base::app);
+            std::ofstream file(Globals::GLogFileName.data(), std::ios_base::out | std::ios_base::app);
             
             if (file.is_open()) {
                 file << Out.str();
@@ -73,7 +75,12 @@ namespace NLogger {
         }
 
         template<class T>
-        TLogHelper&& operator<<(const T& mes) && {
+        TLogHelper&& operator<<(T&& mes) && {
+            Out << std::forward<T>(mes);
+            return std::move(*this);
+        }
+
+        TLogHelper&& operator<<(const char* mes) && {
             Out << mes;
             return std::move(*this);
         }
@@ -82,12 +89,12 @@ namespace NLogger {
 
         std::ostringstream Out;
     };
-}
+}  // namespace NLogger
 
-#define BASE_LOG(level, file, line, ...) if (level <= ::NLogger::TLogHelper::GetLogLevel()) ::NLogger::TLogHelper{file, line, __VA_ARGS__}
+#define BASE_LOG(level, name, file, line) if (level <= ::NLogger::TLogHelper::GetLogLevel()) ::NLogger::TLogHelper{name, file, line}
 #define INFO_LOG  BASE_LOG(::NLogger::TLogHelper::TLevel::lvINFO, "INFO", (__FILENAME__), (__LINE__))
 #define DEBUG_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvDEBUG, "DEBUG", (__FILENAME__), (__LINE__))
 #define ERROR_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvERROR, "ERROR", (__FILENAME__), (__LINE__))
 #define WARNING_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvWARN, "WARN", (__FILENAME__), (__LINE__))
 #define CRITICAL_LOG BASE_LOG(::NLogger::TLogHelper::TLevel::lvCRITICAL, "CRIT", (__FILENAME__), (__LINE__))
-#define Endl '\n'
+#define Endl '\n' // NOLINT(modernize-macro-to-enum)

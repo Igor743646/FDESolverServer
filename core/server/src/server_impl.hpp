@@ -11,5 +11,5 @@ private:
     using TResults = ::PFDESolver::TResults;
 
 public:
-    TStatus RunTask(TServerContext*, const TClientConfig*, TResults*) override final;
+    TStatus RunTask(TServerContext*, const TClientConfig*, TResults*) final;
 };

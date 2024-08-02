@@ -20,35 +20,41 @@ TEST_CASE("Solve Equation", "[plu, solve]") {
 
 
 TEST_CASE("Solve Equation Benchmark", "[plu, solve, benchmark]") {
-    auto getMatrix = [](size_t size) -> NLinalg::TMatrix {
+    std::random_device device;
+    std::knuth_b engine(device());
+    std::normal_distribution dist(0.0, 20.0);
+
+    auto getMatrix = [&](size_t size) -> NLinalg::TMatrix {
         NLinalg::TMatrix matrix(size, size);
         for (size_t i = 0; i < size; i++) {
             for (size_t j = 0; j < size; j++) {
-                matrix[i][j] = (f64)(std::rand() % 20) + (f64)(std::rand() % 1000000) / 1000000.;
+                matrix[i][j] = dist(engine);
             }    
         }
         return matrix;
     };
 
-    auto getVector = [](size_t size) -> std::vector<f64> {
-        std::vector<f64> v(size);
+    auto getVector = [&](size_t size) -> std::vector<f64> {
+        std::vector<f64> data(size);
         for (size_t i = 0; i < size; i++) {
-            v[i] = (f64)(std::rand() % 20) + (f64)(std::rand() % 1000) / 1000.;  
+            data[i] = dist(engine);  
         }
-        return v;
+        return data;
     };
 
     BENCHMARK_ADVANCED("Solve Equation 300x300 without constructor")(Catch::Benchmark::Chronometer meter) {
-        auto matrix = getMatrix(300);
-        auto vector = getVector(300);
+        const usize matrixSize = 300;
+        auto matrix = getMatrix(matrixSize);
+        auto vector = getVector(matrixSize);
         auto plu = matrix.LUFactorizing();
         REQUIRE(plu.has_value());
         meter.measure([&plu, &vector] { return NLinalg::TMatrix::Solve(plu.value(), vector); });
     };
 
     BENCHMARK_ADVANCED("Solve Equation 600x600 without constructor")(Catch::Benchmark::Chronometer meter) {
-        auto matrix = getMatrix(600);
-        auto vector = getVector(600);
+        const usize matrixSize = 600;
+        auto matrix = getMatrix(matrixSize);
+        auto vector = getVector(matrixSize);
         auto plu = matrix.LUFactorizing();
         REQUIRE(plu.has_value());
         meter.measure([&plu, &vector] { return NLinalg::TMatrix::Solve(plu.value(), vector); });

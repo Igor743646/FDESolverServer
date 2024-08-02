@@ -24,11 +24,10 @@ namespace NArgumentParser {
     }
 
     void TArgumentParser::Info() {
-        std::cout << "usage: FDESolverCLI_<build_type>.exe [--help] [--file <file_name>]" << std::endl;
-        std::cout << std::endl;
-        std::cout << "options:" << std::endl;
-        for (auto& [k, v] : Arguments) {
-            std::cout << "\t" << std::setw(15) << k << "\t\t\t" << v.Help() << std::endl;
+        std::cout << "usage: FDESolverCLI_<build_type>.exe [--help] [--file <file_name>]\n\n";
+        std::cout << "options:\n";
+        for (auto& [argName, argInfo] : Arguments) {
+            std::cout << std::format("\t{: >15}\t\t\t{}\n", argName, argInfo.Help());
         }
         std::exit(0);
     }
@@ -38,7 +37,7 @@ namespace NArgumentParser {
 
         for (int i = 1; i < argc; i++) {
             if (!Arguments.contains(std::string(argv[i]))) {
-                std::cerr << "Wrong argument: " << argv[i] << std::endl;
+                std::cerr << "Wrong argument: " << argv[i] << '\n';
                 std::exit(1);
             }
             if (std::strcmp("--help", argv[i]) == 0) {
@@ -54,8 +53,8 @@ namespace NArgumentParser {
                 case TArgumentType::INT_VALUE: {
                     i++;
                     if (i >= argc) {
-                        std::cerr << "Wrong argument count!" << std::endl;
-                        std::cerr << "After " << argv[i - 1] << " must be int value" << std::endl;
+                        std::cerr << "Wrong argument count!" << '\n';
+                        std::cerr << "After " << argv[i - 1] << " must be int value" << '\n';
                         std::exit(1);
                     }
                     result.Set<TArgumentTypeAliasType<TArgumentType::INT_VALUE>>(argInfo, argv[i - 1], std::stoi(argv[i]));
@@ -64,15 +63,15 @@ namespace NArgumentParser {
                 case TArgumentType::STRING_VALUE: {
                     i++;
                     if (i >= argc) {
-                        std::cerr << "Wrong argument count!" << std::endl;
-                        std::cerr << "After " << argv[i - 1] << " must be string value" << std::endl;
+                        std::cerr << "Wrong argument count!" << '\n';
+                        std::cerr << "After " << argv[i - 1] << " must be string value" << '\n';
                         std::exit(1);
                     }
                     result.Set<TArgumentTypeAliasType<TArgumentType::STRING_VALUE>>(argInfo, argv[i - 1], argv[i]);
                     break;
                 }
                 default: {
-                    std::cerr << "Unimplimented type: " << (int8_t)argInfo.Type << std::endl;
+                    std::cerr << "Unimplimented type: " << static_cast<i8>(argInfo.Type) << '\n';
                 }
             }
         }
@@ -83,12 +82,11 @@ namespace NArgumentParser {
                 continue;
             }
             if (v.IsRequire() && !result.Has(k)) {   
-                std::cerr << "Argument " << k << " is require" << std::endl;
+                std::cerr << "Argument " << k << " is require" << '\n';
                 std::exit(1);
             }
         }
 
         return result;
     }
-
-}
+}  // namespace NArgumentParser

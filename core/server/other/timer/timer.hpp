@@ -9,8 +9,6 @@ namespace NTimer {
         using TMilli = std::chrono::duration<double, std::milli>;
         using TSeconds = std::chrono::duration<double>;
 
-    public:
-
         TTimer() {
             Start = std::chrono::system_clock::now();
         }
@@ -33,4 +31,4 @@ namespace NTimer {
 
         std::chrono::system_clock::time_point Start;
     };
-}
+}  // namespace NTimer

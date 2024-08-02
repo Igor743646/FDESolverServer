@@ -1,8 +1,10 @@
 #include "server_impl.hpp"
 
 #include <grpcpp/server_builder.h>
+#include <utils.hpp>
 
 void Init() {
+    std::set_terminate(NUtils::TerminateWithStack);
 #ifndef NDEBUG
     gpr_set_log_verbosity(gpr_log_severity::GPR_LOG_SEVERITY_DEBUG);
     NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelper::TLevel::lvDEBUG);
@@ -15,20 +17,16 @@ void RunServer() {
     std::string serverAddress("[::]:50051");
     TFDESolverServerImpl service;
 
-    grpc::ResourceQuota resourceQuota;
-    resourceQuota.SetMaxThreads(8);
-
     grpc::ServerBuilder builder;
-    builder.SetResourceQuota(resourceQuota);
     builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
     if (server) {
-        gpr_log(GPR_INFO, "Server listening on address: %s", serverAddress.c_str());
+        INFO_LOG << std::format("Server listening on address: {}\n", serverAddress);
         server->Wait();
     } else {
-        gpr_log(GPR_INFO, "Can not run server on address: %s", serverAddress.c_str());
+        INFO_LOG << std::format("Can not run server on address: {}\n", serverAddress);
     }
 }
 

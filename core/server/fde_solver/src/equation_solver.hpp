@@ -27,8 +27,6 @@ namespace NEquationSolver {
         std::vector<f64> GAlpha;
         std::vector<f64> GGamma;
 
-    protected:
-
         void PrefetchData();
         void Init();
 
@@ -38,33 +36,33 @@ namespace NEquationSolver {
 
         struct TResult {
             std::string MethodName;
-            const TSolverConfig& Config;
             NLinalg::TMatrix Field;
 
-            PFDESolver::TResult ToProto() const;
-            bool SaveToFile(std::string name) const;
+            [[nodiscard]] PFDESolver::TResult ToProto() const;
+            [[nodiscard]] bool SaveToFile(const std::string& name) const;
         };
 
         explicit IEquationSolver(const TSolverConfig&);
         explicit IEquationSolver(TSolverConfig&&);
         IEquationSolver(const IEquationSolver&);
-        IEquationSolver(IEquationSolver&&);
+        IEquationSolver(IEquationSolver&&) noexcept;
+        IEquationSolver& operator=(const IEquationSolver&) = delete;
+        IEquationSolver& operator=(IEquationSolver&&) noexcept = delete;
         virtual ~IEquationSolver();
 
-        f64 Space(usize) const;
-        f64 Time(usize) const;
-        f64 CoefA(usize) const;
-        f64 CoefB(usize) const;
-        f64 CoefC(usize) const;
-        f64 CoefG(f64, usize) const;
-        f64 CoefGAlpha(usize) const;
-        f64 CoefGGamma(usize) const;
+        [[nodiscard]] f64 Space(usize) const;
+        [[nodiscard]] f64 Time(usize) const;
+        [[nodiscard]] f64 CoefA(usize) const;
+        [[nodiscard]] f64 CoefB(usize) const;
+        [[nodiscard]] f64 CoefC(usize) const;
+        [[nodiscard]] f64 CoefGAlpha(usize) const;
+        [[nodiscard]] f64 CoefGGamma(usize) const;
 
-        virtual std::string Name() const = 0;
+        [[nodiscard]] virtual std::string Name() const = 0;
         virtual TResult Solve(bool saveMeta) final;
         virtual TResult DoSolve(bool saveMeta) = 0;
 
-        const TSolverConfig& GetConfig() const;
+        [[nodiscard]] const TSolverConfig& GetConfig() const;
         virtual void Validate() const final;
 
         friend std::ostream& operator<<(std::ostream& out, const IEquationSolver& solver) {
@@ -72,4 +70,4 @@ namespace NEquationSolver {
             return out;
         }
     };
-}
+}  // namespace NEquationSolver

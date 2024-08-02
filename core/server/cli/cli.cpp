@@ -1,6 +1,7 @@
 #include <argument_parser.hpp>
 #include <google/protobuf/util/json_util.h>
 #include <service_impl.hpp>
+#include <utility>
 
 using NArgumentParser::TArgumentParserResult;
 using NArgumentParser::TArgumentParser;
@@ -10,9 +11,8 @@ using NArgumentParser::TArgumentTypeAliasType;
 class TCLISolver : NFDESolverService::TFDESolverService {
 public:
 
-    explicit TCLISolver(const TArgumentParserResult& arguments) 
-        : NFDESolverService::TFDESolverService(), 
-          Arguments(arguments) {}
+    explicit TCLISolver(TArgumentParserResult  arguments) 
+        : Arguments(std::move(arguments)) {}
 
     void RunTask() {
         auto config = GetConfig();
@@ -26,15 +26,15 @@ public:
 
 private:
 
-    void Check(bool expression, const std::string& message) {
+    static void Check(bool expression, const std::string& message) {
         if (!expression) {
-            std::cerr << message << std::endl;
+            std::cerr << message << '\n';
             std::exit(1);
         }
     }
 
     std::unique_ptr<PFDESolver::TClientConfig> GetConfig() {
-        const std::string& fileName = Arguments.Get<const std::string&>("--input-file");
+        const auto& fileName = Arguments.Get<const std::string&>("--input-file");
 
         auto config = std::make_unique<PFDESolver::TClientConfig>();
 
@@ -49,7 +49,7 @@ private:
         auto status = google::protobuf::util::JsonStringToMessage(std::string_view(jsonConfig), config.get());
 
         if (!status.ok()) {
-            std::cerr << status.message() << std::endl;
+            std::cerr << status.message() << '\n';
             std::exit(1);
         }
 
@@ -57,7 +57,7 @@ private:
     }
 
     void SaveResults(const PFDESolver::TResults& results) {
-        const std::string& fileName = Arguments.Get<const std::string&>("--output-file");
+        const auto& fileName = Arguments.Get<const std::string&>("--output-file");
         const bool& isJson = Arguments.Get<const bool&>("--output-json");
 
         std::ofstream outputFile(fileName, std::ios::out | std::ios::binary);
@@ -71,11 +71,11 @@ private:
 
             outputFile << jsonSerializedMessage;
 
-            std::cout << "Serialized json success." << std::endl;
+            std::cout << "Serialized json success." << '\n';
         } else {
             Check(results.SerializePartialToOstream(&outputFile), "Can not serialize data as binary in file: " + fileName);
             
-            std::cout << "Serialized binary success." << std::endl;
+            std::cout << "Serialized binary success." << '\n';
         }
     }
 
@@ -83,18 +83,20 @@ private:
 };
 
 TArgumentParserResult ParseArgs(int argc, char** argv) {
+    const TArgumentTypeAliasType<TArgumentType::STRING_VALUE> defaultOutFile = "result.txt";
+    const TArgumentTypeAliasType<TArgumentType::FLAG> defaultJsonMode = false;
+    const TArgumentTypeAliasType<TArgumentType::INT_VALUE> defaultLogLevel = 5;
+
     TArgumentParser parser;
     parser.AddArgument("--input-file", TArgumentType::STRING_VALUE, 
                        "input file with json view of protobuf TClientConfig", true);
     parser.AddArgument("--output-file", TArgumentType::STRING_VALUE, 
-                       "output file with view of protobuf TResults", false, 
-                       TArgumentTypeAliasType<TArgumentType::STRING_VALUE>("result.txt"));
+                       "output file with view of protobuf TResults", false, defaultOutFile);
     parser.AddArgument("--output-json", TArgumentType::FLAG, 
-                       "json output file format", false, 
-                       TArgumentTypeAliasType<TArgumentType::FLAG>(false));
+                       "json output file format", false, defaultJsonMode);
     parser.AddArgument("--log-level", TArgumentType::INT_VALUE, 
                        "log level: 1 (CRITICAL), 2 (ERROR), 3 (WARN), 4 (INFO), 5 (DEBUG)", 
-                       false, TArgumentTypeAliasType<TArgumentType::INT_VALUE>(5));
+                       false, defaultLogLevel);
     return parser.Parse(argc, argv);
 }
 

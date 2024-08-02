@@ -17,23 +17,23 @@ namespace NEquationSolver {
         explicit TStochasticFDES(const TSolverConfig& config) : IEquationSolver(config) {}
         explicit TStochasticFDES(TSolverConfig&& config) :  IEquationSolver(std::move(config)) {}
 
-        virtual std::string Name() const override {
+        [[nodiscard]] std::string Name() const override {
             return "Stochastic method with " + TFiller::Name();
         }
 
     private:
         
-        std::vector<std::discrete_distribution<i64>> CreateDistributions() const {
-            const i64 n = static_cast<i64>(Config.SpaceCount);
-            const i64 k = static_cast<i64>(Config.TimeCount);
-            const i64 probsLen = n + 1 + n + k + 1;
+        [[nodiscard]] std::vector<std::discrete_distribution<i64>> CreateDistributions() const {
+            const usize n = Config.SpaceCount;
+            const usize k = Config.TimeCount;
+            const usize probsLen = n + 1 + n + k + 1;
 
             std::vector<std::discrete_distribution<i64>> result;
             std::vector<f64> probabilities(probsLen, 0.0);
 
-            for (i64 i = 0; i < n - 1; i++) {
-                for (i64 p = 0; p < probsLen; p++) {
-                    probabilities[p] = std::abs(TFiller::FillProbabilities(this, probabilities, i + 1, p));
+            for (usize i = 0; i < n - 1; i++) {
+                for (usize probIdx = 0; probIdx < probsLen; probIdx++) {
+                    probabilities[probIdx] = std::abs(TFiller::FillProbabilities(this, probabilities, i + 1, probIdx));
                 }
                 result.emplace_back(probabilities.begin(), probabilities.end());
             }
@@ -43,7 +43,7 @@ namespace NEquationSolver {
 
     public:
 
-        virtual TResult DoSolve(bool /*saveMeta*/) override {
+        TResult DoSolve(bool /*saveMeta*/) override {
             INFO_LOG << "Start solving Stochastic fractional-derivative equation solver..." << Endl;
             
             const i64 n = static_cast<i64>(Config.SpaceCount);
@@ -79,13 +79,14 @@ namespace NEquationSolver {
                     NTimer::TTimer ceilTimer;
                     f64 resultji = 0.0;
                     
-                    for (i64 _ = 0; _ < (i64)count; _++) {
-                        i64 x = i, y = j;
-                        f64 sf = 0.0;
+                    for (i64 _ = 0; _ < static_cast<i64>(count); _++) {
+                        i64 x = i;
+                        i64 y = j;
+                        f64 sfv = 0.0;
 
                         while (y > 0 && x < n && x > 0) {
                             const i64 idx = distributions[x - 1](engine);
-                            sf += Config.SourceFunction[y][x];
+                            sfv += Config.SourceFunction[y][x];
 
                             if (idx <= 2 * n + k) {
                                 y--;
@@ -99,7 +100,7 @@ namespace NEquationSolver {
                             }
                         }
 
-                        resultji += sf * PowTCGamma;
+                        resultji += sfv * PowTCGamma;
 
                         if (y <= 0 && (x >= 0) && (x <= n)) {
                             resultji += Config.ZeroTimeState[x];
@@ -122,15 +123,14 @@ namespace NEquationSolver {
             }
 
             DEBUG_LOG << "Simulation time: " << timer.MilliSeconds().count() << "ms" << Endl;
-            DEBUG_LOG << "Simulation time by ceil: " << Endl << timeForCeil << Endl;
+            DEBUG_LOG << "Simulation time by ceil:\n" << timeForCeil << Endl;
 
             TResult res = {
                 .MethodName = Name(),
-                .Config = Config, 
                 .Field = std::move(result),
             };
 
             return res;
         }
     };
-}
+}  // namespace NEquationSolver

@@ -30,24 +30,24 @@ namespace NArgumentParser {
 
     class TArgumentParserResult;
     struct TArgumentInfo {
-        TArgumentType   Type;
-        bool            Require;
+        TArgumentType   Type{};
+        bool            Require{};
         std::string     Description;
         std::any        Default;
 
-        const std::string& Help() const {
+        [[nodiscard]] const std::string& Help() const {
             return Description;
         }
 
-        bool IsRequire() const {
+        [[nodiscard]] bool IsRequire() const {
             return Require;
         }
 
-        bool HasDefault() const {
+        [[nodiscard]] bool HasDefault() const {
             return Default.has_value();
         }
     };
-}
+}  // namespace NArgumentParser
 
 namespace NArgumentParser {
     class TArgumentParser {
@@ -82,11 +82,11 @@ namespace NArgumentParser {
             Results[key].second = info;
         }
 
-        bool Has(const std::string& key) const {
+        [[nodiscard]] bool Has(const std::string& key) const {
             return Results.contains(key);
         }
 
-        const std::string& Help(const std::string& key) const {
+        [[nodiscard]] const std::string& Help(const std::string& key) const {
             return Results.at(key).second.Help();
         }
 
@@ -96,7 +96,7 @@ namespace NArgumentParser {
         }
 
         template<class T>
-        const T& Get(const std::string& key) const {
+        [[nodiscard]] const T& Get(const std::string& key) const {
             return std::any_cast<T>(Results.at(key).first);
         }
 
@@ -104,4 +104,4 @@ namespace NArgumentParser {
 
         std::unordered_map<std::string, std::pair<std::any, TArgumentInfo>> Results;
     };
-}
+}  // namespace NArgumentParser

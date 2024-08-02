@@ -7,12 +7,18 @@
 #include <random>
 #include <bitset>
 
-struct BinarySearchBase {
+struct IBinarySearchBase {
+    IBinarySearchBase() = default;
+    IBinarySearchBase(const IBinarySearchBase&) = default;
+    IBinarySearchBase(IBinarySearchBase&&) = default;
+    IBinarySearchBase& operator=(const IBinarySearchBase&) = default;
+    IBinarySearchBase& operator=(IBinarySearchBase&&) = default;
+    virtual ~IBinarySearchBase() = default;
     virtual std::vector<usize> Prepare(std::vector<f64>&) const = 0;
     virtual std::ptrdiff_t Search(const f64*, const f64*, f64, const std::vector<usize>&) const = 0;
 };
 
-struct BinarySearch1 : BinarySearchBase {
+struct TBinarySearch1 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
@@ -20,126 +26,127 @@ struct BinarySearch1 : BinarySearchBase {
     }
 };
 
-struct BinarySearch2 : BinarySearchBase {
+struct TBinarySearch2 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        std::ptrdiff_t l = 0, r = end - begin - 1;
+        std::ptrdiff_t left = 0;
+        std::ptrdiff_t right = end - begin - 1;
 
-        while (l < r) {
-            std::ptrdiff_t m = l + (r - l) / 2;
+        while (left < right) {
+            std::ptrdiff_t mid = left + (right - left) / 2;
 
-            if (begin[m] >= rnd) {
-                r = m;
+            if (begin[mid] >= rnd) {
+                right = mid;
             } else {
-                l = m + 1;
+                left = mid + 1;
             }
         }
 
-        return begin[l] >= rnd ? l : l + 1;
+        return begin[left] >= rnd ? left : left + 1;
     }
 };
 
-struct BinarySearch3 : BinarySearchBase {
+struct TBinarySearch3 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        f64* base = (f64*)(begin);
-        std::ptrdiff_t len = end - begin;
+        std::span base{begin, end};
+        std::ptrdiff_t len = std::distance(begin, end);
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
 
             if (base[half - 1] < rnd) {
-                base += half;
+                base = base.subspan(half);
                 len = len - half;
             } else {
                 len = half;
             }
         }
 
-        return *base >= rnd ? base - begin : base - begin + 1;
+        return std::distance(begin, base.data()) + (base.front() >= rnd ? 0 : 1);
     }
 };
 
-struct BinarySearch4 : BinarySearchBase {
+struct TBinarySearch4 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        f64* base = (f64*)(begin);
-        std::ptrdiff_t len = end - begin;
+        std::span base{begin, end};
+        std::ptrdiff_t len = std::distance(begin, end);
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
 
             if (base[half - 1] < rnd) {
-                base += half;
+                base = base.subspan(half);
             }
             len -= half;
         }
 
-        return *base >= rnd ? base - begin : base - begin + 1;
+        return std::distance(begin, base.data()) + (base.front() >= rnd ? 0 : 1);
     }
 };
 
-struct BinarySearch5 : BinarySearchBase {
+struct TBinarySearch5 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        f64* base = (f64*)(begin);
-        std::ptrdiff_t len = end - begin;
+        std::span base{begin, end};
+        std::ptrdiff_t len = std::distance(begin, end);
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
-            base += static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half;
+            base = base.subspan(static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half);
             len -= half;
         }
 
-        return *base >= rnd ? base - begin : base - begin + 1;
+        return std::distance(begin, base.data()) + (base.front() >= rnd ? 0 : 1);
     }
 };
 
-struct BinarySearch6 : BinarySearchBase {
+struct TBinarySearch6 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        f64* base = (f64*)(begin);
-        std::ptrdiff_t len = end - begin;
+        std::span base{begin, end};
+        std::ptrdiff_t len = std::distance(begin, end);
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
             len -= half;
-            data_prefetch((const char*)(&base[len / 2 - 1]));
-            data_prefetch((const char*)(&base[half + len / 2 - 1]));
+            data_prefetch(reinterpret_cast<const char*>(&base[len / 2 - 1]));
+            data_prefetch(reinterpret_cast<const char*>(&base[half + len / 2 - 1]));
             if (base[half - 1] < rnd) {
-                base += half;
+                base = base.subspan(half);
             }
         }
 
-        return *base >= rnd ? base - begin : base - begin + 1;
+        return std::distance(begin, base.data()) + (base.front() >= rnd ? 0 : 1);
     }
 };
 
-struct BinarySearch7 : BinarySearchBase {
+struct TBinarySearch7 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override { return {}; }
 
     std::ptrdiff_t Search(const f64* begin, const f64* end, f64 rnd, const std::vector<usize>&) const override {
-        f64* base = (f64*)(begin);
-        std::ptrdiff_t len = end - begin;
+        std::span base{begin, end};
+        std::ptrdiff_t len = std::distance(begin, end);
 
         while (len > 1) {
             std::ptrdiff_t half = len / 2;
             len -= half;
-            data_prefetch((const char*)(&base[len / 2 - 1]));
-            data_prefetch((const char*)(&base[half + len / 2 - 1]));
-            base += static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half;
+            data_prefetch(reinterpret_cast<const char*>(&base[len / 2 - 1]));
+            data_prefetch(reinterpret_cast<const char*>(&base[half + len / 2 - 1]));
+            base = base.subspan(static_cast<std::ptrdiff_t>(base[half - 1] < rnd) * half);
         }
 
-        return *base >= rnd ? base - begin : base - begin + 1;
+        return std::distance(begin, base.data()) + (base.front() >= rnd ? 0 : 1);
     }
 };
 
-struct BinarySearch8 : BinarySearchBase {
+struct TBinarySearch8 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override {
         std::vector<f64> dataNew(data.size() + 1);
         std::vector<usize> help(data.size() + 1, data.size());
@@ -171,11 +178,11 @@ struct BinarySearch8 : BinarySearchBase {
             }
         }
         k >>= std::countr_zero(~k) + 1;
-        return help[k];
+        return static_cast<std::ptrdiff_t>(help[k]);
     }
 };
 
-struct BinarySearch9 : BinarySearchBase {
+struct TBinarySearch9 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override {
         std::vector<f64> dataNew(data.size() + 1);
         std::vector<usize> help(data.size() + 1, data.size());
@@ -203,11 +210,11 @@ struct BinarySearch9 : BinarySearchBase {
             k = (k << 1) + static_cast<usize>(begin[k] < rnd);
         }
         k >>= std::countr_zero(~k) + 1;
-        return help[k];
+        return static_cast<std::ptrdiff_t>(help[k]);
     }
 };
 
-struct BinarySearch10 : BinarySearchBase {
+struct TBinarySearch10 : IBinarySearchBase {
     std::vector<usize> Prepare(std::vector<f64>& data) const override {
         std::vector<f64> dataNew(data.size() + 1);
         std::vector<usize> help(data.size() + 1, data.size());
@@ -232,47 +239,47 @@ struct BinarySearch10 : BinarySearchBase {
         usize len = end - begin - 1;
 
         while (k <= len) {
-            data_prefetch((const char*)(begin + k * 16));
+            data_prefetch(reinterpret_cast<const char*>(begin + k * 16));
             k = (k << 1) + static_cast<usize>(begin[k] < rnd);
         }
         k >>= std::countr_zero(~k) + 1;
-        return help[k];
+        return static_cast<std::ptrdiff_t>(help[k]);
     }
 };
 
-BinarySearch1 bs1;
-BinarySearch2 bs2;
-BinarySearch3 bs3;
-BinarySearch4 bs4;
-BinarySearch5 bs5;
-BinarySearch6 bs6;
-BinarySearch7 bs7;
-BinarySearch8 bs8;
-BinarySearch9 bs9;
-BinarySearch10 bs10;
+const TBinarySearch1 gBS1;
+const TBinarySearch2 gBS2;
+const TBinarySearch3 gBS3;
+const TBinarySearch4 gBS4;
+const TBinarySearch5 gBS5;
+const TBinarySearch6 gBS6;
+const TBinarySearch7 gBS7;
+const TBinarySearch8 gBS8;
+const TBinarySearch9 gBS9;
+const TBinarySearch10 gBS10;
 
 namespace {
-    const std::map<const char*, BinarySearchBase*> gNameToMethod = {
-        {"std::lower_bound", &bs1},
-        {"BinSearch standart", &bs2},
-        {"BinSearch stl like 1", &bs3},
-        {"BinSearch stl like 2", &bs4},
-        {"BinSearch stl like 2 cmov", &bs5},
-        {"BinSearch stl like 2 + prefetch", &bs6},
-        {"BinSearch stl like 2 cmov + prefetch", &bs7},
-        {"BinSearch Eytzinger", &bs8},
-        {"BinSearch Eytzinger cmov", &bs9},
-        {"BinSearch Eytzinger cmov + prefetch", &bs10},
+    const std::map<const char*, const IBinarySearchBase*> gNAME_TO_METHOD = {
+        {"std::lower_bound", &gBS1},
+        {"BinSearch standart", &gBS2},
+        {"BinSearch stl like 1", &gBS3},
+        {"BinSearch stl like 2", &gBS4},
+        {"BinSearch stl like 2 cmov", &gBS5},
+        {"BinSearch stl like 2 + prefetch", &gBS6},
+        {"BinSearch stl like 2 cmov + prefetch", &gBS7},
+        {"BinSearch Eytzinger", &gBS8},
+        {"BinSearch Eytzinger cmov", &gBS9},
+        {"BinSearch Eytzinger cmov + prefetch", &gBS10},
     };
 
-    const usize gSIZES[] = {4, 8, 16, 32, 64, 128, 256, 512, 1024, 8192, 2097152};
-}
+    const std::array gSIZES = {4ULL, 8ULL, 16ULL, 32ULL, 64ULL, 128ULL, 256ULL, 512ULL, 1024ULL, 8192ULL, 2097152ULL};
+}  // namespace
 
 struct TTestData {
-    const std::vector<f64>& Data;
-    const std::vector<usize>& Help;
+    const std::vector<f64>* Data;
+    const std::vector<usize>* Help;
     std::string MethodName;
-    const BinarySearchBase& BinarySearch;
+    const IBinarySearchBase* TBinarySearch;
     usize VectorSize;
 };
 
@@ -287,86 +294,87 @@ void RunTest(const TTestData& testData) {
             i = generator(engine);
         }
         meter.measure([&] (int i) {
-            return testData.BinarySearch.Search(&(*testData.Data.begin()), &(*testData.Data.end()), rnds[i], testData.Help); 
+            return testData.TBinarySearch->Search(&(*testData.Data->begin()), &(*testData.Data->end()), rnds[i], *testData.Help); 
         });
     };
 }
 
 
 TEST_CASE("Binary Search Impl Tests", "[binsearch]") {
-    for (const auto [name, method] : gNameToMethod) {
+    for (const auto [name, method] : gNAME_TO_METHOD) {
         SECTION (std::format("{0} Test 1", name)) {
-            std::vector<f64> v = {0.2};
-            std::vector<usize> help = method->Prepare(v);
+            std::vector<f64> data = {0.2};
+            std::vector<usize> help = method->Prepare(data);
 
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.3, help) == 1);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.3, help) == 1);
         }
 
         SECTION (std::format("{0} Test 2", name)) {
-            std::vector<f64> v = {0.2, 0.5};
-            std::vector<usize> help = method->Prepare(v);
+            std::vector<f64> data = {0.2, 0.5};
+            std::vector<usize> help = method->Prepare(data);
 
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.3, help) == 1);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.5, help) == 1);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 2);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.3, help) == 1);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.5, help) == 1);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.6, help) == 2);
         }
 
         SECTION (std::format("{0} Test 3", name)) {
-            std::vector<f64> v = {0.2, 0.5, 0.7, 0.9, 1.0};
-            std::vector<usize> help = method->Prepare(v);
+            std::vector<f64> data = {0.2, 0.5, 0.7, 0.9, 1.0};
+            std::vector<usize> help = method->Prepare(data);
 
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 2);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.7, help) == 2);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.0, help) == 4);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.6, help) == 2);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.7, help) == 2);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 1.0, help) == 4);
         }
 
         SECTION (std::format("{0} Test 4", name)) {
-            std::vector<f64> v = {0.2, 0.2, 0.5, 0.7, 0.9, 1.0, 1.0, 1.0};
-            std::vector<usize> help = method->Prepare(v);
+            std::vector<f64> data = {0.2, 0.2, 0.5, 0.7, 0.9, 1.0, 1.0, 1.0};
+            std::vector<usize> help = method->Prepare(data);
 
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.0, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.2, help) == 0);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.6, help) == 3);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 0.7, help) == 3);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.0, help) == 5);
-            REQUIRE(method->Search(&(*v.begin()), &(*v.end()), 1.1, help) == 8);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.0, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.2, help) == 0);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.6, help) == 3);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 0.7, help) == 3);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 1.0, help) == 5);
+            REQUIRE(method->Search(&(*data.begin()), &(*data.end()), 1.1, help) == 8);
         }
 
         SECTION (std::format("{0} Random 1000", name)) {
             std::random_device device;
             std::minstd_rand0 engine(device());
             std::uniform_real_distribution<f64> generator(0.0, 1.0);
-            std::vector<f64> v(10);
-            for (usize i = 0; i < v.size(); i++) {
-                v[i] = generator(engine);
+            const usize vSize = 1000;
+            std::vector<f64> data(vSize);
+            for (double & i : data) {
+                i = generator(engine);
             }
-            std::sort(v.begin(), v.end());
-            std::vector<f64> vOld = v;
-            std::vector<usize> help = method->Prepare(v);
+            std::sort(data.begin(), data.end());
+            std::vector<f64> vOld = data;
+            std::vector<usize> help = method->Prepare(data);
 
             for (usize i = 0; i < 1; i++) {
                 f64 rnd = generator(engine);
-                auto t1 = method->Search(&(*v.begin()), &(*v.end()), rnd, help);
-                auto t2 = std::lower_bound(vOld.begin(), vOld.end(), rnd) - vOld.begin();
-                if (t1 != t2) {
+                auto res1 = method->Search(&(*data.begin()), &(*data.end()), rnd, help);
+                auto res2 = std::lower_bound(vOld.begin(), vOld.end(), rnd) - vOld.begin();
+                if (res1 != res2) {
                     std::cout << "vOld: ";
                     for (f64 i : vOld) {
                         std::cout << i << " ";
                     }
-                    std::cout << std::endl;
+                    std::cout << '\n';
                     std::cout << "v: ";
-                    for (f64 i : v) {
+                    for (f64 i : data) {
                         std::cout << i << " ";
                     }
-                    std::cout << std::endl;
-                    std::cout << std::format("{} != {}", t1, t2) << std::endl;
-                    std::cout << rnd << std::endl;
+                    std::cout << '\n';
+                    std::cout << std::format("{} != {}", res1, res2) << '\n';
+                    std::cout << rnd << '\n';
 
                     FAIL("Wrong answer");
                 } else {
@@ -384,26 +392,26 @@ TEST_CASE("Binary Search Impl Benchmark", "[binsearch, benchmark]") {
     std::uniform_real_distribution<f64> generator(0.0, 1.0);
 
     auto createData = [&] (usize size) -> std::vector<f64> {
-        std::vector<f64> v(size);
+        std::vector<f64> data(size);
         for (usize i = 0; i < size; i++) {
-            v[i] = generator(engine);
+            data[i] = generator(engine);
         }
-        std::sort(v.begin(), v.end());
-        return v;
+        std::sort(data.begin(), data.end());
+        return data;
     };
 
     for (auto size : gSIZES) {
-        const std::vector<f64> v = createData(size);
+        const std::vector<f64> data = createData(size);
 
         SECTION (std::format("Size: {}", size)) {
-            for (const auto [name, method] : gNameToMethod) {
-                auto vNew = v;
+            for (const auto [name, method] : gNAME_TO_METHOD) {
+                auto vNew = data;
                 auto help = method->Prepare(vNew);
                 RunTest(TTestData{
-                    .Data = vNew,
-                    .Help = help,
+                    .Data = &vNew,
+                    .Help = &help,
                     .MethodName = std::format("{0}", name),
-                    .BinarySearch = *method,
+                    .TBinarySearch = method,
                     .VectorSize = size,
                 });
             }

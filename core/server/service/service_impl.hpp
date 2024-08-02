@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
-    #define _WIN32_WINNT 0x0601
+    #define _WIN32_WINNT 0x0601 // boost thread pool require
 #endif
 
 #include <math_expression_calculator.hpp>
@@ -25,40 +25,48 @@ namespace NFDESolverService {
 
     struct IMethodBuilder {
         constexpr IMethodBuilder() = default;
+        constexpr IMethodBuilder(const IMethodBuilder&) = default;
+        constexpr IMethodBuilder(IMethodBuilder&&) noexcept = default;
+        constexpr IMethodBuilder& operator=(const IMethodBuilder&) = default;
+        constexpr IMethodBuilder& operator=(IMethodBuilder&&) noexcept = default;
         virtual ~IMethodBuilder() = default;
-        virtual usize Number() const = 0;
-        virtual std::unique_ptr<IEquationSolver> GetMethod(const TSolverConfig&) const = 0;
+        [[nodiscard]] virtual usize Number() const = 0;
+        [[nodiscard]] virtual std::unique_ptr<IEquationSolver> GetMethod(const TSolverConfig&) const = 0;
         virtual std::unique_ptr<IEquationSolver> GetMethod(TSolverConfig&&) const = 0;
     };
 
     template<class TMethod>
     struct TMethodBuilder final : public IMethodBuilder {
-        const usize SeqNumber;
-
+        
         constexpr explicit TMethodBuilder(usize seqNumber) : IMethodBuilder(), SeqNumber(seqNumber) {}
-
-        usize Number() const override {
+        
+        [[nodiscard]] usize Number() const override {
             return SeqNumber;
         }
 
-        std::unique_ptr<IEquationSolver> GetMethod(const TSolverConfig& config) const override {
+        [[nodiscard]] std::unique_ptr<IEquationSolver> GetMethod(const TSolverConfig& config) const override {
             return std::make_unique<TMethod>(config);
         }
 
         std::unique_ptr<IEquationSolver> GetMethod(TSolverConfig&& config) const override {
             return std::make_unique<TMethod>(std::move(config));
         }
+
+    private:
+        usize SeqNumber;
     };
 
     class TFDESolverService {
 
         using TClientConfig = ::PFDESolver::TClientConfig;
         using TResults = ::PFDESolver::TResults;
-        using TSolvers = std::array<std::shared_ptr<IEquationSolver>, NEquationSolver::MethodsCount>;
+        using TSolvers = std::vector<std::unique_ptr<IEquationSolver>>;
+
+        static constexpr usize ThreadsCount = 4;
 
     public:
 
-        TFDESolverService() : ThreadPool(4) {
+        TFDESolverService() : ThreadPool(ThreadsCount) {
             Methods.insert({"MGL", std::make_unique<TMethodBuilder<TMatrixFDES<TMFDESRule>>>(0)});
             Methods.insert({"MRL", std::make_unique<TMethodBuilder<TMatrixFDES<TRLFDESRule>>>(1)});
             Methods.insert({"SGL", std::make_unique<TMethodBuilder<TStochasticFDES<TMFDESRule>>>(2)});
@@ -69,17 +77,16 @@ namespace NFDESolverService {
 
     private:
 
-        void SolveTask(IEquationSolver&, PFDESolver::TResult&, bool = true);
-        void AddConfig(const TSolverConfig& config, TResults& response);
-        void AddRealSolution(const TSolverConfig&, TResults&);
+        static void SolveTask(IEquationSolver&, PFDESolver::TResult&, bool = true);
+        static void AddConfig(const TSolverConfig& config, TResults& response);
+        static void AddRealSolution(const TSolverConfig&, TResults&);
 
         template<std::convertible_to<std::string>... Args>
         auto GetFunction(std::string, const Args...);
         TParsedSolverConfig ParseClientConfig(const TClientConfig&);
         TSolvers ParseSolveMethods(const TClientConfig&, const TSolverConfig&);
 
-    private:
         std::unordered_map<std::string, std::unique_ptr<IMethodBuilder>> Methods;
         boost::asio::thread_pool ThreadPool;
     };
-}
+}  // namespace NFDESolverService

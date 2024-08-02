@@ -41,29 +41,29 @@ namespace NEquationSolver {
         return di;
     }
 
-    f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize p) {
+    f64 TMFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize probIdx) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
         const f64 alpha = solver->GetConfig().Alpha;
         const f64 gamma = solver->GetConfig().Gamma;
 
-        if (p < n - 1) {
-            return solver->CoefB(i) * solver->CoefGAlpha(n - p + 1); 
+        if (probIdx < n - 1) {
+            return solver->CoefB(i) * solver->CoefGAlpha(n - probIdx + 1); 
         } 
-        if (p == n - 1) {
+        if (probIdx == n - 1) {
             return solver->CoefA(i) + solver->CoefB(i) * solver->CoefGAlpha(2) + solver->CoefC(i);
         } 
-        if (p == n) {
+        if (probIdx == n) {
             return gamma - alpha * (solver->CoefA(i) + solver->CoefB(i));
         } 
-        if (p == n + 1) {
+        if (probIdx == n + 1) {
             return solver->CoefA(i) * solver->CoefGAlpha(2) + solver->CoefB(i) - solver->CoefC(i);
         } 
-        if (n + 1 < p && p <= 2 * n) {
-            return solver->CoefA(i) * solver->CoefGAlpha(p - n + 1);
+        if (n + 1 < probIdx && probIdx <= 2 * n) {
+            return solver->CoefA(i) * solver->CoefGAlpha(probIdx - n + 1);
         } 
-        if (2 * n < p && p <= 2 * n + k) {
-            return -solver->CoefGGamma(p - 2 * n + 1);
+        if (2 * n < probIdx && probIdx <= 2 * n + k) {
+            return -solver->CoefGGamma(probIdx - 2 * n + 1);
         } 
 
         return 1.0 - std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
@@ -76,17 +76,17 @@ namespace NEquationSolver {
     */
     f64 TRLFDESRule::CoefGMatrix(IEquationSolver const *const solver, usize k) {
         const f64 alpha = solver->GetConfig().Alpha;
-        const f64 c0 = 1.0 / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
+        const f64 th0 = 1.0 / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
         
         if (k == 0) {
-            return c0;
+            return th0;
         }
         
         if (k == 1) {
-            return c0 * (std::pow(3.0, 2.0 - alpha) - 2.0);
+            return th0 * (std::pow(3, 2 - alpha) - 2);
         }
         
-        return c0 * (std::pow(2 * k - 3, 2.0 - alpha) - 2.0 * std::pow(2 * k - 1, 2.0 - alpha) + std::pow(2 * k + 1, 2.0 - alpha));
+        return th0 * (std::pow(2 * k - 3, 2 - alpha) - 2 * std::pow(2 * k - 1, 2 - alpha) + std::pow(2 * k + 1, 2 - alpha));
     }
 
     f64 TRLFDESRule::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
@@ -134,13 +134,13 @@ namespace NEquationSolver {
     */
     f64 TRLFDESRule::CoefGDestination(IEquationSolver const *const solver, usize k) {
         const f64 gamma = solver->GetConfig().Gamma;
-        const f64 c0 = 1.0 / NFunctions::Gamma(2.0 - gamma);
+        const f64 th0 = 1.0 / NFunctions::Gamma(2.0 - gamma);
         
         if (k == 0) {
-            return c0;
+            return th0;
         } 
         
-        return c0 * (std::pow(k, 1.0 - gamma) - std::pow(k - 1.0, 1.0 - gamma));
+        return th0 * (std::pow(k, 1.0 - gamma) - std::pow(k - 1, 1.0 - gamma));
     }
 
     // Math: d_i^k = -\theta_{k}u_i^0 + \sum_{j=1}^{k-1}{(\theta_{k-j+1}-\theta_{k-j})u_i^{j}} - \tau^\gamma f(x_i, t_j)
@@ -157,21 +157,21 @@ namespace NEquationSolver {
         return di;
     }
 
-    f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize p) {
+    f64 TRLFDESRule::FillProbabilities(IEquationSolver const *const solver, const std::span<f64>& probabilities, usize i, usize probIdx) {
         const usize n = solver->GetConfig().SpaceCount;
         const usize k = solver->GetConfig().TimeCount;
 
-        if (p == n) {
+        if (probIdx == n) {
             return ((CoefGMatrix(solver, 1) - CoefGMatrix(solver, 0)) * (solver->CoefA(i) + solver->CoefB(i)) + (CoefGDestination(solver, 0) - CoefGDestination(solver, 2))) / CoefGDestination(solver, 0);
         }
-        if (p == n - 1) {
+        if (probIdx == n - 1) {
             f64 result = (CoefGMatrix(solver, 0) * solver->CoefA(i) + (CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefB(i) + solver->CoefC(i)) / CoefGDestination(solver, 0);
             if (i == n - 1) {
                 result -= (CoefGMatrix(solver, 2) * solver->CoefB(i)) / CoefGDestination(solver, 0);
             }
             return result;
         }
-        if (p == n + 1) {
+        if (probIdx == n + 1) {
             f64 result = ((CoefGMatrix(solver, 2) - CoefGMatrix(solver, 1)) * solver->CoefA(i) + CoefGMatrix(solver, 0) * solver->CoefB(i) - solver->CoefC(i)) / CoefGDestination(solver, 0);
             if (i == 1) {
                 result -= (CoefGMatrix(solver, 2) * solver->CoefA(i)) / CoefGDestination(solver, 0);
@@ -179,31 +179,31 @@ namespace NEquationSolver {
             return result;
         } 
 
-        if (i <= p && p < n - 1) {
-            if (p == i) {
-                return -CoefGMatrix(solver, n - p) * solver->CoefB(i) / CoefGDestination(solver, 0); 
+        if (i <= probIdx && probIdx < n - 1) {
+            if (probIdx == i) {
+                return -CoefGMatrix(solver, n - probIdx) * solver->CoefB(i) / CoefGDestination(solver, 0); 
             }
-            return (CoefGMatrix(solver, n - p + 1) - CoefGMatrix(solver, n - p)) * solver->CoefB(i) / CoefGDestination(solver, 0); 
+            return (CoefGMatrix(solver, n - probIdx + 1) - CoefGMatrix(solver, n - probIdx)) * solver->CoefB(i) / CoefGDestination(solver, 0); 
         }
 
-        if (n + 1 < p && p <= n + i) {
-            if (p == n + i) {
-                return -CoefGMatrix(solver, p - n) * solver->CoefA(i) / CoefGDestination(solver, 0);
+        if (n + 1 < probIdx && probIdx <= n + i) {
+            if (probIdx == n + i) {
+                return -CoefGMatrix(solver, probIdx - n) * solver->CoefA(i) / CoefGDestination(solver, 0);
             }
-            return (CoefGMatrix(solver, p - n + 1) - CoefGMatrix(solver, p - n)) * solver->CoefA(i) / CoefGDestination(solver, 0);
+            return (CoefGMatrix(solver, probIdx - n + 1) - CoefGMatrix(solver, probIdx - n)) * solver->CoefA(i) / CoefGDestination(solver, 0);
         }
 
-        if (2 * n < p && p <= 2 * n + k) {
-            if (p == 2 * n + k) {
-                return CoefGDestination(solver, p - 2 * n + 2) / CoefGDestination(solver, 0);
+        if (2 * n < probIdx && probIdx <= 2 * n + k) {
+            if (probIdx == 2 * n + k) {
+                return CoefGDestination(solver, probIdx - 2 * n + 2) / CoefGDestination(solver, 0);
             }
-            return (CoefGDestination(solver, p - 2 * n + 1) - CoefGDestination(solver, p - 2 * n + 2)) / CoefGDestination(solver, 0);
+            return (CoefGDestination(solver, probIdx - 2 * n + 1) - CoefGDestination(solver, probIdx - 2 * n + 2)) / CoefGDestination(solver, 0);
         }
 
-        if (p == 2 * n + k + 1) {
+        if (probIdx == 2 * n + k + 1) {
             return 1.0 - std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
         }
 
         return 0.0;
     }
-}
+}  // namespace NEquationSolver

@@ -9,11 +9,11 @@ namespace {
 
 namespace ANTLRMathExpParser {
 
-    void ExpressionVisitor::SetValue(const std::string& name, double val) {
+    void TExpressionVisitor::SetValue(const std::string& name, double val) {
         Values[name] = val;
     }
 
-    std::optional<double> ExpressionVisitor::GetValue(const std::string& name) {
+    std::optional<double> TExpressionVisitor::GetValue(const std::string& name) {
         auto iter = Values.find(name);
         if (iter == Values.end()) {
             return std::nullopt;
@@ -22,21 +22,21 @@ namespace ANTLRMathExpParser {
         return iter->second;
     }
 
-    std::any ExpressionVisitor::visitRoot(TParser::RootContext *context) {
+    std::any TExpressionVisitor::visitRoot(TParser::RootContext *context) {
         std::any childResult = context->children[0]->accept(this);
         return std::any_cast<double>(childResult);
     }
 
-    std::any ExpressionVisitor::visitMainExpressionCondExpr(TParser::MainExpressionCondExprContext *context) {
+    std::any TExpressionVisitor::visitMainExpressionCondExpr(TParser::MainExpressionCondExprContext *context) {
         std::any childResult = context->children[0]->accept(this);
         return std::any_cast<double>(childResult);
     }
 
-    std::any ExpressionVisitor::visitMainExpressionConstant(TParser::MainExpressionConstantContext *context) {
+    std::any TExpressionVisitor::visitMainExpressionConstant(TParser::MainExpressionConstantContext *context) {
         return std::stod(context->getText());
     }
 
-    std::any ExpressionVisitor::visitMainExpressionIdentifier(TParser::MainExpressionIdentifierContext *context) {
+    std::any TExpressionVisitor::visitMainExpressionIdentifier(TParser::MainExpressionIdentifierContext *context) {
         std::string val = context->getText();
         
         if (Values.contains(val)) {
@@ -47,22 +47,22 @@ namespace ANTLRMathExpParser {
         NUtils::Unreachable();
     }
 
-    std::any ExpressionVisitor::visitConditionalExpression(TParser::ConditionalExpressionContext *context) {
+    std::any TExpressionVisitor::visitConditionalExpression(TParser::ConditionalExpressionContext *context) {
         std::any logicalExpr = context->children[0]->accept(this);
         double result = std::any_cast<double>(logicalExpr);
 
-        if (context->children.size() > 1) {
-            if (result != 0.0) {
-                return std::any_cast<double>(context->children[2]->accept(this));
-            } else {
-                return std::any_cast<double>(context->children[4]->accept(this));
-            }
+        if (context->children.size() <= 1) {
+            return result;
         }
 
-        return result;
+        if (result != 0.0) {
+            return std::any_cast<double>(context->children[2]->accept(this));
+        }
+        
+        return std::any_cast<double>(context->children[4]->accept(this));
     }
 
-    std::any ExpressionVisitor::visitLogicalOrExpression(TParser::LogicalOrExpressionContext *context) {
+    std::any TExpressionVisitor::visitLogicalOrExpression(TParser::LogicalOrExpressionContext *context) {
         std::any logicalAnd = context->children[0]->accept(this);
         double result = std::any_cast<double>(logicalAnd);
 
@@ -84,7 +84,7 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitLogicalAndExpression(TParser::LogicalAndExpressionContext *context) {
+    std::any TExpressionVisitor::visitLogicalAndExpression(TParser::LogicalAndExpressionContext *context) {
         std::any equalityExp = context->children[0]->accept(this);
         double result = std::any_cast<double>(equalityExp);
 
@@ -106,15 +106,15 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitEqualityExpression(TParser::EqualityExpressionContext *context) {
+    std::any TExpressionVisitor::visitEqualityExpression(TParser::EqualityExpressionContext *context) {
         std::any relationalExp = context->children[0]->accept(this);
         double result = std::any_cast<double>(relationalExp);
 
         if (context->children.size() > 1) {
-            std::string op = context->children[1]->getText();
+            std::string opr = context->children[1]->getText();
             std::any relationalExp2 = context->children[2]->accept(this);
             
-            if (op == "==") {
+            if (opr == "==") {
                 if (result == std::any_cast<double>(relationalExp2)) {
                     return 1.0;
                 } 
@@ -130,23 +130,23 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitRelationalExpression(TParser::RelationalExpressionContext *context) {
+    std::any TExpressionVisitor::visitRelationalExpression(TParser::RelationalExpressionContext *context) {
         std::any additiveExp = context->children[0]->accept(this);
         double result = std::any_cast<double>(additiveExp);
 
         if (context->children.size() > 1) {
-            std::string op = context->children[1]->getText();
+            std::string opr = context->children[1]->getText();
             std::any additiveExp2 = context->children[2]->accept(this);
             
-            if (op == ">") {
+            if (opr == ">") {
                 if (result > std::any_cast<double>(additiveExp2)) {
                     return 1.0;
                 } 
-            } else if (op == "<") {
+            } else if (opr == "<") {
                 if (result < std::any_cast<double>(additiveExp2)) {
                     return 1.0;
                 } 
-            } else if (op == ">=") {
+            } else if (opr == ">=") {
                 if (result >= std::any_cast<double>(additiveExp2)) {
                     return 1.0;
                 } 
@@ -162,15 +162,15 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitAdditiveExpression(TParser::AdditiveExpressionContext *context) {
+    std::any TExpressionVisitor::visitAdditiveExpression(TParser::AdditiveExpressionContext *context) {
         std::any multiplyExp = context->children[0]->accept(this);
         double result = std::any_cast<double>(multiplyExp);
 
         if (context->children.size() > 1) {
             for (size_t i = 2; i < context->children.size(); i+=2) {
-                std::string op = context->children[i - 1]->getText();
+                std::string opr = context->children[i - 1]->getText();
 
-                if (op == "+") {
+                if (opr == "+") {
                     result += std::any_cast<double>(context->children[i]->accept(this));
                 } else {
                     result -= std::any_cast<double>(context->children[i]->accept(this));
@@ -181,15 +181,15 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitMultiplicativeExpression(TParser::MultiplicativeExpressionContext *context) {
+    std::any TExpressionVisitor::visitMultiplicativeExpression(TParser::MultiplicativeExpressionContext *context) {
         std::any castExp = context->children[0]->accept(this);
         double result = std::any_cast<double>(castExp);
 
         if (context->children.size() > 1) {
             for (size_t i = 2; i < context->children.size(); i+=2) {
-                std::string op = context->children[i - 1]->getText();
+                std::string opr = context->children[i - 1]->getText();
 
-                if (op == "*") {
+                if (opr == "*") {
                     result *= std::any_cast<double>(context->children[i]->accept(this));
                 } else {
                     result /= std::any_cast<double>(context->children[i]->accept(this));
@@ -200,21 +200,21 @@ namespace ANTLRMathExpParser {
         return result;
     }
 
-    std::any ExpressionVisitor::visitCastExpressionUnary(TParser::CastExpressionUnaryContext *context) {
+    std::any TExpressionVisitor::visitCastExpressionUnary(TParser::CastExpressionUnaryContext *context) {
         std::any childResult = context->children[0]->accept(this);
         return std::any_cast<double>(childResult);
     }
 
-    std::any ExpressionVisitor::visitCastExpressionParen(TParser::CastExpressionParenContext *context) {
+    std::any TExpressionVisitor::visitCastExpressionParen(TParser::CastExpressionParenContext *context) {
         std::any childResult = context->children[1]->accept(this);
         return std::any_cast<double>(childResult);
     }
 
-    std::any ExpressionVisitor::visitCastExpressionConstant(TParser::CastExpressionConstantContext *context) {
+    std::any TExpressionVisitor::visitCastExpressionConstant(TParser::CastExpressionConstantContext *context) {
         return std::stod(context->getText());
     }
 
-    std::any ExpressionVisitor::visitCastExpressionIdentifier(TParser::CastExpressionIdentifierContext *context) {
+    std::any TExpressionVisitor::visitCastExpressionIdentifier(TParser::CastExpressionIdentifierContext *context) {
         std::string val = context->getText();
         
         if (Values.contains(val)) {
@@ -225,34 +225,36 @@ namespace ANTLRMathExpParser {
         NUtils::Unreachable();
     }
 
-    std::any ExpressionVisitor::visitUnaryExpressionUnCastExpr(TParser::UnaryExpressionUnCastExprContext *context) {
+    std::any TExpressionVisitor::visitUnaryExpressionUnCastExpr(TParser::UnaryExpressionUnCastExprContext *context) {
         std::any castExp = context->children[1]->accept(this);
         double result = std::any_cast<double>(castExp);
 
-        std::string op = context->children[0]->getText();
-        if (op == "-") {
+        std::string opr = context->children[0]->getText();
+        if (opr == "-") {
             return -result;
-        } else if (op == "!") {
+        }
+
+        if (opr == "!") {
             return ((result == 0.0) ? 1.0 : 0.0);
         }
 
         return result;
     }
 
-    std::any ExpressionVisitor::visitUnaryExpressionFunc(TParser::UnaryExpressionFuncContext *context) {
+    std::any TExpressionVisitor::visitUnaryExpressionFunc(TParser::UnaryExpressionFuncContext *context) {
         std::any childResult = context->children[0]->accept(this);
         return std::any_cast<double>(childResult);
     }
 
-    std::any ExpressionVisitor::visitFunctionExpression(TParser::FunctionExpressionContext *context) {
+    std::any TExpressionVisitor::visitFunctionExpression(TParser::FunctionExpressionContext *context) {
         std::string functionName = std::any_cast<std::string>(context->children[0]->getText());
 
         if (context->children.size() == 3) {
             if (functionName == "randomf") {
-                std::random_device r;
-                std::default_random_engine e1(r());
+                std::random_device device;
+                std::default_random_engine engine(device());
                 std::uniform_real_distribution<double> urd;
-                return urd(e1);
+                return urd(engine);
             }
         } else {
             auto arguments = std::any_cast<std::array<double, ArgumentListMax>>(context->children[2]->accept(this));
@@ -270,43 +272,40 @@ namespace ANTLRMathExpParser {
         NUtils::Unreachable();
     }
 
-    std::any ExpressionVisitor::visitArgumentExpressionList(TParser::ArgumentExpressionListContext *context) {
+    std::any TExpressionVisitor::visitArgumentExpressionList(TParser::ArgumentExpressionListContext *context) {
         std::array<double, ArgumentListMax> result = {0};
 
-        for (size_t i = 0; i < context->children.size() && i < 10; i+=2) {
-            std::any mainExp = context->children[i]->accept(this);
-            result[i >> 1] = std::any_cast<double>(mainExp);
+        for (size_t i = 0; (i << 1) < context->children.size() && i < ArgumentListMax; i++) {
+            std::any mainExp = context->children[i << 1]->accept(this);
+            result.at(i) = std::any_cast<double>(mainExp);
         }
         
         return result;
     }
-}
+}  // namespace ANTLRMathExpParser
 
 namespace ANTLRMathExpParser {
-    MathExpressionCalculator::MathExpressionCalculator(const std::string& expression, const std::vector<std::string>& variables) {
-        Input = std::make_unique<antlr4::ANTLRInputStream>(std::move(expression));
+    TMathExpressionCalculator::TMathExpressionCalculator(const std::string& expression, const std::vector<std::string>& variables) {
+        Input = std::make_unique<antlr4::ANTLRInputStream>(expression);
         Lexer = std::make_unique<ANTLRMathExpParser::TLexer>(Input.get());
         Tokens = std::make_unique<antlr4::CommonTokenStream>(Lexer.get());
         Tokens->fill();
         Parser = std::make_unique<ANTLRMathExpParser::TParser>(Tokens.get());
         Tree = Parser->root();
         
-        for (auto& var : variables) {
+        for (const auto& var : variables) {
             Visitor.SetValue(var, 0.0);
         }
     }
 
-    void MathExpressionCalculator::SetVar(const std::string& var, double value) {
+    void TMathExpressionCalculator::SetVar(const std::string& var, double value) {
         Visitor.SetValue(var, value);
     }
 
-    double MathExpressionCalculator::Calc() {
-        if (Tree != nullptr) {
-            std::any result = Tree->accept(dynamic_cast<antlr4::tree::ParseTreeVisitor*>(&Visitor));
-            return std::any_cast<double>(result);
-        }
-
-        NStackTracer::TStackTracer::ThrowWithMessage("Can not calculate value because parse tree error (Tree = nullptr)");
-        NUtils::Unreachable();
+    double TMathExpressionCalculator::Calc() {
+        STACK_ASSERT(Tree != nullptr, "Can not calculate value because parse tree error (Tree = nullptr)");
+        
+        std::any result = Tree->accept(dynamic_cast<antlr4::tree::ParseTreeVisitor*>(&Visitor));
+        return std::any_cast<double>(result);
     }
-}
+}  // namespace ANTLRMathExpParser

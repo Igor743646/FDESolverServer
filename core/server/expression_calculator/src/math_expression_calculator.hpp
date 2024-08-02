@@ -12,34 +12,34 @@
 #include <TParserBaseVisitor.h>
 
 namespace ANTLRMathExpParser {
-    class ExpressionVisitor : public TParserVisitor {
+    class TExpressionVisitor : public TParserVisitor {
     public:
 
-        explicit ExpressionVisitor(std::unordered_map<std::string, double>&& vals) : Values(std::move(vals)) {}
-        ExpressionVisitor() : Values() {}
+        explicit TExpressionVisitor(std::unordered_map<std::string, double>&& vals) : Values(std::move(vals)) {}
+        TExpressionVisitor() = default;
 
         virtual void SetValue(const std::string&, double);
         virtual std::optional<double> GetValue(const std::string&);
 
-        virtual std::any visitRoot(TParser::RootContext *context) override;
-        virtual std::any visitMainExpressionCondExpr(TParser::MainExpressionCondExprContext *context) override;
-        virtual std::any visitMainExpressionConstant(TParser::MainExpressionConstantContext *context) override;
-        virtual std::any visitMainExpressionIdentifier(TParser::MainExpressionIdentifierContext *context) override;
-        virtual std::any visitConditionalExpression(TParser::ConditionalExpressionContext *context) override;
-        virtual std::any visitLogicalOrExpression(TParser::LogicalOrExpressionContext *context) override;
-        virtual std::any visitLogicalAndExpression(TParser::LogicalAndExpressionContext *context) override;
-        virtual std::any visitEqualityExpression(TParser::EqualityExpressionContext *context) override;
-        virtual std::any visitRelationalExpression(TParser::RelationalExpressionContext *context) override;
-        virtual std::any visitAdditiveExpression(TParser::AdditiveExpressionContext *context) override;
-        virtual std::any visitMultiplicativeExpression(TParser::MultiplicativeExpressionContext *context) override;
-        virtual std::any visitCastExpressionUnary(TParser::CastExpressionUnaryContext *context) override;
-        virtual std::any visitCastExpressionParen(TParser::CastExpressionParenContext *context) override;
-        virtual std::any visitCastExpressionConstant(TParser::CastExpressionConstantContext *context) override;
-        virtual std::any visitCastExpressionIdentifier(TParser::CastExpressionIdentifierContext *context) override;
-        virtual std::any visitUnaryExpressionUnCastExpr(TParser::UnaryExpressionUnCastExprContext *context) override;
-        virtual std::any visitUnaryExpressionFunc(TParser::UnaryExpressionFuncContext *context) override;
-        virtual std::any visitFunctionExpression(TParser::FunctionExpressionContext *context) override;
-        virtual std::any visitArgumentExpressionList(TParser::ArgumentExpressionListContext *context) override;
+        std::any visitRoot(TParser::RootContext *context) override;
+        std::any visitMainExpressionCondExpr(TParser::MainExpressionCondExprContext *context) override;
+        std::any visitMainExpressionConstant(TParser::MainExpressionConstantContext *context) override;
+        std::any visitMainExpressionIdentifier(TParser::MainExpressionIdentifierContext *context) override;
+        std::any visitConditionalExpression(TParser::ConditionalExpressionContext *context) override;
+        std::any visitLogicalOrExpression(TParser::LogicalOrExpressionContext *context) override;
+        std::any visitLogicalAndExpression(TParser::LogicalAndExpressionContext *context) override;
+        std::any visitEqualityExpression(TParser::EqualityExpressionContext *context) override;
+        std::any visitRelationalExpression(TParser::RelationalExpressionContext *context) override;
+        std::any visitAdditiveExpression(TParser::AdditiveExpressionContext *context) override;
+        std::any visitMultiplicativeExpression(TParser::MultiplicativeExpressionContext *context) override;
+        std::any visitCastExpressionUnary(TParser::CastExpressionUnaryContext *context) override;
+        std::any visitCastExpressionParen(TParser::CastExpressionParenContext *context) override;
+        std::any visitCastExpressionConstant(TParser::CastExpressionConstantContext *context) override;
+        std::any visitCastExpressionIdentifier(TParser::CastExpressionIdentifierContext *context) override;
+        std::any visitUnaryExpressionUnCastExpr(TParser::UnaryExpressionUnCastExprContext *context) override;
+        std::any visitUnaryExpressionFunc(TParser::UnaryExpressionFuncContext *context) override;
+        std::any visitFunctionExpression(TParser::FunctionExpressionContext *context) override;
+        std::any visitArgumentExpressionList(TParser::ArgumentExpressionListContext *context) override;
 
     private:
 
@@ -60,17 +60,17 @@ namespace ANTLRMathExpParser {
     };
 
 
-    class MathExpressionCalculator {
+    class TMathExpressionCalculator {
     public:
 
-        MathExpressionCalculator(const std::string&, const std::vector<std::string>&);
+        TMathExpressionCalculator(const std::string&, const std::vector<std::string>&);
 
         void SetVar(const std::string&, double);
         double Calc();
 
     private:
 
-        ANTLRMathExpParser::ExpressionVisitor Visitor;
+        ANTLRMathExpParser::TExpressionVisitor Visitor;
         std::unordered_map<std::string, double> Variables;
         std::unique_ptr<antlr4::ANTLRInputStream> Input;
         std::unique_ptr<ANTLRMathExpParser::TLexer> Lexer;
@@ -78,5 +78,5 @@ namespace ANTLRMathExpParser {
         std::unique_ptr<ANTLRMathExpParser::TParser> Parser;
         ANTLRMathExpParser::TParser::RootContext* Tree;
     };
-}
+}  // namespace ANTLRMathExpParser
 
