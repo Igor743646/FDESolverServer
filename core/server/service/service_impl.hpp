@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WINDOWS)
     #define _WIN32_WINNT 0x0601 // boost thread pool require
 #endif
 

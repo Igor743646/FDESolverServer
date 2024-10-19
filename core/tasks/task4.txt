@@ -1,0 +1,19 @@
+{
+    "LeftBound": "-1.0",
+    "RightBound": "1.0",   
+    "MaxTime": "1.0",                 
+    "Alpha": "1.5",
+    "Gamma": "0.9",            
+    "SpaceStep": "0.1",
+    "TimeStep": "0.01",     
+    "Beta": "0.0",  
+    "DiffusionCoefficient": "0.1",     
+    "DemolitionCoefficient": "0.0",    
+    "ZeroTimeState": "abs(x) < 0.05 ? 1.0 : 0.0",            
+    "SourceFunction": "0.0",   
+    "LeftBoundState": "0.0",           
+    "RightBoundState": "0.0",          
+    "BordersAvailable": false,          
+    "StochasticIterationCount": "100",
+    "SolveMethods": "MGL;MRL;SGL;SRL"
+}

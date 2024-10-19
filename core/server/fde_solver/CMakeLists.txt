@@ -33,20 +33,21 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 DEFINE_LIB_HEADERS(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 # Tests
+if (WITH_TESTS)
+    list(APPEND TESTS "binsearch")
 
-list(APPEND TESTS "binsearch")
+    foreach(test_name IN LISTS TESTS)
+        add_executable(${PROJECT_NAME}_${test_name}_test
+            "tests/${test_name}_test.cpp"
+        )
 
-foreach(test_name IN LISTS TESTS)
-    add_executable(${PROJECT_NAME}_${test_name}_test
-        "tests/${test_name}_test.cpp"
-    )
-
-    target_link_libraries(${PROJECT_NAME}_${test_name}_test PUBLIC 
-        MathUtils 
-        Catch2::Catch2WithMain 
-    )
-    target_include_directories(${PROJECT_NAME}_${test_name}_test PUBLIC
-        ${Catch2_INCLUDE_DIRS}
-        ${MathUtils_HEADERS_DIR}
-    )
-endforeach()
+        target_link_libraries(${PROJECT_NAME}_${test_name}_test PUBLIC 
+            MathUtils 
+            Catch2::Catch2WithMain 
+        )
+        target_include_directories(${PROJECT_NAME}_${test_name}_test PUBLIC
+            ${Catch2_INCLUDE_DIRS}
+            ${MathUtils_HEADERS_DIR}
+        )
+    endforeach()
+endif()

@@ -25,7 +25,7 @@ PROTOBUF_CONSTEXPR TClientConfig::TClientConfig(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.diffusioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.leftdiffusioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.demolitioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.zerotimestate_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.sourcefunction_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -34,6 +34,7 @@ PROTOBUF_CONSTEXPR TClientConfig::TClientConfig(
   , /*decltype(_impl_.realsolutionname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.realsolution_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.solvemethods_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.rightdiffusioncoefficient_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.spacecount_)*/uint64_t{0u}
   , /*decltype(_impl_.timecount_)*/uint64_t{0u}
   , /*decltype(_impl_.leftbound_)*/0
@@ -112,7 +113,8 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.betaleft_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.alpharight_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.betaright_),
-  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.diffusioncoefficient_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.leftdiffusioncoefficient_),
+  PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.rightdiffusioncoefficient_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.demolitioncoefficient_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.zerotimestate_),
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.sourcefunction_),
@@ -125,6 +127,7 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TClientConfig, _impl_.solvemethods_),
   3,
   4,
+  ~0u,
   ~0u,
   ~0u,
   ~0u,
@@ -171,8 +174,8 @@ const uint32_t TableStruct_config_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::PFDESolver::TSolverConfig, _impl_.bordersavailable_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 31, -1, sizeof(::PFDESolver::TClientConfig)},
-  { 56, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
+  { 0, 32, -1, sizeof(::PFDESolver::TClientConfig)},
+  { 58, -1, -1, sizeof(::PFDESolver::TSolverConfig)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -181,37 +184,37 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014config.proto\022\nPFDESolver\"\271\005\n\rTClientCo"
+  "\n\014config.proto\022\nPFDESolver\"\340\005\n\rTClientCo"
   "nfig\022\027\n\nSpaceCount\030\001 \001(\004H\000\210\001\001\022\026\n\tTimeCou"
   "nt\030\002 \001(\004H\001\210\001\001\022\021\n\tLeftBound\030\003 \001(\001\022\022\n\nRigh"
   "tBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r\n\005Alpha\030\006"
   " \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceStep\030\010 \001(\001\022\020"
   "\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022\021\n\tAlphaL"
   "eft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n\nAlphaRigh"
-  "t\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\034\n\024DiffusionC"
-  "oefficient\030\017 \001(\t\022\035\n\025DemolitionCoefficien"
-  "t\030\020 \001(\t\022\025\n\rZeroTimeState\030\021 \001(\t\022\026\n\016Source"
-  "Function\030\022 \001(\t\022\026\n\016LeftBoundState\030\023 \001(\t\022\027"
-  "\n\017RightBoundState\030\024 \001(\t\022\030\n\020BordersAvaila"
-  "ble\030\025 \001(\010\022%\n\030StochasticIterationCount\030\026 "
-  "\001(\004H\002\210\001\001\022\035\n\020RealSolutionName\030\027 \001(\tH\003\210\001\001\022"
-  "\031\n\014RealSolution\030\030 \001(\tH\004\210\001\001\022\031\n\014SolveMetho"
-  "ds\030\031 \001(\tH\005\210\001\001B\r\n\013_SpaceCountB\014\n\n_TimeCou"
-  "ntB\033\n\031_StochasticIterationCountB\023\n\021_Real"
-  "SolutionNameB\017\n\r_RealSolutionB\017\n\r_SolveM"
-  "ethods\"\245\002\n\rTSolverConfig\022\022\n\nSpaceCount\030\001"
-  " \001(\004\022\021\n\tTimeCount\030\002 \001(\004\022\021\n\tLeftBound\030\003 \001"
-  "(\001\022\022\n\nRightBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022"
-  "\r\n\005Alpha\030\006 \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceSt"
-  "ep\030\010 \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001"
-  "\022\021\n\tAlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n"
-  "\nAlphaRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020"
-  "BordersAvailable\030\017 \001(\010B\tZ\007/protosb\006proto"
-  "3"
+  "t\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022 \n\030LeftDiffus"
+  "ionCoefficient\030\017 \001(\t\022!\n\031RightDiffusionCo"
+  "efficient\030\032 \001(\t\022\035\n\025DemolitionCoefficient"
+  "\030\020 \001(\t\022\025\n\rZeroTimeState\030\021 \001(\t\022\026\n\016SourceF"
+  "unction\030\022 \001(\t\022\026\n\016LeftBoundState\030\023 \001(\t\022\027\n"
+  "\017RightBoundState\030\024 \001(\t\022\030\n\020BordersAvailab"
+  "le\030\025 \001(\010\022%\n\030StochasticIterationCount\030\026 \001"
+  "(\004H\002\210\001\001\022\035\n\020RealSolutionName\030\027 \001(\tH\003\210\001\001\022\031"
+  "\n\014RealSolution\030\030 \001(\tH\004\210\001\001\022\031\n\014SolveMethod"
+  "s\030\031 \001(\tH\005\210\001\001B\r\n\013_SpaceCountB\014\n\n_TimeCoun"
+  "tB\033\n\031_StochasticIterationCountB\023\n\021_RealS"
+  "olutionNameB\017\n\r_RealSolutionB\017\n\r_SolveMe"
+  "thods\"\245\002\n\rTSolverConfig\022\022\n\nSpaceCount\030\001 "
+  "\001(\004\022\021\n\tTimeCount\030\002 \001(\004\022\021\n\tLeftBound\030\003 \001("
+  "\001\022\022\n\nRightBound\030\004 \001(\001\022\017\n\007MaxTime\030\005 \001(\001\022\r"
+  "\n\005Alpha\030\006 \001(\001\022\r\n\005Gamma\030\007 \001(\001\022\021\n\tSpaceSte"
+  "p\030\010 \001(\001\022\020\n\010TimeStep\030\t \001(\001\022\014\n\004Beta\030\n \001(\001\022"
+  "\021\n\tAlphaLeft\030\013 \001(\001\022\020\n\010BetaLeft\030\014 \001(\001\022\022\n\n"
+  "AlphaRight\030\r \001(\001\022\021\n\tBetaRight\030\016 \001(\001\022\030\n\020B"
+  "ordersAvailable\030\017 \001(\010B\tZ\007/protosb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_config_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_config_2eproto = {
-    false, false, 1041, descriptor_table_protodef_config_2eproto,
+    false, false, 1080, descriptor_table_protodef_config_2eproto,
     "config.proto",
     &descriptor_table_config_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_config_2eproto::offsets,
@@ -263,7 +266,7 @@ TClientConfig::TClientConfig(const TClientConfig& from)
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.diffusioncoefficient_){}
+    , decltype(_impl_.leftdiffusioncoefficient_){}
     , decltype(_impl_.demolitioncoefficient_){}
     , decltype(_impl_.zerotimestate_){}
     , decltype(_impl_.sourcefunction_){}
@@ -272,6 +275,7 @@ TClientConfig::TClientConfig(const TClientConfig& from)
     , decltype(_impl_.realsolutionname_){}
     , decltype(_impl_.realsolution_){}
     , decltype(_impl_.solvemethods_){}
+    , decltype(_impl_.rightdiffusioncoefficient_){}
     , decltype(_impl_.spacecount_){}
     , decltype(_impl_.timecount_){}
     , decltype(_impl_.leftbound_){}
@@ -290,12 +294,12 @@ TClientConfig::TClientConfig(const TClientConfig& from)
     , decltype(_impl_.bordersavailable_){}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.diffusioncoefficient_.InitDefault();
+  _impl_.leftdiffusioncoefficient_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+    _impl_.leftdiffusioncoefficient_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_diffusioncoefficient().empty()) {
-    _this->_impl_.diffusioncoefficient_.Set(from._internal_diffusioncoefficient(), 
+  if (!from._internal_leftdiffusioncoefficient().empty()) {
+    _this->_impl_.leftdiffusioncoefficient_.Set(from._internal_leftdiffusioncoefficient(), 
       _this->GetArenaForAllocation());
   }
   _impl_.demolitioncoefficient_.InitDefault();
@@ -362,6 +366,14 @@ TClientConfig::TClientConfig(const TClientConfig& from)
     _this->_impl_.solvemethods_.Set(from._internal_solvemethods(), 
       _this->GetArenaForAllocation());
   }
+  _impl_.rightdiffusioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.rightdiffusioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_rightdiffusioncoefficient().empty()) {
+    _this->_impl_.rightdiffusioncoefficient_.Set(from._internal_rightdiffusioncoefficient(), 
+      _this->GetArenaForAllocation());
+  }
   ::memcpy(&_impl_.spacecount_, &from._impl_.spacecount_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.bordersavailable_) -
     reinterpret_cast<char*>(&_impl_.spacecount_)) + sizeof(_impl_.bordersavailable_));
@@ -375,7 +387,7 @@ inline void TClientConfig::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.diffusioncoefficient_){}
+    , decltype(_impl_.leftdiffusioncoefficient_){}
     , decltype(_impl_.demolitioncoefficient_){}
     , decltype(_impl_.zerotimestate_){}
     , decltype(_impl_.sourcefunction_){}
@@ -384,6 +396,7 @@ inline void TClientConfig::SharedCtor(
     , decltype(_impl_.realsolutionname_){}
     , decltype(_impl_.realsolution_){}
     , decltype(_impl_.solvemethods_){}
+    , decltype(_impl_.rightdiffusioncoefficient_){}
     , decltype(_impl_.spacecount_){uint64_t{0u}}
     , decltype(_impl_.timecount_){uint64_t{0u}}
     , decltype(_impl_.leftbound_){0}
@@ -401,9 +414,9 @@ inline void TClientConfig::SharedCtor(
     , decltype(_impl_.stochasticiterationcount_){uint64_t{0u}}
     , decltype(_impl_.bordersavailable_){false}
   };
-  _impl_.diffusioncoefficient_.InitDefault();
+  _impl_.leftdiffusioncoefficient_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+    _impl_.leftdiffusioncoefficient_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.demolitioncoefficient_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -437,6 +450,10 @@ inline void TClientConfig::SharedCtor(
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.solvemethods_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.rightdiffusioncoefficient_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.rightdiffusioncoefficient_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 TClientConfig::~TClientConfig() {
@@ -450,7 +467,7 @@ TClientConfig::~TClientConfig() {
 
 inline void TClientConfig::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.diffusioncoefficient_.Destroy();
+  _impl_.leftdiffusioncoefficient_.Destroy();
   _impl_.demolitioncoefficient_.Destroy();
   _impl_.zerotimestate_.Destroy();
   _impl_.sourcefunction_.Destroy();
@@ -459,6 +476,7 @@ inline void TClientConfig::SharedDtor() {
   _impl_.realsolutionname_.Destroy();
   _impl_.realsolution_.Destroy();
   _impl_.solvemethods_.Destroy();
+  _impl_.rightdiffusioncoefficient_.Destroy();
 }
 
 void TClientConfig::SetCachedSize(int size) const {
@@ -471,7 +489,7 @@ void TClientConfig::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.diffusioncoefficient_.ClearToEmpty();
+  _impl_.leftdiffusioncoefficient_.ClearToEmpty();
   _impl_.demolitioncoefficient_.ClearToEmpty();
   _impl_.zerotimestate_.ClearToEmpty();
   _impl_.sourcefunction_.ClearToEmpty();
@@ -489,6 +507,7 @@ void TClientConfig::Clear() {
       _impl_.solvemethods_.ClearNonDefaultToEmpty();
     }
   }
+  _impl_.rightdiffusioncoefficient_.ClearToEmpty();
   if (cached_has_bits & 0x00000018u) {
     ::memset(&_impl_.spacecount_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&_impl_.timecount_) -
@@ -624,13 +643,13 @@ const char* TClientConfig::_InternalParse(const char* ptr, ::_pbi::ParseContext*
         } else
           goto handle_unusual;
         continue;
-      // string DiffusionCoefficient = 15;
+      // string LeftDiffusionCoefficient = 15;
       case 15:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 122)) {
-          auto str = _internal_mutable_diffusioncoefficient();
+          auto str = _internal_mutable_leftdiffusioncoefficient();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.DiffusionCoefficient"));
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.LeftDiffusionCoefficient"));
         } else
           goto handle_unusual;
         continue;
@@ -728,6 +747,16 @@ const char* TClientConfig::_InternalParse(const char* ptr, ::_pbi::ParseContext*
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.SolveMethods"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string RightDiffusionCoefficient = 26;
+      case 26:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 210)) {
+          auto str = _internal_mutable_rightdiffusioncoefficient();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "PFDESolver.TClientConfig.RightDiffusionCoefficient"));
         } else
           goto handle_unusual;
         continue;
@@ -893,14 +922,14 @@ uint8_t* TClientConfig::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(14, this->_internal_betaright(), target);
   }
 
-  // string DiffusionCoefficient = 15;
-  if (!this->_internal_diffusioncoefficient().empty()) {
+  // string LeftDiffusionCoefficient = 15;
+  if (!this->_internal_leftdiffusioncoefficient().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_diffusioncoefficient().data(), static_cast<int>(this->_internal_diffusioncoefficient().length()),
+      this->_internal_leftdiffusioncoefficient().data(), static_cast<int>(this->_internal_leftdiffusioncoefficient().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PFDESolver.TClientConfig.DiffusionCoefficient");
+      "PFDESolver.TClientConfig.LeftDiffusionCoefficient");
     target = stream->WriteStringMaybeAliased(
-        15, this->_internal_diffusioncoefficient(), target);
+        15, this->_internal_leftdiffusioncoefficient(), target);
   }
 
   // string DemolitionCoefficient = 16;
@@ -995,6 +1024,16 @@ uint8_t* TClientConfig::_InternalSerialize(
         25, this->_internal_solvemethods(), target);
   }
 
+  // string RightDiffusionCoefficient = 26;
+  if (!this->_internal_rightdiffusioncoefficient().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_rightdiffusioncoefficient().data(), static_cast<int>(this->_internal_rightdiffusioncoefficient().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PFDESolver.TClientConfig.RightDiffusionCoefficient");
+    target = stream->WriteStringMaybeAliased(
+        26, this->_internal_rightdiffusioncoefficient(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1011,11 +1050,11 @@ size_t TClientConfig::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string DiffusionCoefficient = 15;
-  if (!this->_internal_diffusioncoefficient().empty()) {
+  // string LeftDiffusionCoefficient = 15;
+  if (!this->_internal_leftdiffusioncoefficient().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_diffusioncoefficient());
+        this->_internal_leftdiffusioncoefficient());
   }
 
   // string DemolitionCoefficient = 16;
@@ -1054,7 +1093,7 @@ size_t TClientConfig::ByteSizeLong() const {
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x00000007u) {
     // optional string RealSolutionName = 23;
     if (cached_has_bits & 0x00000001u) {
       total_size += 2 +
@@ -1076,6 +1115,15 @@ size_t TClientConfig::ByteSizeLong() const {
           this->_internal_solvemethods());
     }
 
+  }
+  // string RightDiffusionCoefficient = 26;
+  if (!this->_internal_rightdiffusioncoefficient().empty()) {
+    total_size += 2 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_rightdiffusioncoefficient());
+  }
+
+  if (cached_has_bits & 0x00000018u) {
     // optional uint64 SpaceCount = 1;
     if (cached_has_bits & 0x00000008u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_spacecount());
@@ -1225,8 +1273,8 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_diffusioncoefficient().empty()) {
-    _this->_internal_set_diffusioncoefficient(from._internal_diffusioncoefficient());
+  if (!from._internal_leftdiffusioncoefficient().empty()) {
+    _this->_internal_set_leftdiffusioncoefficient(from._internal_leftdiffusioncoefficient());
   }
   if (!from._internal_demolitioncoefficient().empty()) {
     _this->_internal_set_demolitioncoefficient(from._internal_demolitioncoefficient());
@@ -1244,7 +1292,7 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
     _this->_internal_set_rightboundstate(from._internal_rightboundstate());
   }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       _this->_internal_set_realsolutionname(from._internal_realsolutionname());
     }
@@ -1254,6 +1302,11 @@ void TClientConfig::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
     if (cached_has_bits & 0x00000004u) {
       _this->_internal_set_solvemethods(from._internal_solvemethods());
     }
+  }
+  if (!from._internal_rightdiffusioncoefficient().empty()) {
+    _this->_internal_set_rightdiffusioncoefficient(from._internal_rightdiffusioncoefficient());
+  }
+  if (cached_has_bits & 0x00000018u) {
     if (cached_has_bits & 0x00000008u) {
       _this->_impl_.spacecount_ = from._impl_.spacecount_;
     }
@@ -1373,8 +1426,8 @@ void TClientConfig::InternalSwap(TClientConfig* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.diffusioncoefficient_, lhs_arena,
-      &other->_impl_.diffusioncoefficient_, rhs_arena
+      &_impl_.leftdiffusioncoefficient_, lhs_arena,
+      &other->_impl_.leftdiffusioncoefficient_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.demolitioncoefficient_, lhs_arena,
@@ -1407,6 +1460,10 @@ void TClientConfig::InternalSwap(TClientConfig* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.solvemethods_, lhs_arena,
       &other->_impl_.solvemethods_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.rightdiffusioncoefficient_, lhs_arena,
+      &other->_impl_.rightdiffusioncoefficient_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(TClientConfig, _impl_.bordersavailable_)

@@ -181,7 +181,7 @@ class TClientConfig final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDiffusionCoefficientFieldNumber = 15,
+    kLeftDiffusionCoefficientFieldNumber = 15,
     kDemolitionCoefficientFieldNumber = 16,
     kZeroTimeStateFieldNumber = 17,
     kSourceFunctionFieldNumber = 18,
@@ -190,6 +190,7 @@ class TClientConfig final :
     kRealSolutionNameFieldNumber = 23,
     kRealSolutionFieldNumber = 24,
     kSolveMethodsFieldNumber = 25,
+    kRightDiffusionCoefficientFieldNumber = 26,
     kSpaceCountFieldNumber = 1,
     kTimeCountFieldNumber = 2,
     kLeftBoundFieldNumber = 3,
@@ -207,18 +208,18 @@ class TClientConfig final :
     kStochasticIterationCountFieldNumber = 22,
     kBordersAvailableFieldNumber = 21,
   };
-  // string DiffusionCoefficient = 15;
-  void clear_diffusioncoefficient();
-  const std::string& diffusioncoefficient() const;
+  // string LeftDiffusionCoefficient = 15;
+  void clear_leftdiffusioncoefficient();
+  const std::string& leftdiffusioncoefficient() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_diffusioncoefficient(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_diffusioncoefficient();
-  PROTOBUF_NODISCARD std::string* release_diffusioncoefficient();
-  void set_allocated_diffusioncoefficient(std::string* diffusioncoefficient);
+  void set_leftdiffusioncoefficient(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_leftdiffusioncoefficient();
+  PROTOBUF_NODISCARD std::string* release_leftdiffusioncoefficient();
+  void set_allocated_leftdiffusioncoefficient(std::string* leftdiffusioncoefficient);
   private:
-  const std::string& _internal_diffusioncoefficient() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_diffusioncoefficient(const std::string& value);
-  std::string* _internal_mutable_diffusioncoefficient();
+  const std::string& _internal_leftdiffusioncoefficient() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_leftdiffusioncoefficient(const std::string& value);
+  std::string* _internal_mutable_leftdiffusioncoefficient();
   public:
 
   // string DemolitionCoefficient = 16;
@@ -343,6 +344,20 @@ class TClientConfig final :
   const std::string& _internal_solvemethods() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_solvemethods(const std::string& value);
   std::string* _internal_mutable_solvemethods();
+  public:
+
+  // string RightDiffusionCoefficient = 26;
+  void clear_rightdiffusioncoefficient();
+  const std::string& rightdiffusioncoefficient() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_rightdiffusioncoefficient(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_rightdiffusioncoefficient();
+  PROTOBUF_NODISCARD std::string* release_rightdiffusioncoefficient();
+  void set_allocated_rightdiffusioncoefficient(std::string* rightdiffusioncoefficient);
+  private:
+  const std::string& _internal_rightdiffusioncoefficient() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_rightdiffusioncoefficient(const std::string& value);
+  std::string* _internal_mutable_rightdiffusioncoefficient();
   public:
 
   // optional uint64 SpaceCount = 1;
@@ -511,7 +526,7 @@ class TClientConfig final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr diffusioncoefficient_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr leftdiffusioncoefficient_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr demolitioncoefficient_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr zerotimestate_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sourcefunction_;
@@ -520,6 +535,7 @@ class TClientConfig final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolutionname_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr realsolution_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr solvemethods_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr rightdiffusioncoefficient_;
     uint64_t spacecount_;
     uint64_t timecount_;
     double leftbound_;
@@ -1149,54 +1165,104 @@ inline void TClientConfig::set_betaright(double value) {
   // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.BetaRight)
 }
 
-// string DiffusionCoefficient = 15;
-inline void TClientConfig::clear_diffusioncoefficient() {
-  _impl_.diffusioncoefficient_.ClearToEmpty();
+// string LeftDiffusionCoefficient = 15;
+inline void TClientConfig::clear_leftdiffusioncoefficient() {
+  _impl_.leftdiffusioncoefficient_.ClearToEmpty();
 }
-inline const std::string& TClientConfig::diffusioncoefficient() const {
-  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.DiffusionCoefficient)
-  return _internal_diffusioncoefficient();
+inline const std::string& TClientConfig::leftdiffusioncoefficient() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.LeftDiffusionCoefficient)
+  return _internal_leftdiffusioncoefficient();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void TClientConfig::set_diffusioncoefficient(ArgT0&& arg0, ArgT... args) {
+void TClientConfig::set_leftdiffusioncoefficient(ArgT0&& arg0, ArgT... args) {
  
- _impl_.diffusioncoefficient_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.DiffusionCoefficient)
+ _impl_.leftdiffusioncoefficient_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.LeftDiffusionCoefficient)
 }
-inline std::string* TClientConfig::mutable_diffusioncoefficient() {
-  std::string* _s = _internal_mutable_diffusioncoefficient();
-  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.DiffusionCoefficient)
+inline std::string* TClientConfig::mutable_leftdiffusioncoefficient() {
+  std::string* _s = _internal_mutable_leftdiffusioncoefficient();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.LeftDiffusionCoefficient)
   return _s;
 }
-inline const std::string& TClientConfig::_internal_diffusioncoefficient() const {
-  return _impl_.diffusioncoefficient_.Get();
+inline const std::string& TClientConfig::_internal_leftdiffusioncoefficient() const {
+  return _impl_.leftdiffusioncoefficient_.Get();
 }
-inline void TClientConfig::_internal_set_diffusioncoefficient(const std::string& value) {
+inline void TClientConfig::_internal_set_leftdiffusioncoefficient(const std::string& value) {
   
-  _impl_.diffusioncoefficient_.Set(value, GetArenaForAllocation());
+  _impl_.leftdiffusioncoefficient_.Set(value, GetArenaForAllocation());
 }
-inline std::string* TClientConfig::_internal_mutable_diffusioncoefficient() {
+inline std::string* TClientConfig::_internal_mutable_leftdiffusioncoefficient() {
   
-  return _impl_.diffusioncoefficient_.Mutable(GetArenaForAllocation());
+  return _impl_.leftdiffusioncoefficient_.Mutable(GetArenaForAllocation());
 }
-inline std::string* TClientConfig::release_diffusioncoefficient() {
-  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.DiffusionCoefficient)
-  return _impl_.diffusioncoefficient_.Release();
+inline std::string* TClientConfig::release_leftdiffusioncoefficient() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.LeftDiffusionCoefficient)
+  return _impl_.leftdiffusioncoefficient_.Release();
 }
-inline void TClientConfig::set_allocated_diffusioncoefficient(std::string* diffusioncoefficient) {
-  if (diffusioncoefficient != nullptr) {
+inline void TClientConfig::set_allocated_leftdiffusioncoefficient(std::string* leftdiffusioncoefficient) {
+  if (leftdiffusioncoefficient != nullptr) {
     
   } else {
     
   }
-  _impl_.diffusioncoefficient_.SetAllocated(diffusioncoefficient, GetArenaForAllocation());
+  _impl_.leftdiffusioncoefficient_.SetAllocated(leftdiffusioncoefficient, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.diffusioncoefficient_.IsDefault()) {
-    _impl_.diffusioncoefficient_.Set("", GetArenaForAllocation());
+  if (_impl_.leftdiffusioncoefficient_.IsDefault()) {
+    _impl_.leftdiffusioncoefficient_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.DiffusionCoefficient)
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.LeftDiffusionCoefficient)
+}
+
+// string RightDiffusionCoefficient = 26;
+inline void TClientConfig::clear_rightdiffusioncoefficient() {
+  _impl_.rightdiffusioncoefficient_.ClearToEmpty();
+}
+inline const std::string& TClientConfig::rightdiffusioncoefficient() const {
+  // @@protoc_insertion_point(field_get:PFDESolver.TClientConfig.RightDiffusionCoefficient)
+  return _internal_rightdiffusioncoefficient();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TClientConfig::set_rightdiffusioncoefficient(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.rightdiffusioncoefficient_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PFDESolver.TClientConfig.RightDiffusionCoefficient)
+}
+inline std::string* TClientConfig::mutable_rightdiffusioncoefficient() {
+  std::string* _s = _internal_mutable_rightdiffusioncoefficient();
+  // @@protoc_insertion_point(field_mutable:PFDESolver.TClientConfig.RightDiffusionCoefficient)
+  return _s;
+}
+inline const std::string& TClientConfig::_internal_rightdiffusioncoefficient() const {
+  return _impl_.rightdiffusioncoefficient_.Get();
+}
+inline void TClientConfig::_internal_set_rightdiffusioncoefficient(const std::string& value) {
+  
+  _impl_.rightdiffusioncoefficient_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TClientConfig::_internal_mutable_rightdiffusioncoefficient() {
+  
+  return _impl_.rightdiffusioncoefficient_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TClientConfig::release_rightdiffusioncoefficient() {
+  // @@protoc_insertion_point(field_release:PFDESolver.TClientConfig.RightDiffusionCoefficient)
+  return _impl_.rightdiffusioncoefficient_.Release();
+}
+inline void TClientConfig::set_allocated_rightdiffusioncoefficient(std::string* rightdiffusioncoefficient) {
+  if (rightdiffusioncoefficient != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.rightdiffusioncoefficient_.SetAllocated(rightdiffusioncoefficient, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.rightdiffusioncoefficient_.IsDefault()) {
+    _impl_.rightdiffusioncoefficient_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:PFDESolver.TClientConfig.RightDiffusionCoefficient)
 }
 
 // string DemolitionCoefficient = 16;

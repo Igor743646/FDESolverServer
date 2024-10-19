@@ -1,50 +1,45 @@
 #pragma once
 
 #include <iostream>
-#include <boost/stacktrace.hpp>
-#include <boost/exception/all.hpp>
+#include <utils.hpp>
 
 namespace NStackTracer {
 
     class TExceptionWithStack : public std::exception {
     public:
 
-        explicit TExceptionWithStack(const char* message) : Message(message) {}
+        explicit TExceptionWithStack(const std::string& message) : Message(message) {}
 
         const char* what() const noexcept override { //NOLINT
-            return Message;
+            return Message.c_str();
         }
 
     private:
 
-        const char* Message;
+        std::string Message;
     };
 
     class TStackTracer {
-        using Traced = boost::error_info<struct tag_stacktrace, boost::stacktrace::stacktrace>;
-
     public:
 
         static void CurrentStack() {
-            std::cout << boost::stacktrace::stacktrace() << '\n';
+            std::cout << NUtils::StackTrace() << '\n';
         }
 
         [[noreturn]] static void ThrowWithMessage(const char* message) {
-            throw boost::enable_error_info(TExceptionWithStack(message))
-                << Traced(boost::stacktrace::stacktrace());
+            std::ostringstream ss;
+            ss << message << '\n' << NUtils::StackTrace();
+            throw TExceptionWithStack(ss.str());
         }
 
         [[noreturn]] static void ThrowWithMessage(const std::string& message) {
-            throw boost::enable_error_info(TExceptionWithStack(message.c_str()))
-                << Traced(boost::stacktrace::stacktrace());
+            std::ostringstream ss;
+            ss << message << '\n' << NUtils::StackTrace();
+            throw TExceptionWithStack(ss.str());
         }
 
         static void CatchAndPrintStack(const TExceptionWithStack& exception) {
-            std::cout << exception.what() << '\n';
-            const boost::stacktrace::stacktrace* trace = boost::get_error_info<Traced>(exception);
-            if (trace != nullptr) {
-                std::cerr << *trace;
-            }
+            std::cerr << exception.what() << '\n';
         }
 
     };

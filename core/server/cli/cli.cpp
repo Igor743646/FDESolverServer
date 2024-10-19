@@ -2,11 +2,21 @@
 #include <google/protobuf/util/json_util.h>
 #include <service_impl.hpp>
 #include <utility>
+#include <utils.hpp>
+#include <signal.h>
 
 using NArgumentParser::TArgumentParserResult;
 using NArgumentParser::TArgumentParser;
 using NArgumentParser::TArgumentType;
 using NArgumentParser::TArgumentTypeAliasType;
+
+void Init() {
+    signal(SIGINT, NUtils::TerminateWithStack);
+    signal(SIGFPE, NUtils::TerminateWithStack);
+    signal(SIGSEGV, NUtils::TerminateWithStack);
+    signal(SIGABRT, NUtils::TerminateWithStack);
+    signal(SIGTERM, NUtils::TerminateWithStack);
+}
 
 class TCLISolver : NFDESolverService::TFDESolverService {
 public:
@@ -101,6 +111,7 @@ TArgumentParserResult ParseArgs(int argc, char** argv) {
 }
 
 int main(int argc, char* argv[]) { //NOLINT
+    Init();
     auto args = ParseArgs(argc, argv);
 
     i64 logLevel = args.Get<i64>("--log-level");

@@ -87,7 +87,7 @@ func RunTask(writer http.ResponseWriter, request *http.Request) {
 
 	dialOpts = append(dialOpts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	conn, err := grpc.NewClient("[::]:50051", dialOpts...)
+	conn, err := grpc.NewClient("[::]:50001", dialOpts...)
 	if err != nil {
 		result.Error = err
 		ReplyErrorPage(writer, result)
@@ -105,7 +105,8 @@ func RunTask(writer http.ResponseWriter, request *http.Request) {
 	if t, ok := trailer["work-time"]; ok {
 		result.WorkTime, _ = strconv.ParseFloat(t[0], 64)
 	} else {
-		log.Fatal("work-time expected but doesn't exist in trailer")
+		log.Printf("work-time expected but doesn't exist in trailer")
+		result.WorkTime = 0.0
 	}
 
 	if err != nil {

@@ -2,36 +2,74 @@
 
 #include <grpcpp/server_builder.h>
 #include <utils.hpp>
+#include <signal.h>
+#include <chrono>
 
-void Init() {
-    std::set_terminate(NUtils::TerminateWithStack);
-#ifndef NDEBUG
-    gpr_set_log_verbosity(gpr_log_severity::GPR_LOG_SEVERITY_DEBUG);
-    NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelper::TLevel::lvDEBUG);
-#else 
-    gpr_set_log_verbosity(gpr_log_severity::GPR_LOG_SEVERITY_INFO);
-#endif
-}
+using namespace std::chrono_literals;
 
-void RunServer() {
-    std::string serverAddress("[::]:50051");
-    TFDESolverServerImpl service;
-
-    grpc::ServerBuilder builder;
-    builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
-    builder.RegisterService(&service);
-    std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
-
-    if (server) {
-        INFO_LOG << std::format("Server listening on address: {}\n", serverAddress);
-        server->Wait();
-    } else {
-        INFO_LOG << std::format("Can not run server on address: {}\n", serverAddress);
+class MainContext {
+public:
+    
+    MainContext(const std::string& address) 
+    : Address(address) {
+        signal(SIGINT, OnExit);
+        signal(SIGFPE, NUtils::TerminateWithStack);
+        signal(SIGSEGV, NUtils::TerminateWithStack);
+        signal(SIGABRT, NUtils::TerminateWithStack);
+        signal(SIGTERM, NUtils::TerminateWithStack);
+    #ifndef NDEBUG
+        NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelper::TLevel::lvDEBUG);
+    #endif
     }
-}
 
-int main(int, char**) {
-    Init();
-    RunServer();
+    void Run() {
+        TFDESolverServerImpl service;
+        grpc::ServerBuilder builder;
+        builder.AddListeningPort(Address, grpc::InsecureServerCredentials());
+        builder.RegisterService(&service);
+        Server = std::move(builder.BuildAndStart());
+
+        if (Server) {
+            INFO_LOG << std::format("Server listening on address: {}\n", Address);
+            Server->Wait();
+        } else {
+            INFO_LOG << std::format("Can not run server on address: {}\n", Address);
+        }
+    }
+
+    static void OnExit(int sig) {
+        if (MainContext::Server == nullptr) {
+            return;
+        }
+
+        INFO_LOG << "Shutdown server" << Endl;
+        MainContext::Server->Shutdown(std::chrono::system_clock::time_point(1s));
+        INFO_LOG << "Server stoped" << Endl;
+
+        exit(0);
+    }
+
+private:
+    std::string Address;
+    static std::unique_ptr<grpc::Server> Server;
+};
+
+std::unique_ptr<grpc::Server> MainContext::Server = nullptr;
+
+int main(int argc, char** argv) {
+    std::string serverAddress = "[::]:50001";
+    
+    if (argc > 2) {
+        ERROR_LOG << "Wrong arguments count!" << Endl;
+    }
+
+    if (argc == 2) {
+        serverAddress = argv[1];
+    }
+
+    MainContext ctx(serverAddress);
+    ctx.Run();
+    NUtils::Unreachable();
+
     return 0;
 }

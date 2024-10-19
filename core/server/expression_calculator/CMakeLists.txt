@@ -28,18 +28,18 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 DEFINE_LIB_HEADERS(${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 # Tests
+if (WITH_TESTS)
+    add_executable(${PROJECT_NAME}_test "src/tests/mec_test.cpp")
 
-add_executable(${PROJECT_NAME}_test "src/tests/mec_test.cpp")
-
-target_link_libraries(${PROJECT_NAME}_test PUBLIC
-    Catch2::Catch2WithMain
-    ${PROJECT_NAME}
-)
-target_include_directories(${PROJECT_NAME}_test PUBLIC 
-    ${ANTLR_SampleGrammarLexer_OUTPUT_DIR}
-    ${ANTLR_SampleGrammarParser_OUTPUT_DIR}
-    ${ANTLR_SampleGrammarVisitor_OUTPUT_DIR}
-    ${Catch2_INCLUDE_DIRS}
-    ${MathExpressionParser_HEADERS_DIR}
-)
-
+    target_link_libraries(${PROJECT_NAME}_test PUBLIC
+        Catch2::Catch2WithMain
+        ${PROJECT_NAME}
+    )
+    target_include_directories(${PROJECT_NAME}_test PUBLIC 
+        ${ANTLR_SampleGrammarLexer_OUTPUT_DIR}
+        ${ANTLR_SampleGrammarParser_OUTPUT_DIR}
+        ${ANTLR_SampleGrammarVisitor_OUTPUT_DIR}
+        ${Catch2_INCLUDE_DIRS}
+        ${MathExpressionParser_HEADERS_DIR}
+    )
+endif()

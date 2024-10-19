@@ -24,7 +24,7 @@ namespace NArgumentParser {
     }
 
     void TArgumentParser::Info() {
-        std::cout << "usage: FDESolverCLI_<build_type>.exe [--help] [--file <file_name>]\n\n";
+        std::cout << "usage: FDESolverCLI_<build_type>.exe\n\n";
         std::cout << "options:\n";
         for (auto& [argName, argInfo] : Arguments) {
             std::cout << std::format("\t{: >15}\t\t\t{}\n", argName, argInfo.Help());

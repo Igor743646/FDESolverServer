@@ -63,7 +63,11 @@ namespace NEquationSolver {
         virtual TResult DoSolve(bool saveMeta) = 0;
 
         [[nodiscard]] const TSolverConfig& GetConfig() const;
-        virtual void Validate() const final;
+        void CheckDiffusionCoefficient() const;
+        void CheckMainStabilityCondition() const;
+        void CheckStochasticMethodStabilityCondition1() const;
+        void CheckStochasticMethodStabilityCondition2() const;
+        void Validate() const;
 
         friend std::ostream& operator<<(std::ostream& out, const IEquationSolver& solver) {
             out << solver.Name() << Endl;

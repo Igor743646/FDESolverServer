@@ -4,6 +4,9 @@
 #include <result.pb.h>
 #include <matrix.pb.h>
 
+#undef max
+#undef min
+
 namespace NEquationSolver {
 
     PFDESolver::TResult IEquationSolver::TResult::ToProto() const {
@@ -91,13 +94,13 @@ namespace NEquationSolver {
 
     f64 IEquationSolver::CoefA(usize i) const {
         return (1.0 + Config.Beta) 
-        * (Config.DiffusionCoefficient[i] / 2.0) 
+        * (Config.LeftDiffusionCoefficient[i] / 2.0) 
         * (PowTCGamma / PowSCAlpha);
     }
 
     f64 IEquationSolver::CoefB(usize i) const {
         return (1.0 - Config.Beta) 
-        * (Config.DiffusionCoefficient[i] / 2.0) 
+        * (Config.RightDiffusionCoefficient[i] / 2.0) 
         * (PowTCGamma / PowSCAlpha);
     }
 
@@ -109,40 +112,75 @@ namespace NEquationSolver {
         return Config;
     }
 
+    void IEquationSolver::CheckDiffusionCoefficient() const {
+        const auto minLeftDiffCoef = std::ranges::min(Config.LeftDiffusionCoefficient);
+        const auto minRightDiffCoef = std::ranges::min(Config.RightDiffusionCoefficient);
+
+        if (minLeftDiffCoef < 0.0) {
+            WARNING_LOG << std::format("Problem with left diffusion coefficient: "
+                                       "D: {} > 0", minLeftDiffCoef) << Endl;
+
+        }
+
+        if (minRightDiffCoef < 0.0) {
+            WARNING_LOG << std::format("Problem with right diffusion coefficient: "
+                                       "D: {} > 0", minRightDiffCoef) << Endl;
+
+        }
+    }
+
+    void IEquationSolver::CheckMainStabilityCondition() const {
+        const f64 maxLeftDiffCoef = std::ranges::max(Config.LeftDiffusionCoefficient);
+        const f64 maxRightDiffCoef = std::ranges::max(Config.RightDiffusionCoefficient);
+        const f64 maxDiffCoef = std::max(maxLeftDiffCoef, maxRightDiffCoef);
+
+        const f64 left = maxDiffCoef * PowTCGamma / PowSCAlpha;
+        const f64 right = Config.Gamma / Config.Alpha;
+        
+        if (left > right) {
+            WARNING_LOG << std::format("Problem with main stability condition: "
+                                       "D * pow(tau, gamma) / pow(h, alpha): {} <= gamma/alpha: {}", left, right) << Endl;
+            
+            WARNING_LOG << "May make h >= " << std::pow(PowTCGamma * maxDiffCoef / right, 1.0/Config.Alpha) << Endl;
+            WARNING_LOG << "Or tau <= " << std::pow(right * PowSCAlpha / maxDiffCoef, 1.0/Config.Gamma) << Endl;
+        }
+    }
+
+    void IEquationSolver::CheckStochasticMethodStabilityCondition1() const {
+        // const auto [minDiffCoef, maxDiffCoef] = std::ranges::minmax_element(Config.DiffusionCoefficient);
+        // const auto [minDemCoef, maxDemCoef] = std::ranges::minmax_element(Config.DemolitionCoefficient);
+        // const auto minDiffCoefPos = std::ranges::distance(Config.DiffusionCoefficient.begin(), minDiffCoef);
+
+        // {
+        //     const f64 left = (*maxDemCoef) * PowTCGamma / 2.0 / Config.SpaceStep;
+        //     const f64 right = CoefA(minDiffCoefPos) * GAlpha[2] + CoefB(minDiffCoefPos);
+        //     if (left > right) {
+        //         WARNING_LOG << std::format("Problem with stochastic method stability condition: "
+        //                                    "V * pow(tau, gamma) / 2h: {} <= C+ * g_a_2 + C-: {}", left, right) << Endl;
+
+        //     }
+        // }
+
+        // {
+        //     const f64 left = (*minDemCoef) * PowTCGamma / 2.0 / Config.SpaceStep;
+        //     const f64 right = -(CoefB(minDiffCoefPos) * GAlpha[2] + CoefA(minDiffCoefPos));
+        //     if (left < right) {
+        //         WARNING_LOG << std::format("Problem with stochastic method stability condition: "
+        //                                    "V * pow(tau, gamma) / 2h: {} >= C- * g_a_2 + C+: {}", left, right) << Endl;
+
+        //     }
+        // }
+    }
+
+    void IEquationSolver::CheckStochasticMethodStabilityCondition2() const {
+
+    }
+
     void IEquationSolver::Validate() const {
-        DEBUG_LOG << Config.DiffusionCoefficient << Endl;
-        auto diffusionCMaxId = std::ranges::max_element(Config.DiffusionCoefficient.begin(), Config.DiffusionCoefficient.end());
-        f64 const diffusionCMax = *diffusionCMaxId;
-        auto demolitionCMaxId = std::ranges::max_element(Config.DemolitionCoefficient.begin(), Config.DemolitionCoefficient.end());
-        f64 const demolitionCMax = *demolitionCMaxId;
-
-        f64 left = diffusionCMax * PowTCGamma / PowSCAlpha;
-        f64 right = Config.Gamma / Config.Alpha;
-        INFO_LOG << "Left: " << left << " (" << (diffusionCMaxId - Config.DiffusionCoefficient.begin()) << " Right: " << right << Endl;
-        if (left > right) {
-            WARNING_LOG << "May be problem with condition" << Endl
-                        << "\t\tD * pow(tau, gamma) / pow(h, alpha): " << left << Endl
-                        << "\t\tgamma/alpha: " << right << Endl;
-
-            WARNING_LOG << "May make h >= " << std::pow(PowTCGamma * diffusionCMax / right, 1.0/Config.Alpha) << Endl;
-            WARNING_LOG << "Or tau <= " << std::pow(right * PowSCAlpha / diffusionCMax, 1.0/Config.Gamma) << Endl;
-        }
-
-        left = 2.0 * Config.SpaceStep * (CoefA(diffusionCMaxId - Config.DiffusionCoefficient.begin()) * GAlpha[2] + CoefB(diffusionCMaxId - Config.DiffusionCoefficient.begin()));
-        right = demolitionCMax * PowTCGamma;
-        if (left > right) {
-            WARNING_LOG << "May be problem with condition" << Endl
-                        << "\t\t2h * (C+ * g_a_2 + C-): " << left << Endl
-                        << "\t\tpow(tau, gamma)*V: " << right << Endl;
-        }
-
-        left = 2.0 * Config.SpaceStep * (CoefB(diffusionCMaxId - Config.DiffusionCoefficient.begin()) * GAlpha[2] + CoefA(diffusionCMaxId - Config.DiffusionCoefficient.begin()));
-        right = demolitionCMax * PowTCGamma;
-        if (left < right) {
-            WARNING_LOG << "May be problem with condition" << Endl
-                        << "\t\t2h * (C- * g_a_2 + C+): " << left << Endl
-                        << "\t\tpow(tau, gamma)*V: " << right << Endl;
-        }
+        CheckDiffusionCoefficient();
+        CheckMainStabilityCondition();
+        CheckStochasticMethodStabilityCondition1();
+        CheckStochasticMethodStabilityCondition2();
     }
 
     IEquationSolver::TResult IEquationSolver::Solve(bool saveMeta) {

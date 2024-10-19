@@ -1,3 +1,4 @@
+.gitignore
 **/build/*
 **/bin/*
 .vscode/
@@ -7,3 +8,4 @@ core/server/graph.html
 core/server/log.*
 core/tasks/results/
 core/server/expression_calculator/grammar/.antlr
+core/client/server/cert

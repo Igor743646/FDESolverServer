@@ -76,7 +76,7 @@ func main() {
 				}
 
 				ouputFileName := c.String("output-path") + ".html"
-				ouputFile, err := os.OpenFile(ouputFileName, os.O_RDWR|os.O_CREATE, 0644)
+				ouputFile, err := os.OpenFile(ouputFileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 				if err != nil {
 					return err
 				}

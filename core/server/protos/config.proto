@@ -19,7 +19,8 @@ message TClientConfig {
     double BetaLeft = 12;                               // коэффициент граничных условий третьего рода для x == L
     double AlphaRight = 13;                             // коэффициент граничных условий третьего рода для x == R
     double BetaRight = 14;                              // коэффициент граничных условий третьего рода для x == R
-    string DiffusionCoefficient = 15;                   // коэффициент диффузии
+    string LeftDiffusionCoefficient = 15;                   // коэффициент диффузии
+    string RightDiffusionCoefficient = 26;                   // коэффициент диффузии
     string DemolitionCoefficient = 16;                  // коэффициент линейного сноса
     string ZeroTimeState = 17;                          // функция u(x, 0)
     string SourceFunction = 18;                         // функция f(x, t)

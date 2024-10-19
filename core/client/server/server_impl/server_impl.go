@@ -17,11 +17,11 @@ var (
 type TFDEClient struct {
 }
 
-func NewTFDEClient() *TFDEClient {
-	return &TFDEClient{}
+func NewTFDEClient() TFDEClient {
+	return TFDEClient{}
 }
 
-func (cl *TFDEClient) ListenAndServe(addr string, handler http.Handler) error {
+func (cl TFDEClient) ListenAndServe(addr string, handler http.Handler) error {
 
 	homeRouter := mux.NewRouter()
 	homeRouter.HandleFunc("/home", router.Home).Methods(http.MethodGet)
@@ -34,5 +34,5 @@ func (cl *TFDEClient) ListenAndServe(addr string, handler http.Handler) error {
 	http.Handle("/", http.RedirectHandler("/home", http.StatusMovedPermanently))
 
 	log.Printf("Server start on: %s", addr)
-	return http.ListenAndServe(addr, handler)
+	return http.ListenAndServeTLS(addr, "cert/FDES-LOCALHOST-IGOR.crt", "cert/FDES-LOCALHOST-IGOR.key", handler)
 }

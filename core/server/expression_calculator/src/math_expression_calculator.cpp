@@ -259,6 +259,7 @@ namespace ANTLRMathExpParser {
         } else {
             auto arguments = std::any_cast<std::array<double, ArgumentListMax>>(context->children[2]->accept(this));
             
+            if (functionName == "abs") {return std::abs(arguments[0]);}
             if (functionName == "sin") {return std::sin(arguments[0]);}
             if (functionName == "cos") {return std::cos(arguments[0]);}
             if (functionName == "Gamma") {return Gamma(arguments[0]);}

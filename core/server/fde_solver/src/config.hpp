@@ -36,7 +36,8 @@ namespace NEquationSolver {
     };
 
     struct TParsedSolverConfig : public TSolverConfigBase {
-        std::function<f64(f64)> DiffusionCoefficient;               // коэффициент диффузии при дробной производной по пространству
+        std::function<f64(f64)> LeftDiffusionCoefficient;           // коэффициент диффузии при дробной производной по пространству
+        std::function<f64(f64)> RightDiffusionCoefficient;          // коэффициент диффузии при дробной производной по пространству
         std::function<f64(f64)> DemolitionCoefficient;              // коэффициент сноса при производной первой степени
         std::function<f64(f64)> ZeroTimeState;                      // начальное условие при t = 0, u(x, 0) = psi(x)
         std::function<f64(f64, f64)> SourceFunction;                // функция источник
@@ -48,8 +49,9 @@ namespace NEquationSolver {
     };
 
     struct TSolverConfig : TSolverConfigBase {
-        std::vector<f64> DiffusionCoefficient;              // коэффициент диффузии при дробной производной по пространству
-        std::vector<f64> DemolitionCoefficient;             // коэффициент сноса при производной первой степени
+        std::vector<f64> LeftDiffusionCoefficient;          // коэффициент диффузии при дробной производной по пространству
+        std::vector<f64> RightDiffusionCoefficient;         // коэффициент диффузии при дробной производной по пространству
+        std::vector<f64> DemolitionCoefficient;             // коэффициент сноса при производной первой степени по пространству
         std::vector<f64> ZeroTimeState;                     // начальное условие при t = 0, u(x, 0) = psi(x)
         NLinalg::TMatrix SourceFunction;                    // функция источник
         std::vector<f64> LeftBoundState;                    // граничное условие u(L, t) = phiL(t)

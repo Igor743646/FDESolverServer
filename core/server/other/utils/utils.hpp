@@ -1,6 +1,10 @@
 #pragma once
 
-#include <boost/stacktrace.hpp>
+#ifdef STDSTACKTRACE
+    #include <stacktrace>
+#else
+    #include <boost/stacktrace.hpp>
+#endif
 #include <logger.hpp>
 
 namespace NUtils {
@@ -12,13 +16,31 @@ namespace NUtils {
     #endif
     }
 
-    [[noreturn]] inline void TerminateWithStack() {
+    inline std::string StackTrace() {
+        #ifdef STDSTACKTRACE
+            return std::to_string(std::stacktrace::current());
+        #else
+            return boost::stacktrace::to_string(boost::stacktrace::stacktrace());
+        #endif
+    }
 
-        auto trace = boost::stacktrace::stacktrace();
+    [[noreturn]] inline void TerminateWithStack() throw() {
+
+        auto trace = StackTrace();
 
         CRITICAL_LOG << trace << Endl;
-        std::cerr << std::format("Stacktrace:\n{}", boost::stacktrace::to_string(trace));
+        std::cerr << std::format("Stacktrace:\n{}", trace);
 
-        std::abort();
+        std::exit(1);
+    }
+
+    [[noreturn]] inline void TerminateWithStack(int sig) throw() {
+
+        auto trace = StackTrace();
+
+        CRITICAL_LOG << "Sig: " << sig << " " << trace << Endl;
+        std::cerr << std::format("Signal: {} Stacktrace:\n{}", sig, trace);
+
+        std::exit(sig);
     }
 }  // namespace NUtils

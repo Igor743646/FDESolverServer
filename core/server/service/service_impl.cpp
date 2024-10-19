@@ -3,7 +3,8 @@
 #include <timer.hpp>
 #include <logger.hpp>
 #include <future>
-#include <boost/thread/latch.hpp>
+// #include <boost/thread/latch.hpp>
+#include <latch>
 
 namespace NFDESolverService {
 
@@ -15,7 +16,7 @@ namespace NFDESolverService {
         TSolverConfig solverConfig(parsedSolverConfig);
         const TSolvers solvers = ParseSolveMethods(*request, solverConfig);
 
-        boost::latch latch(solvers.size());
+        std::latch latch(solvers.size());
 
         // №1 Set Config to results
         AddConfig(solverConfig, *response);
@@ -88,7 +89,8 @@ namespace NFDESolverService {
     TParsedSolverConfig TFDESolverService::ParseClientConfig(const TClientConfig& config) {
         return {
             TSolverConfigBase::FromProto(config),
-            /* .DiffusionCoefficient =*/ GetFunction(config.diffusioncoefficient(), "x"),
+            /* .DiffusionCoefficient =*/ GetFunction(config.leftdiffusioncoefficient(), "x"),
+            /* .DiffusionCoefficient =*/ GetFunction(config.rightdiffusioncoefficient(), "x"),
             /* .DemolitionCoefficient =*/ GetFunction(config.demolitioncoefficient(), "x"),
             /* .ZeroTimeState =*/ GetFunction(config.zerotimestate(), "x"),
             /* .SourceFunction =*/ GetFunction(config.sourcefunction(), "x", "t"),

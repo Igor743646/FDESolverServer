@@ -29,7 +29,8 @@ namespace NEquationSolver {
     TSolverConfig::TSolverConfig(const TParsedSolverConfig& parsedConfig) : TSolverConfigBase(parsedConfig.Base()) {
         const usize n = parsedConfig.SpaceCount + 1;
         const usize k = parsedConfig.TimeCount + 1;
-        DiffusionCoefficient.resize(n);
+        LeftDiffusionCoefficient.resize(n);
+        RightDiffusionCoefficient.resize(n);
         DemolitionCoefficient.resize(n);
         ZeroTimeState.resize(n);
         SourceFunction = NLinalg::TMatrix(k, n);
@@ -39,7 +40,8 @@ namespace NEquationSolver {
         for (usize i = 0; i < n; i++) {
             f64 x = parsedConfig.LeftBound + static_cast<f64>(i) * parsedConfig.SpaceStep;
             
-            DiffusionCoefficient[i] = parsedConfig.DiffusionCoefficient(x);
+            LeftDiffusionCoefficient[i] = parsedConfig.LeftDiffusionCoefficient(x);
+            RightDiffusionCoefficient[i] = parsedConfig.RightDiffusionCoefficient(x);
             DemolitionCoefficient[i] = parsedConfig.DemolitionCoefficient(x);
             ZeroTimeState[i] = parsedConfig.ZeroTimeState(x);
         }
