@@ -147,33 +147,9 @@ namespace NEquationSolver {
     }
 
     void IEquationSolver::CheckStochasticMethodStabilityCondition1() const {
-        // const auto [minDiffCoef, maxDiffCoef] = std::ranges::minmax_element(Config.DiffusionCoefficient);
-        // const auto [minDemCoef, maxDemCoef] = std::ranges::minmax_element(Config.DemolitionCoefficient);
-        // const auto minDiffCoefPos = std::ranges::distance(Config.DiffusionCoefficient.begin(), minDiffCoef);
-
-        // {
-        //     const f64 left = (*maxDemCoef) * PowTCGamma / 2.0 / Config.SpaceStep;
-        //     const f64 right = CoefA(minDiffCoefPos) * GAlpha[2] + CoefB(minDiffCoefPos);
-        //     if (left > right) {
-        //         WARNING_LOG << std::format("Problem with stochastic method stability condition: "
-        //                                    "V * pow(tau, gamma) / 2h: {} <= C+ * g_a_2 + C-: {}", left, right) << Endl;
-
-        //     }
-        // }
-
-        // {
-        //     const f64 left = (*minDemCoef) * PowTCGamma / 2.0 / Config.SpaceStep;
-        //     const f64 right = -(CoefB(minDiffCoefPos) * GAlpha[2] + CoefA(minDiffCoefPos));
-        //     if (left < right) {
-        //         WARNING_LOG << std::format("Problem with stochastic method stability condition: "
-        //                                    "V * pow(tau, gamma) / 2h: {} >= C- * g_a_2 + C+: {}", left, right) << Endl;
-
-        //     }
-        // }
     }
 
     void IEquationSolver::CheckStochasticMethodStabilityCondition2() const {
-
     }
 
     void IEquationSolver::Validate() const {

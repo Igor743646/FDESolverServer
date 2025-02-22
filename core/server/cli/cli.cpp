@@ -10,31 +10,38 @@ using NArgumentParser::TArgumentParser;
 using NArgumentParser::TArgumentType;
 using NArgumentParser::TArgumentTypeAliasType;
 
-void Init() {
-    signal(SIGINT, NUtils::TerminateWithStack);
-    signal(SIGFPE, NUtils::TerminateWithStack);
-    signal(SIGSEGV, NUtils::TerminateWithStack);
-    signal(SIGABRT, NUtils::TerminateWithStack);
-    signal(SIGTERM, NUtils::TerminateWithStack);
-}
-
 class TCLISolver : NFDESolverService::TFDESolverService {
 public:
 
-    explicit TCLISolver(TArgumentParserResult  arguments) 
-        : Arguments(std::move(arguments)) {}
+    explicit TCLISolver(TArgumentParserResult&& arguments) 
+        : Arguments(std::move(arguments)) {
+        signal(SIGINT, OnInterrupt);
+        signal(SIGFPE, NUtils::TerminateWithStack);
+        signal(SIGSEGV, NUtils::TerminateWithStack);
+        signal(SIGABRT, NUtils::TerminateWithStack);
+        signal(SIGTERM, NUtils::TerminateWithStack);
+        i64 logLevel = Arguments.Get<i64>("--log-level");
+        STACK_ASSERT(1 <= logLevel && logLevel <= 5, "Log level must be from 1 to 5");
+        NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelperBase::TLevel(logLevel));
+    }
 
     void RunTask() {
         auto config = GetConfig();
 
         PFDESolver::TResults results;
-        NFDESolverService::TFDESolverService service;
-
-        service.DoRunTask(config.get(), &results);
+        
+        Service.DoRunTask(config.get(), &results);
         SaveResults(results);
     }
 
 private:
+
+    static void OnInterrupt(int sig) {
+        WARNING_LOG << "Interupting..." << Endl;
+        Service.Interrupt();
+        WARNING_LOG << "Interuptted service" << Endl;
+        std::exit(1);
+    }
 
     static void Check(bool expression, const std::string& message) {
         if (!expression) {
@@ -90,7 +97,10 @@ private:
     }
 
     TArgumentParserResult Arguments;
+    static NFDESolverService::TFDESolverService Service;
 };
+
+NFDESolverService::TFDESolverService TCLISolver::Service;
 
 TArgumentParserResult ParseArgs(int argc, char** argv) {
     const TArgumentTypeAliasType<TArgumentType::STRING_VALUE> defaultOutFile = "result.txt";
@@ -110,15 +120,9 @@ TArgumentParserResult ParseArgs(int argc, char** argv) {
     return parser.Parse(argc, argv);
 }
 
-int main(int argc, char* argv[]) { //NOLINT
-    Init();
+int main(int argc, char** argv) { //NOLINT
     auto args = ParseArgs(argc, argv);
-
-    i64 logLevel = args.Get<i64>("--log-level");
-    STACK_ASSERT(1 <= logLevel && logLevel <= 5, "Log level must be from 1 to 5");
-    NLogger::TLogHelper::SetLogLevel(NLogger::TLogHelperBase::TLevel(logLevel));
-    
-    TCLISolver solver(args);
+    TCLISolver solver(std::move(args));
     solver.RunTask();
     return 0;
 }

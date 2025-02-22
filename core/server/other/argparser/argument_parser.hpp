@@ -70,6 +70,8 @@ namespace NArgumentParser {
     public:
 
         TArgumentParserResult() = default;
+        TArgumentParserResult(TArgumentParserResult&&) = default;
+        TArgumentParserResult(const TArgumentParserResult&) = delete;
 
         template<class T, class... Args>
         void Set(const TArgumentInfo& info, const std::string& key, Args... args) {

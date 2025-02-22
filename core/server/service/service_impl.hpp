@@ -22,6 +22,7 @@ namespace NFDESolverService {
     using NEquationSolver::TMFDESRule;
     using NEquationSolver::TStochasticFDES;
     using NEquationSolver::TRLFDESRule;
+    using NEquationSolver::TRLFDESRule2;
 
     struct IMethodBuilder {
         constexpr IMethodBuilder() = default;
@@ -71,9 +72,11 @@ namespace NFDESolverService {
             Methods.insert({"MRL", std::make_unique<TMethodBuilder<TMatrixFDES<TRLFDESRule>>>(1)});
             Methods.insert({"SGL", std::make_unique<TMethodBuilder<TStochasticFDES<TMFDESRule>>>(2)});
             Methods.insert({"SRL", std::make_unique<TMethodBuilder<TStochasticFDES<TRLFDESRule>>>(3)});
+            Methods.insert({"MRL2", std::make_unique<TMethodBuilder<TMatrixFDES<TRLFDESRule2>>>(4)});
         }
 
         void DoRunTask(const TClientConfig*, TResults*);
+        void Interrupt();
 
     private:
 

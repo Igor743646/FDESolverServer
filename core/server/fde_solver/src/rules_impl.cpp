@@ -207,3 +207,120 @@ namespace NEquationSolver {
         return 0.0;
     }
 }  // namespace NEquationSolver
+
+namespace NEquationSolver {
+    
+    f64 TRLFDESRule2::CoefGMatrixLeft(IEquationSolver const *const solver, usize j, usize i) {
+        const f64 alpha = solver->GetConfig().Alpha;
+        const f64 gamma = solver->GetConfig().Gamma;
+        const f64 th0 = NFunctions::Gamma(2.0 - gamma) / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
+        
+        if (j == i + 1) {
+            return th0;
+        }
+
+        if (j == i) {
+            return th0 * (std::pow(3, 2 - alpha) - 3);
+        }
+
+        if (j + 1 == i) {
+            return th0 * (std::pow(5, 2 - alpha) - 3 * std::pow(3, 2 - alpha) + 3);
+        }
+
+        if (j == 0) {
+            return th0 * (2 * (2 - alpha) * (std::pow(2*i+1, 1 - alpha) - std::pow(2*i-1, 1 - alpha)) - (std::pow(2*i+1, 2 - alpha) - 2 * std::pow(2*i-1, 2 - alpha) + std::pow(2*i-3, 2 - alpha)));
+        }
+        
+        return th0 * (std::pow(2*(i-j) + 3, 2 - alpha) - 3 * std::pow(2*(i-j) + 1, 2 - alpha) + 3 * std::pow(2*(i-j) -1, 2 - alpha) - std::pow(2*(i-j) - 3, 2 - alpha));
+    }
+
+    f64 TRLFDESRule2::CoefGMatrixRight(IEquationSolver const *const solver, usize j, usize i) {
+        const f64 alpha = solver->GetConfig().Alpha;
+        const f64 gamma = solver->GetConfig().Gamma;
+        const usize n = solver->GetConfig().SpaceCount;
+        const f64 th0 = NFunctions::Gamma(2.0 - gamma) / (NFunctions::Gamma(3.0 - alpha) * (std::pow(2.0, 2.0 - alpha)));
+        
+        if (j + 1 == i) {
+            return th0;
+        }
+
+        if (j == i) {
+            return th0 * (std::pow(3, 2 - alpha) - 3);
+        }
+
+        if (j == i + 1) {
+            return th0 * (std::pow(5, 2 - alpha) - 3 * std::pow(3, 2 - alpha) + 3);
+        }
+
+        if (j == n) {
+            return th0 * (2 * (2 - alpha) * (std::pow(2*(n - i)+1, 1 - alpha) - std::pow(2*(n - i)-1, 1 - alpha)) - (std::pow(2*(n - i)+1, 2 - alpha) - 2 * std::pow(2*(n - i)-1, 2 - alpha) + std::pow(2*(n - i)-3, 2 - alpha)));
+        }
+        
+        return th0 * (std::pow(2*(j-i) + 3, 2 - alpha) - 3 * std::pow(2*(j-i) + 1, 2 - alpha) + 3 * std::pow(2*(j-i) -1, 2 - alpha) - std::pow(2*(j-i) - 3, 2 - alpha));
+    }
+
+    f64 TRLFDESRule2::FillMatrix(IEquationSolver const *const solver, usize i, usize j) {
+        const f64 gamma = solver->GetConfig().Gamma;
+        const usize n = solver->GetConfig().SpaceCount;
+        f64 result = 0.0;
+
+        if (j <= i + 1) { // Left
+            result += solver->CoefA(i) * CoefGMatrixLeft(solver, j, i);
+        }
+
+        if (i <= j + 1) { // Right
+            result += solver->CoefB(i) * CoefGMatrixRight(solver, j, i);
+        }
+
+        if (i == j) {
+            result -= 1;
+        }
+
+        if (i == j + 1) {
+            result -= NFunctions::Gamma(2.0 - gamma) * solver->CoefC(i);
+        }
+
+        if (i + 1 == j) {
+            result += NFunctions::Gamma(2.0 - gamma) * solver->CoefC(i);
+        }
+
+        return result;
+    }
+
+    /*
+        // Math: \theta_0 = \frac{1}{(1-\gamma)\Gamma(1-\gamma)}
+        // Math: \theta_k = \theta_0 * (k^{1-\gamma} - (k-1)^{1-\gamma})
+    */
+    f64 TRLFDESRule2::CoefGDestination(IEquationSolver const *const solver, usize j, usize k) {
+        const f64 gamma = solver->GetConfig().Gamma;
+        
+        if (j == k) {
+            return 1;
+        }
+
+        if (j + 1 == k) {
+            return std::pow(2, 1.0 - gamma) - 2;
+        }
+
+        if (j == 0) {
+            return (1 - gamma) * std::pow(k, -gamma) - std::pow(k, 1 - gamma) + std::pow(k - 1, 1 - gamma);
+        }
+        
+        return (std::pow(k - j + 1, 1.0 - gamma) - 2 * std::pow(k - j, 1.0 - gamma) + std::pow(k - j - 1, 1.0 - gamma));
+    }
+
+    // Math: d_i^k = -\theta_{k}u_i^0 + \sum_{j=1}^{k-1}{(\theta_{k-j+1}-\theta_{k-j})u_i^{j}} - \tau^\gamma f(x_i, t_j)
+    f64 TRLFDESRule2::FillDestination(IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize k) {
+        const f64 gamma = solver->GetConfig().Gamma;
+
+        f64 di = 0.0;
+
+        for (usize j = 0; j < k; j++) {
+            di += CoefGDestination(solver, j, k) * result[j][i];
+        }
+
+        di -= solver->PowTCGamma * NFunctions::Gamma(2.0 - gamma) * solver->GetConfig().SourceFunction[k][i];
+        
+        return di;
+    }
+}

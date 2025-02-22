@@ -18,5 +18,5 @@
     "StochasticIterationCount": "80",
     "RealSolutionName": "$u(x, t) = x + t$",                        
     "RealSolution" : "x + t",
-    "SolveMethods": "MGL;MRL;SGL;SRL"
+    "SolveMethods": "MGL;MRL2"
 }

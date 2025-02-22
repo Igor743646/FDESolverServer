@@ -7,7 +7,8 @@
     "SpaceStep": "0.1",
     "TimeStep": "0.01",     
     "Beta": "0.0",  
-    "DiffusionCoefficient": "0.1",     
+    "LeftDiffusionCoefficient": "0.1",  
+    "RightDiffusionCoefficient": "0.1", 
     "DemolitionCoefficient": "0.0",    
     "ZeroTimeState": "abs(x) < 0.05 ? 1.0 : 0.0",            
     "SourceFunction": "0.0",   
@@ -15,5 +16,5 @@
     "RightBoundState": "0.0",          
     "BordersAvailable": false,          
     "StochasticIterationCount": "100",
-    "SolveMethods": "MGL;MRL;SGL;SRL"
+    "SolveMethods": "MGL;MRL;MRL2;SGL;SRL"
 }

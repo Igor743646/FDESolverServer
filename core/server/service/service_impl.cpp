@@ -3,8 +3,8 @@
 #include <timer.hpp>
 #include <logger.hpp>
 #include <future>
-// #include <boost/thread/latch.hpp>
 #include <latch>
+#include <boost/thread.hpp>
 
 namespace NFDESolverService {
 
@@ -30,7 +30,11 @@ namespace NFDESolverService {
 
             boost::asio::post(ThreadPool, [this, pbResultDest, solver=solver.get(), &latch]() {
                 NTimer::TTimer timer;
-                SolveTask(*solver, *pbResultDest, true);
+                try {
+                    SolveTask(*solver, *pbResultDest, true);
+                } catch (boost::thread_interrupted) {
+                    WARNING_LOG << "Thread was interrupted" << Endl;
+                }
                 INFO_LOG << "Method " << solver->Name() << " elapsed: " << timer.MilliSeconds().count() << "ms" << Endl;
                 latch.count_down();
             });
@@ -42,6 +46,10 @@ namespace NFDESolverService {
         
         latch.wait();
         DEBUG_LOG << "Finish DoRunTask" << Endl;
+    }
+
+    void TFDESolverService::Interrupt() {
+        ThreadPool.stop();
     }
 
     void TFDESolverService::AddConfig(const TSolverConfig& config, TResults& response) {

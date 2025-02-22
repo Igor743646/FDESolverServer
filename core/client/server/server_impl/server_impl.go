@@ -34,5 +34,5 @@ func (cl TFDEClient) ListenAndServe(addr string, handler http.Handler) error {
 	http.Handle("/", http.RedirectHandler("/home", http.StatusMovedPermanently))
 
 	log.Printf("Server start on: %s", addr)
-	return http.ListenAndServeTLS(addr, "cert/FDES-LOCALHOST-IGOR.crt", "cert/FDES-LOCALHOST-IGOR.key", handler)
+	return http.ListenAndServe(addr, handler)
 }

@@ -4,7 +4,7 @@
 
 namespace NEquationSolver {
 
-    constexpr size_t MethodsCount = 4;
+    constexpr size_t MethodsCount = 5;
 
     template<class T>
     concept TMatrixFillRuleConcept = requires (IEquationSolver const *const solver, const NLinalg::TMatrix& result, usize i, usize j) {
@@ -51,8 +51,25 @@ namespace NEquationSolver {
         ~TRLFDESRule() = delete;
     };
 
+    struct TRLFDESRule2 {
+        static std::string Name() { return "Riemann-Liouville approximation"; };
+        static f64 FillMatrix(IEquationSolver const *, usize, usize);
+        static f64 FillDestination(IEquationSolver const *, const NLinalg::TMatrix&, usize, usize);
+        static f64 FillProbabilities(IEquationSolver const *, const std::span<f64>&, usize, usize);
+        static f64 CoefGMatrixLeft(IEquationSolver const *, usize, usize);
+        static f64 CoefGMatrixRight(IEquationSolver const *, usize, usize);
+        static f64 CoefGDestination(IEquationSolver const *, usize, usize);
+        TRLFDESRule2() = delete;
+        TRLFDESRule2(const TRLFDESRule2&) = delete;
+        TRLFDESRule2(TRLFDESRule2&&) = delete;
+        TRLFDESRule2& operator=(const TRLFDESRule2&) = delete;
+        TRLFDESRule2& operator=(TRLFDESRule2&&) = delete;
+        ~TRLFDESRule2() = delete;
+    };
+
     static_assert(TMatrixFillRuleConcept<TMFDESRule>, "Wrong type TMFDESRule for TMatrixFillRuleConcept");
     static_assert(TMatrixFillRuleConcept<TRLFDESRule>, "Wrong type TRLFDESRule for TMatrixFillRuleConcept");
+    static_assert(TMatrixFillRuleConcept<TRLFDESRule2>, "Wrong type TRLFDESRule2 for TMatrixFillRuleConcept");
     static_assert(TProbabilitiesFillRuleConcept<TMFDESRule>, "Wrong type TMFDESRule for TProbabilitiesFillRuleConcept");
     static_assert(TProbabilitiesFillRuleConcept<TRLFDESRule>, "Wrong type TRLFDESRule for TProbabilitiesFillRuleConcept");
 }  // namespace NEquationSolver

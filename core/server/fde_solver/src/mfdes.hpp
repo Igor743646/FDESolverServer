@@ -41,6 +41,10 @@ namespace NEquationSolver {
             TMatrix matrix(n + 1);
             FillMatrix(matrix);
 
+            DEBUG_LOG << '\n' << matrix << Endl;
+            DEBUG_LOG << Config.LeftDiffusionCoefficient << Endl;
+            DEBUG_LOG << Config.SourceFunction << Endl;
+
             auto plu = matrix.LUFactorizing();
 
             if (!plu.has_value()) {

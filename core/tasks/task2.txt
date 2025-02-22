@@ -18,5 +18,5 @@
     "StochasticIterationCount": "80",
     "RealSolutionName": "$u(x, t) = x^2 \\\\cdot t^2$",                        
     "RealSolution" : "pow(x, 2.0) * pow(t, 2.0)",
-    "SolveMethods": "MGL;MRL;SGL;SRL"
+    "SolveMethods": "MGL;MRL2;SGL;SRL"
 }
